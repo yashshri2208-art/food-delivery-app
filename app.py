@@ -73,12 +73,12 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 .bill-row { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px dashed rgba(255,255,255,.14); }
 .bill-row.saving { color:var(--mint); font-weight:700; } .bill-total { display:flex; justify-content:space-between; gap:16px; padding-top:14px; font-size:1.35rem; font-weight:800; color:var(--gold); }
 /* Welcome screen: three original, illustrated campaign-style backgrounds. */
-@keyframes welcomeRotate { 0%,29% { opacity:1; } 33%,96% { opacity:0; } 100% { opacity:1; } }
+@keyframes welcomeRotate { 0%,30% { opacity:1; } 34%,96% { opacity:0; } 100% { opacity:1; } }
 .welcome-carousel { position:absolute; inset:0; overflow:hidden; border-radius:30px; background:#211526; }
-.welcome-slide { position:absolute; inset:0; opacity:0; animation:welcomeRotate 18s infinite; }
+.welcome-slide { position:absolute; inset:0; opacity:0; animation:welcomeRotate 24s ease-in-out infinite; will-change:opacity; }
 .welcome-slide:nth-child(1) { animation-delay:0s; background:radial-gradient(circle at 82% 36%,#ffbb52 0%,transparent 28%),linear-gradient(120deg,#341437 0%,#762548 52%,#f56c48 100%); }
-.welcome-slide:nth-child(2) { animation-delay:6s; background:radial-gradient(circle at 85% 25%,#e0fc76 0%,transparent 27%),linear-gradient(120deg,#142c31 0%,#176c63 52%,#54ad77 100%); }
-.welcome-slide:nth-child(3) { animation-delay:12s; background:radial-gradient(circle at 83% 32%,#ffbbdc 0%,transparent 27%),linear-gradient(120deg,#25163e 0%,#553d9b 54%,#c86dba 100%); }
+.welcome-slide:nth-child(2) { animation-delay:8s; background:radial-gradient(circle at 85% 25%,#e0fc76 0%,transparent 27%),linear-gradient(120deg,#142c31 0%,#176c63 52%,#54ad77 100%); }
+.welcome-slide:nth-child(3) { animation-delay:16s; background:radial-gradient(circle at 83% 32%,#ffbbdc 0%,transparent 27%),linear-gradient(120deg,#25163e 0%,#553d9b 54%,#c86dba 100%); }
 .welcome-slide:before { content:""; position:absolute; width:360px; height:360px; border:2px solid rgba(255,255,255,.23); border-radius:50%; right:6%; top:12%; box-shadow:0 0 0 45px rgba(255,255,255,.055),0 0 0 95px rgba(255,255,255,.035); }
 .welcome-slide:after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(17,12,26,.72),rgba(17,12,26,.12) 80%); }
 .welcome-sticker { position:absolute; right:10%; top:27%; font-size:clamp(105px,15vw,205px); transform:rotate(-12deg); filter:drop-shadow(0 22px 28px rgba(0,0,0,.22)); z-index:1; animation:floatFood 5s ease-in-out infinite; }
@@ -99,17 +99,17 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 .food-orbit { position:absolute; right:9%; top:24%; width:210px; height:210px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(145deg,rgba(255,201,40,.2),rgba(255,90,82,.12)); border:1px solid rgba(255,255,255,.15); font-size:105px; animation:floatFood 5s ease-in-out infinite,glow 4s ease-in-out infinite; }
 .food-orbit-small { position:absolute; right:27%; top:59%; font-size:44px; animation:floatFood 4.2s ease-in-out infinite; }
 .landing-perks { display:flex; flex-wrap:wrap; gap:10px; margin-top:34px; }
-.landing-perks span { padding:10px 14px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.055); color:#fff7e8; border-radius:999px; font-size:.88rem; }
+.landing-perks span { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 16px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.055); color:#fff7e8; border-radius:999px; font-size:.88rem; line-height:1.2; white-space:nowrap; } .landing-perks .perk-icon { display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; width:1.1em; margin:0; padding:0; border:0; background:transparent; font-size:1em; line-height:1; }
 .landing-footer { color:rgba(255,247,232,.5); font-size:.8rem; margin-top:36px; }
 @media (max-width:800px) { .food-orbit { position:relative; right:auto; top:auto; width:140px; height:140px; font-size:70px; margin:30px 0 0; } .food-orbit-small { display:none; } .landing-screen { min-height:auto; } }
 
 
 /* Keep the welcome campaign copy clear of the logo, perks and CTA at every screen size. */
 .landing-screen { min-height: min(760px, 78vh); min-height: max(620px, 78vh); padding:clamp(26px,4vw,56px); }
-.welcome-copy { position:absolute !important; left:clamp(26px,4vw,56px); top:clamp(190px,26vh,245px); right:clamp(26px,38%,520px); opacity:0; animation:welcomeRotate 18s infinite; pointer-events:none; z-index:3; }
+.welcome-copy { position:absolute !important; left:clamp(26px,4vw,56px); top:clamp(190px,26vh,245px); right:clamp(26px,38%,520px); opacity:0; animation:welcomeRotate 24s ease-in-out infinite; pointer-events:none; z-index:3; will-change:opacity; }
 .welcome-copy-1 { animation-delay:0s; }
-.welcome-copy-2 { animation-delay:6s; }
-.welcome-copy-3 { animation-delay:12s; }
+.welcome-copy-2 { animation-delay:8s; }
+.welcome-copy-3 { animation-delay:16s; }
 .welcome-copy .landing-kicker { margin-top:0; font-size:clamp(.68rem,1vw,.78rem); }
 .welcome-copy .landing-title { margin-top:12px; margin-bottom:14px; font-size:clamp(2.65rem,5.4vw,5.1rem); line-height:.98; letter-spacing:-.045em; overflow-wrap:normal; }
 .welcome-copy .landing-copy { max-width:540px; font-size:clamp(.92rem,1.4vw,1.12rem); line-height:1.5; }
@@ -645,7 +645,7 @@ if not st.session_state.entered_app:
     welcome_html += '</div><div class="brand-mark">🍜</div>'
     for index, (sticker, kicker, title, copy) in enumerate(welcome_slides):
         welcome_html += f'<div class="welcome-copy welcome-copy-{index+1}"><div class="landing-kicker">{kicker}</div><div class="landing-title">{title}</div><div class="landing-copy">{copy}</div></div>'
-    welcome_html += '<div class="landing-perks"><span>✦ Local favourites</span><span>⚡ Quick delivery</span><span>₹ Easy-on-pocket picks</span></div><div class="landing-footer">MADE FOR YOUR CRAVINGS · SONIPAT, HARYANA</div></div>'
+    welcome_html += '<div class="landing-perks"><span><span class="perk-icon">✦</span>Local favourites</span><span><span class="perk-icon">⚡</span>Quick delivery</span><span><span class="perk-icon">₹</span>Easy-on-pocket picks</span></div><div class="landing-footer">MADE FOR YOUR CRAVINGS · SONIPAT, HARYANA</div></div>'
     st.markdown(welcome_html, unsafe_allow_html=True)
     _, action_col, _ = st.columns([1.2, 1.1, 2.2])
     with action_col:
