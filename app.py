@@ -122,17 +122,18 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 /* Welcome screen: pin the campaign to the actual viewport so Streamlit gutters cannot leave black margins. */
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHeader"],
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stToolbar"] { display:none !important; height:0 !important; visibility:hidden !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) .block-container { animation:none !important; transform:none !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) .main,
 [data-testid="stAppViewContainer"]:has(.landing-screen) section.main,
 [data-testid="stAppViewContainer"]:has(.landing-screen) section.main > div,
 [data-testid="stAppViewContainer"]:has(.landing-screen) .main .block-container,
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stVerticalBlock"] { max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; gap:0 !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { position:fixed !important; inset:0 !important; z-index:50 !important; width:100vw !important; height:100vh !important; height:100dvh !important; min-height:100vh !important; min-height:100dvh !important; box-sizing:border-box !important; margin:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] { position:fixed !important; left:50% !important; bottom:28px !important; transform:translateX(-50%) !important; width:min(360px, calc(100vw - 36px)) !important; z-index:1001 !important; margin:0 !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] { position:fixed !important; left:clamp(28px,5vw,90px) !important; right:auto !important; top:auto !important; bottom:clamp(72px,14vh,150px) !important; transform:none !important; width:min(360px, calc(100vw - 56px)) !important; z-index:1001 !important; margin:0 !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] button { width:100% !important; min-height:60px !important; padding:16px 24px !important; white-space:nowrap !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] button p { font-size:1.12rem !important; white-space:nowrap !important; overflow:visible !important; text-overflow:clip !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] button span { white-space:nowrap !important; overflow:visible !important; text-overflow:clip !important; }
-@media (max-width:560px) { [data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { padding:22px !important; } }
+@media (max-width:560px) { [data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { padding:22px !important; } [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] { left:22px !important; bottom:80px !important; width:calc(100vw - 44px) !important; } }
 
 /* Extra polish: CSS-only motion, so the project still uses Python + Streamlit. */
 @keyframes gradientDrift { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
