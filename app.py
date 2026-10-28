@@ -2,23 +2,23 @@
 ChaiTapri Eats - Food Delivery Website (Streamlit)
 ===================================================
 Python Programming for Business Students - End Term Project
-
+ 
 What this app does:
   1. Finds the customer's location (GPS or a chosen area)
   2. Shows nearby restaurants with distance, rating and delivery time
   3. Lets the customer pick items from a restaurant's menu
   4. Calculates a full bill: items, coupon, delivery fee, GST, tip, total
   5. Places the order and shows a confirmation
-
+ 
 Run with:  streamlit run app.py
 """
-
+ 
 import math
 import random
-
+ 
 import pandas as pd
 import streamlit as st
-
+ 
 # The GPS feature needs the 'streamlit-geolocation' package.
 # If it is not installed, the app still works using the "Choose an area" option.
 try:
@@ -26,20 +26,20 @@ try:
     GPS_AVAILABLE = True
 except ImportError:
     GPS_AVAILABLE = False
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 1. PAGE SETUP AND STYLING
 # ---------------------------------------------------------------------------
 st.set_page_config(page_title="ChaiTapri Eats", page_icon="🍛", layout="wide")
-
+ 
 # Custom CSS: gives the page its own look (colours, fonts, cards).
 # Palette: ink #2B1B2E, turmeric #F2B705, chilli #D7263D, mint #2E9E83
 st.markdown(
     """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap');
-
+ 
 html, body, [class*="css"], .stMarkdown, .stButton button, label {
     font-family: 'DM Sans', 'Segoe UI', sans-serif;
 }
@@ -100,8 +100,8 @@ h1, h2, h3, .display {
 """,
     unsafe_allow_html=True,
 )
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 2. DATA: LOCATIONS, RESTAURANTS, MENUS, COUPONS, PRICING RULES
 # ---------------------------------------------------------------------------
@@ -113,7 +113,7 @@ PRESET_LOCATIONS = {
     "Kundli (far - to test the delivery limit)": (28.8648, 77.1264),
 }
 DEFAULT_LOCATION = "OP Jindal Global University"
-
+ 
 # Each restaurant is a dictionary. A menu item is (name, description, price, is_veg).
 RESTAURANTS = [
     {
@@ -177,7 +177,7 @@ RESTAURANTS = [
         ],
     },
 ]
-
+ 
 # Coupons: type, value, maximum discount, minimum order and description
 COUPONS = {
     "WELCOME50": {"type": "percent", "value": 50, "cap": 100, "min": 199,
@@ -187,7 +187,7 @@ COUPONS = {
     "FREEDEL": {"type": "freedel", "value": 0, "cap": 0, "min": 149,
                 "desc": "Free delivery on orders of ₹149 or more"},
 }
-
+ 
 # Pricing rules (all amounts in rupees)
 MAX_DELIVERY_KM = 10       # we do not deliver beyond this road distance
 ROAD_FACTOR = 1.3          # road distance is roughly 1.3 x straight-line distance
@@ -195,16 +195,16 @@ FREE_DELIVERY_ABOVE = 499  # free delivery when the item total is at least this
 PLATFORM_FEE = 5
 EXPRESS_FEE = 30
 GST_RATE = 0.05            # 5% GST on food
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 3. HELPER FUNCTIONS
 # ---------------------------------------------------------------------------
 def inr(amount):
     """Format a number as Indian rupees, e.g. 1234.5 -> ₹1,234.50"""
     return f"₹{amount:,.2f}"
-
-
+ 
+ 
 def road_distance_km(lat1, lon1, lat2, lon2):
     """Haversine formula: straight-line distance between two GPS points,
     multiplied by ROAD_FACTOR to estimate the real road distance."""
@@ -216,8 +216,8 @@ def road_distance_km(lat1, lon1, lat2, lon2):
          * math.sin(d_lon / 2) ** 2)
     straight_line = 2 * earth_radius * math.asin(math.sqrt(a))
     return straight_line * ROAD_FACTOR
-
-
+ 
+ 
 def estimate_eta(prep_minutes, distance_km, express):
     """Delivery time = cooking time + riding time (about 25 km/h in the city)."""
     ride_minutes = distance_km / 25 * 60
@@ -225,8 +225,8 @@ def estimate_eta(prep_minutes, distance_km, express):
     if express:
         eta = eta - 8  # express orders are prioritised
     return max(10, round(eta))
-
-
+ 
+ 
 def base_delivery_fee(distance_km, item_total):
     """Delivery fee depends on the order value and the distance."""
     if item_total >= FREE_DELIVERY_ABOVE:
@@ -239,51 +239,51 @@ def base_delivery_fee(distance_km, item_total):
         return 50
     else:
         return 70
-
-
+ 
+ 
 def apply_coupon(code, item_total, delivery_fee):
     """Check a coupon code. Returns (discount, new_delivery_fee, message, is_valid)."""
     if code == "":
         return 0, delivery_fee, "", True
-
+ 
     if code not in COUPONS:
         return 0, delivery_fee, "Coupon not found. Check the spelling.", False
-
+ 
     coupon = COUPONS[code]
     if item_total < coupon["min"]:
         short_by = coupon["min"] - item_total
         return 0, delivery_fee, f"Add items worth {inr(short_by)} more to use {code}.", False
-
+ 
     if coupon["type"] == "percent":
         discount = min(item_total * coupon["value"] / 100, coupon["cap"])
         return round(discount, 2), delivery_fee, f"{code} applied. You save {inr(discount)}.", True
     else:  # free delivery coupon
         return 0, 0, f"{code} applied. Delivery is free.", True
-
-
+ 
+ 
 def calculate_bill(item_total, packaging, distance_km, express, code, tip):
     """Put the whole bill together and return it as a dictionary."""
     fee = base_delivery_fee(distance_km, item_total)
     discount, fee, coupon_msg, coupon_ok = apply_coupon(code, item_total, fee)
-
+ 
     express_fee = EXPRESS_FEE if express else 0
     taxable_amount = item_total - discount           # GST is charged on food after discount
     gst = round(taxable_amount * GST_RATE, 2)
     total = taxable_amount + fee + express_fee + packaging + PLATFORM_FEE + gst + tip
-
+ 
     return {
         "item_total": item_total, "discount": discount, "delivery_fee": fee,
         "express_fee": express_fee, "packaging": packaging,
         "platform_fee": PLATFORM_FEE, "gst": gst, "tip": tip,
         "total": round(total, 2), "coupon_msg": coupon_msg, "coupon_ok": coupon_ok,
     }
-
-
+ 
+ 
 def select_restaurant(name):
     """Button callback: remember which restaurant the customer chose."""
     st.session_state.selected = name
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 4. SIDEBAR: LOCATION (GPS) AND FILTERS
 # ---------------------------------------------------------------------------
@@ -293,15 +293,16 @@ location_mode = st.sidebar.radio(
     ["Use my GPS location", "Choose an area"],
     label_visibility="collapsed",
 )
-
+ 
 user_lat, user_lon = PRESET_LOCATIONS[DEFAULT_LOCATION]
 location_label = DEFAULT_LOCATION
-
+ 
 if location_mode == "Use my GPS location":
     if GPS_AVAILABLE:
         try:
-            st.sidebar.caption("Tap the button below and allow location access in your browser.")
-            gps = streamlit_geolocation()  # asks the browser for the live location
+            st.sidebar.caption("Tap the target icon below and allow location access in your browser.")
+            with st.sidebar:
+                gps = streamlit_geolocation()  # asks the browser for the live location
             if gps and gps.get("latitude") is not None and gps.get("longitude") is not None:
                 user_lat, user_lon = gps["latitude"], gps["longitude"]
                 location_label = "Your live GPS location"
@@ -317,12 +318,12 @@ else:
     area = st.sidebar.selectbox("Pick your area", list(PRESET_LOCATIONS.keys()))
     user_lat, user_lon = PRESET_LOCATIONS[area]
     location_label = area
-
+ 
 st.sidebar.markdown("### 🔎 Filters")
 veg_only = st.sidebar.checkbox("Veg items only 🟢")
 sort_by = st.sidebar.selectbox("Sort restaurants by", ["Nearest first", "Top rated", "Fastest delivery"])
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 5. HEADER
 # ---------------------------------------------------------------------------
@@ -335,8 +336,8 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 6. RESTAURANTS NEAR YOU (distance and delivery time use the user's location)
 # ---------------------------------------------------------------------------
@@ -344,20 +345,20 @@ for r in RESTAURANTS:
     r["distance"] = road_distance_km(user_lat, user_lon, r["lat"], r["lon"])
     r["eta"] = estimate_eta(r["prep"], r["distance"], False)
     r["deliverable"] = r["distance"] <= MAX_DELIVERY_KM
-
+ 
 if sort_by == "Nearest first":
     ordered = sorted(RESTAURANTS, key=lambda r: r["distance"])
 elif sort_by == "Top rated":
     ordered = sorted(RESTAURANTS, key=lambda r: r["rating"], reverse=True)
 else:
     ordered = sorted(RESTAURANTS, key=lambda r: r["eta"])
-
+ 
 # Keep the selected restaurant stored between reruns
 if "selected" not in st.session_state:
     st.session_state.selected = ordered[0]["name"]
-
+ 
 st.markdown('<div class="section-title">Restaurants near you</div>', unsafe_allow_html=True)
-
+ 
 card_columns = st.columns(3)
 for i, r in enumerate(ordered):
     with card_columns[i % 3]:
@@ -379,7 +380,7 @@ for i, r in enumerate(ordered):
             unsafe_allow_html=True,
         )
         st.button("View menu", key=f"btn_{r['name']}", on_click=select_restaurant, args=(r["name"],))
-
+ 
 # Map showing the customer (blue) and all restaurants (red)
 with st.expander("🗺️ See the restaurants on the map", expanded=False):
     map_rows = [{"lat": user_lat, "lon": user_lon, "color": "#1E64F0", "size": 140}]
@@ -387,14 +388,14 @@ with st.expander("🗺️ See the restaurants on the map", expanded=False):
         map_rows.append({"lat": r["lat"], "lon": r["lon"], "color": "#D7263D", "size": 90})
     st.map(pd.DataFrame(map_rows), latitude="lat", longitude="lon", color="color", size="size")
     st.caption("Blue dot: you. Red dots: restaurants.")
-
-
+ 
+ 
 # ---------------------------------------------------------------------------
 # 7. MENU (left) AND CHECKOUT (right)
 # ---------------------------------------------------------------------------
 restaurant = next(r for r in RESTAURANTS if r["name"] == st.session_state.selected)
 menu_col, bill_col = st.columns([3, 2], gap="large")
-
+ 
 # ---- Menu ----
 cart = []  # list of (item name, quantity, price)
 with menu_col:
@@ -424,11 +425,11 @@ with menu_col:
                 cart.append((item_name, qty, price))
     if shown_items == 0:
         st.info("No items match your filter at this restaurant.")
-
+ 
 # ---- Checkout ----
 with bill_col:
     st.markdown('<div class="section-title">Your order</div>', unsafe_allow_html=True)
-
+ 
     if len(cart) == 0:
         st.info("Your cart is empty. Add items from the menu to see your bill.")
     elif not restaurant["deliverable"]:
@@ -439,7 +440,7 @@ with bill_col:
     else:
         try:
             item_total = sum(qty * price for _, qty, price in cart)
-
+ 
             # Checkout options (inputs)
             delivery_speed = st.radio("Delivery speed", ["Standard", "Express ⚡ (+₹30)"], horizontal=True)
             express = delivery_speed.startswith("Express")
@@ -448,22 +449,22 @@ with bill_col:
             payment = st.selectbox("Payment method", ["UPI", "Credit / Debit Card", "Cash on Delivery"])
             contactless = st.checkbox("Contactless delivery")
             instructions = st.text_input("Cooking or delivery note", placeholder="Less spicy, ring the bell...")
-
+ 
             with st.expander("Available coupons"):
                 for code, info in COUPONS.items():
                     st.markdown(f"**{code}**: {info['desc']}")
-
+ 
             bill = calculate_bill(item_total, restaurant["packaging"], restaurant["distance"],
                                   express, coupon_code, tip)
             eta = estimate_eta(restaurant["prep"], restaurant["distance"], express)
-
+ 
             # Coupon feedback
             if bill["coupon_msg"]:
                 if bill["coupon_ok"]:
                     st.success(bill["coupon_msg"])
                 else:
                     st.warning(bill["coupon_msg"])
-
+ 
             # Bill (HTML so it looks like a receipt)
             rows = ""
             for name, qty, price in cart:
@@ -484,9 +485,9 @@ with bill_col:
                 rows += f'<div class="bill-row"><span>Tip</span><span>{inr(bill["tip"])}</span></div>'
             rows += f'<div class="bill-total"><span>To pay</span><span>{inr(bill["total"])}</span></div>'
             st.markdown(f'<div class="bill-box">{rows}</div>', unsafe_allow_html=True)
-
+ 
             st.caption(f"🛵 Estimated delivery in about {eta} minutes. Free delivery above {inr(FREE_DELIVERY_ABOVE)}.")
-
+ 
             # Place order
             if st.button("Place order", type="primary"):
                 order_id = "CT" + str(random.randint(10000, 99999))
@@ -504,6 +505,7 @@ with bill_col:
         except Exception as error:
             # Safety net so the website never crashes in front of the user
             st.error(f"Something went wrong while preparing your bill: {error}")
-
+ 
 st.divider()
 st.caption("ChaiTapri Eats is a student project. Restaurants, menus and prices are made up for demonstration.")
+ 
