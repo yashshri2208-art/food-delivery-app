@@ -72,6 +72,19 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 .bill-box { border:1px solid rgba(255,255,255,.13); border-radius:18px; padding:18px 20px; margin:8px 0 12px; background:rgba(255,255,255,.025); }
 .bill-row { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px dashed rgba(255,255,255,.14); }
 .bill-row.saving { color:var(--mint); font-weight:700; } .bill-total { display:flex; justify-content:space-between; gap:16px; padding-top:14px; font-size:1.35rem; font-weight:800; color:var(--gold); }
+/* Welcome screen: three original, illustrated campaign-style backgrounds. */
+@keyframes welcomeRotate { 0%,29% { opacity:1; } 33%,96% { opacity:0; } 100% { opacity:1; } }
+.welcome-carousel { position:absolute; inset:0; overflow:hidden; border-radius:30px; background:#211526; }
+.welcome-slide { position:absolute; inset:0; opacity:0; animation:welcomeRotate 18s infinite; }
+.welcome-slide:nth-child(1) { animation-delay:0s; background:radial-gradient(circle at 82% 36%,#ffbb52 0%,transparent 28%),linear-gradient(120deg,#341437 0%,#762548 52%,#f56c48 100%); }
+.welcome-slide:nth-child(2) { animation-delay:6s; background:radial-gradient(circle at 85% 25%,#e0fc76 0%,transparent 27%),linear-gradient(120deg,#142c31 0%,#176c63 52%,#54ad77 100%); }
+.welcome-slide:nth-child(3) { animation-delay:12s; background:radial-gradient(circle at 83% 32%,#ffbbdc 0%,transparent 27%),linear-gradient(120deg,#25163e 0%,#553d9b 54%,#c86dba 100%); }
+.welcome-slide:before { content:""; position:absolute; width:360px; height:360px; border:2px solid rgba(255,255,255,.23); border-radius:50%; right:6%; top:12%; box-shadow:0 0 0 45px rgba(255,255,255,.055),0 0 0 95px rgba(255,255,255,.035); }
+.welcome-slide:after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(17,12,26,.72),rgba(17,12,26,.12) 80%); }
+.welcome-sticker { position:absolute; right:10%; top:27%; font-size:clamp(105px,15vw,205px); transform:rotate(-12deg); filter:drop-shadow(0 22px 28px rgba(0,0,0,.22)); z-index:1; animation:floatFood 5s ease-in-out infinite; }
+.landing-screen > :not(.welcome-carousel) { position:relative; z-index:2; }
+@media (max-width:800px) { .welcome-sticker { right:2%; top:20%; opacity:.32; } }
+@media (prefers-reduced-motion: reduce) { .welcome-slide { animation:none; } .welcome-slide:nth-child(1) { opacity:1; } }
 /* Welcome page */
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stSidebar"] { display:none; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHeader"] { background:transparent; }
@@ -89,6 +102,17 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 .landing-perks span { padding:10px 14px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.055); color:#fff7e8; border-radius:999px; font-size:.88rem; }
 .landing-footer { color:rgba(255,247,232,.5); font-size:.8rem; margin-top:36px; }
 @media (max-width:800px) { .food-orbit { position:relative; right:auto; top:auto; width:140px; height:140px; font-size:70px; margin:30px 0 0; } .food-orbit-small { display:none; } .landing-screen { min-height:auto; } }
+
+
+.welcome-copy { position:absolute !important; left:clamp(28px,6vw,84px); top:clamp(155px,21vh,230px); right:clamp(28px,6vw,84px); opacity:0; animation:welcomeRotate 18s infinite; pointer-events:none; }
+.welcome-copy-1 { animation-delay:0s; }
+.welcome-copy-2 { animation-delay:6s; }
+.welcome-copy-3 { animation-delay:12s; }
+.welcome-copy .landing-kicker { margin-top:0; }
+.welcome-copy .landing-title { margin-top:16px; }
+.welcome-copy .landing-copy { max-width:590px; }
+@media (max-width:800px) { .welcome-copy { top:140px; } }
+@media (prefers-reduced-motion: reduce) { .welcome-copy { animation:none; } .welcome-copy-1 { opacity:1; } .welcome-copy-2,.welcome-copy-3 { display:none; } }
 
 /* Extra polish: CSS-only motion, so the project still uses Python + Streamlit. */
 @keyframes gradientDrift { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
@@ -603,22 +627,21 @@ if "location_mode" not in st.session_state:
 
 # First visit: the full-screen brand introduction.
 if not st.session_state.entered_app:
-    st.markdown(
-        """
-        <div class="landing-screen">
-          <div class="brand-mark">🍜</div>
-          <div class="landing-kicker">Your campus food companion</div>
-          <div class="landing-title">Good food.<br><span>Good mood.</span></div>
-          <div class="landing-copy">Cravings don't wait. Discover your favourite local kitchens, find something delicious, and get it delivered right to your door at OP Jindal Global University.</div>
-          <div class="landing-perks">
-            <span>✦ Local favourites</span><span>⚡ Quick delivery</span><span>₹ Easy-on-pocket picks</span>
-          </div>
-          <div class="food-orbit">🍔</div><div class="food-orbit-small">🍕</div>
-          <div class="landing-footer">MADE FOR YOUR CRAVINGS · SONIPAT, HARYANA</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    # Each slide has its own original campaign-style gradient, emoji art, and cheeky headline.
+    # The Home page carousel below is intentionally unchanged.
+    welcome_slides = [
+        ("🍔", "ATTENTION, HUNGRY HUMAN", "Your stomach called.<br><span>We picked up.</span>", "Your 2 AM cravings have excellent taste. Your attendance? Let's not talk about it."),
+        ("🍟", "HOSTEL LIFE, BUT MAKE IT TASTY", "Mess food again?<br><span>That's a plot twist.</span>", "When the mess menu says surprise, we say order something you actually want."),
+        ("🍕", "ACADEMIC PRESSURE? MEET CHEESE.", "Deadlines can wait.<br><span>Pizza can't.</span>", "One more assignment, one more slice. We're not saying food solves everything… but have you tried garlic bread?"),
+    ]
+    welcome_html = '<div class="landing-screen"><div class="welcome-carousel" aria-label="Three colourful welcome campaigns rotating automatically">'
+    for sticker, kicker, title, copy in welcome_slides:
+        welcome_html += f'<div class="welcome-slide"><div class="welcome-sticker">{sticker}</div></div>'
+    welcome_html += '</div><div class="brand-mark">🍜</div>'
+    for index, (sticker, kicker, title, copy) in enumerate(welcome_slides):
+        welcome_html += f'<div class="welcome-copy welcome-copy-{index+1}"><div class="landing-kicker">{kicker}</div><div class="landing-title">{title}</div><div class="landing-copy">{copy}</div></div>'
+    welcome_html += '<div class="landing-perks"><span>✦ Local favourites</span><span>⚡ Quick delivery</span><span>₹ Easy-on-pocket picks</span></div><div class="landing-footer">MADE FOR YOUR CRAVINGS · SONIPAT, HARYANA</div></div>'
+    st.markdown(welcome_html, unsafe_allow_html=True)
     _, action_col, _ = st.columns([1.2, 1.1, 2.2])
     with action_col:
         if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
