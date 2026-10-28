@@ -201,62 +201,135 @@ RESTAURANTS = [
         "rating": 4.5, "prep": 25, "packaging": 15, "lat": 28.9590, "lon": 77.0900,
         "menu": [
             ("Paneer Butter Masala", "Creamy tomato gravy, soft paneer", 240, True),
-            ("Dal Makhani", "Slow-cooked black lentils", 190, True),
-            ("Butter Chicken", "Tandoori chicken in rich gravy", 290, False),
-            ("Chicken Biryani", "Dum biryani with raita", 260, False),
-            ("Butter Naan", "Fresh from the tandoor", 45, True),
-            ("Jeera Rice", "Fragrant cumin rice", 120, True),
+            ("Dal Makhani", "Slow-cooked black lentils with butter", 190, True),
+            ("Shahi Paneer", "Paneer in a rich cashew and tomato gravy", 230, True),
+            ("Butter Chicken", "Tandoori chicken in a rich makhani gravy", 290, False),
+            ("Chicken Biryani", "Fragrant dum biryani served with raita", 260, False),
+            ("Veg Pulao", "Basmati rice with vegetables and whole spices", 170, True),
+            ("Butter Naan", "Soft tandoor-baked naan brushed with butter", 45, True),
+            ("Garlic Naan", "Tandoor naan with garlic and coriander", 60, True),
+            ("Jeera Rice", "Steamed basmati rice tempered with cumin", 120, True),
+            ("Paneer Tikka", "Tandoori paneer with peppers and chutney", 190, True),
+            ("Hara Bhara Kebab", "Spinach and pea patties with mint chutney", 150, True),
+            ("Gulab Jamun (2 pcs)", "Warm milk-solid dumplings in sugar syrup", 80, True),
+            ("Masala Chaas", "Chilled spiced buttermilk", 55, True),
+            ("Mango Lassi", "Thick yoghurt drink with mango", 95, True),
+            ("Masala Chai", "Freshly brewed tea with milk and warming spices", 35, True),
+            ("Adrak Chai", "Hot milk tea brewed with fresh ginger", 40, True),
         ],
     },
     {
         "name": "Burger Barn", "emoji": "🍔", "cuisine": "Burgers and Fries",
         "rating": 4.2, "prep": 18, "packaging": 10, "lat": 28.9480, "lon": 77.1010,
         "menu": [
-            ("Classic Veg Burger", "Crispy patty, lettuce, mayo", 99, True),
-            ("Crispy Chicken Burger", "Double crunch chicken fillet", 149, False),
-            ("Cheese Fries", "Loaded with melted cheese", 109, True),
-            ("Peri Peri Fries", "Spicy and crunchy", 99, True),
-            ("Chicken Wings (6 pcs)", "Smoky BBQ glaze", 179, False),
-            ("Chocolate Shake", "Thick and chilled", 119, True),
+            ("Classic Veg Burger", "Crispy veg patty, lettuce and house sauce", 99, True),
+            ("Double Cheese Veg Burger", "Double patty with melted cheese", 149, True),
+            ("Crispy Chicken Burger", "Crunchy chicken fillet with spicy mayo", 149, False),
+            ("Smoky BBQ Chicken Burger", "Grilled chicken, BBQ sauce and onions", 179, False),
+            ("Cheese Fries", "Golden fries loaded with cheese sauce", 109, True),
+            ("Peri Peri Fries", "Crispy fries tossed in peri peri seasoning", 99, True),
+            ("Chicken Wings (6 pcs)", "Wings tossed in smoky BBQ glaze", 179, False),
+            ("Veg Nuggets (6 pcs)", "Crunchy vegetable bites with dip", 89, True),
+            ("Onion Rings", "Crispy battered onion rings", 79, True),
+            ("Chocolate Shake", "Thick chocolate milkshake", 119, True),
+            ("Strawberry Shake", "Creamy strawberry milkshake", 119, True),
+            ("Classic Lemonade", "Fresh lemon, mint and soda", 69, True),
+            ("Brownie with Ice Cream", "Chocolate brownie with vanilla scoop", 129, True),
+            ("Vanilla Soft Serve", "Classic creamy soft serve", 59, True),
         ],
     },
     {
         "name": "Pizza Piazza", "emoji": "🍕", "cuisine": "Italian",
         "rating": 4.4, "prep": 28, "packaging": 20, "lat": 28.9700, "lon": 77.0800,
         "menu": [
-            ("Margherita Pizza", "Classic cheese and basil", 199, True),
-            ("Farmhouse Pizza", "Capsicum, onion, tomato, corn", 299, True),
-            ("Pepperoni Pizza", "Loaded with pepperoni", 329, False),
-            ("Garlic Bread", "Buttery and toasted", 119, True),
-            ("Pasta Alfredo", "White sauce penne", 219, True),
-            ("Choco Lava Cake", "Warm molten centre", 99, True),
+            ("Margherita Pizza", "Mozzarella, tomato sauce and basil", 199, True),
+            ("Farmhouse Pizza", "Capsicum, onion, tomato and sweet corn", 299, True),
+            ("Four Cheese Pizza", "A rich blend of four cheeses", 349, True),
+            ("Pepperoni Pizza", "Classic pepperoni with mozzarella", 329, False),
+            ("BBQ Chicken Pizza", "BBQ chicken, onion and smoky sauce", 349, False),
+            ("Pasta Alfredo", "Penne in creamy white sauce", 219, True),
+            ("Arrabbiata Pasta", "Penne in a spicy tomato sauce", 199, True),
+            ("Garlic Bread", "Toasted bread with garlic butter", 119, True),
+            ("Cheesy Garlic Bread", "Garlic bread topped with mozzarella", 149, True),
+            ("Jalapeno Poppers", "Cheese-filled bites with jalapeno", 129, True),
+            ("Classic Tiramisu Cup", "Coffee-soaked dessert with creamy layers", 149, True),
+            ("Choco Lava Cake", "Warm chocolate cake with molten centre", 99, True),
+            ("Iced Tea", "Chilled lemon iced tea", 79, True),
+            ("Cold Coffee", "Chilled coffee blended with milk", 109, True),
         ],
     },
     {
-        "name": "Dragon Wok", "emoji": "🥡", "cuisine": "Chinese",
+        "name": "Dragon Wok", "emoji": "🥡", "cuisine": "Chinese and Indo-Chinese",
         "rating": 4.1, "prep": 22, "packaging": 15, "lat": 28.9560, "lon": 77.1100,
         "menu": [
-            ("Veg Hakka Noodles", "Wok-tossed with veggies", 150, True),
-            ("Chicken Fried Rice", "Egg and chicken, smoky wok flavour", 180, False),
-            ("Veg Manchurian", "Crispy balls in tangy sauce", 160, True),
-            ("Chilli Chicken", "Dry, spicy and saucy", 220, False),
-            ("Veg Spring Rolls", "Crunchy golden rolls", 120, True),
-            ("Hot and Sour Soup", "Peppery and warming", 110, True),
+            ("Veg Hakka Noodles", "Wok-tossed noodles with crunchy vegetables", 150, True),
+            ("Chicken Hakka Noodles", "Wok noodles with chicken and spring onion", 190, False),
+            ("Veg Fried Rice", "Wok-fried rice with vegetables", 145, True),
+            ("Chicken Fried Rice", "Wok-fried rice with chicken and egg", 180, False),
+            ("Veg Manchurian", "Crispy vegetable balls in tangy sauce", 160, True),
+            ("Chilli Chicken", "Chicken tossed with chilli, peppers and onion", 220, False),
+            ("Paneer Chilli", "Crispy paneer tossed in chilli sauce", 195, True),
+            ("Veg Spring Rolls", "Crispy rolls filled with seasoned vegetables", 120, True),
+            ("Chicken Momos (6 pcs)", "Steamed chicken dumplings with spicy chutney", 150, False),
+            ("Veg Momos (6 pcs)", "Steamed vegetable dumplings with chutney", 120, True),
+            ("Hot and Sour Soup", "Peppery soup with vegetables", 110, True),
+            ("Sweet Corn Chicken Soup", "Comforting chicken and sweet corn soup", 130, False),
+            ("Chilli Garlic Potatoes", "Crispy potatoes in chilli garlic sauce", 135, True),
+            ("Classic Lemon Soda", "Fresh lemon soda, sweet or salted", 65, True),
         ],
     },
     {
         "name": "Green Bowl", "emoji": "🥗", "cuisine": "Healthy (Pure Veg)",
         "rating": 4.6, "prep": 15, "packaging": 12, "lat": 28.9520, "lon": 77.0990,
         "menu": [
-            ("Quinoa Salad Bowl", "Quinoa, veggies, lemon dressing", 189, True),
-            ("Paneer Wrap", "Grilled paneer in a whole wheat wrap", 149, True),
-            ("Fresh Fruit Bowl", "Seasonal fruits", 129, True),
-            ("Cold-Pressed Juice", "No added sugar", 99, True),
-            ("Hummus Platter", "With pita and veggie sticks", 169, True),
-            ("Oats Banana Smoothie", "Filling and light", 119, True),
+            ("Quinoa Salad Bowl", "Quinoa, fresh vegetables and lemon dressing", 189, True),
+            ("Paneer Wrap", "Grilled paneer in a whole-wheat wrap", 149, True),
+            ("Mediterranean Chickpea Bowl", "Chickpeas, cucumber, tomato and herbs", 179, True),
+            ("Grilled Paneer Protein Bowl", "Paneer, brown rice and seasonal greens", 219, True),
+            ("Avocado Toast", "Multigrain toast with avocado and seeds", 199, True),
+            ("Hummus Platter", "Hummus with pita and vegetable sticks", 169, True),
+            ("Sweet Potato Wedges", "Oven-baked wedges with herb seasoning", 99, True),
+            ("Corn and Spinach Soup", "Light soup with corn and spinach", 109, True),
+            ("Fresh Fruit Bowl", "Seasonal fresh-cut fruits", 129, True),
+            ("Greek Yoghurt Parfait", "Yoghurt, granola and seasonal fruit", 139, True),
+            ("Chia Seed Pudding", "Chia soaked in milk with fruit", 119, True),
+            ("Cold-Pressed Juice", "Fresh juice with no added sugar", 99, True),
+            ("Oats Banana Smoothie", "Banana, oats and milk smoothie", 119, True),
+            ("Mint Cucumber Cooler", "Refreshing cucumber, mint and lime", 89, True),
         ],
     },
 ]
+
+# Categorise each dish into menu sections, as used by food-ordering apps.
+# Unlisted items safely fall back to the closest general category.
+MENU_CATEGORIES = {
+    "Paneer Butter Masala": "Main Course", "Dal Makhani": "Main Course", "Shahi Paneer": "Main Course",
+    "Butter Chicken": "Main Course", "Chicken Biryani": "Main Course", "Veg Pulao": "Main Course",
+    "Jeera Rice": "Main Course", "Paneer Tikka": "Starters", "Hara Bhara Kebab": "Starters",
+    "Butter Naan": "Sides & Breads", "Garlic Naan": "Sides & Breads", "Gulab Jamun (2 pcs)": "Desserts",
+    "Masala Chaas": "Drinks", "Mango Lassi": "Drinks", "Masala Chai": "Drinks", "Adrak Chai": "Drinks",
+    "Classic Veg Burger": "Burgers", "Double Cheese Veg Burger": "Burgers", "Crispy Chicken Burger": "Burgers",
+    "Smoky BBQ Chicken Burger": "Burgers", "Cheese Fries": "Sides", "Peri Peri Fries": "Sides",
+    "Chicken Wings (6 pcs)": "Starters", "Veg Nuggets (6 pcs)": "Starters", "Onion Rings": "Sides",
+    "Chocolate Shake": "Drinks", "Strawberry Shake": "Drinks", "Classic Lemonade": "Drinks",
+    "Brownie with Ice Cream": "Desserts", "Vanilla Soft Serve": "Desserts",
+    "Margherita Pizza": "Pizza", "Farmhouse Pizza": "Pizza", "Four Cheese Pizza": "Pizza",
+    "Pepperoni Pizza": "Pizza", "BBQ Chicken Pizza": "Pizza", "Pasta Alfredo": "Pasta",
+    "Arrabbiata Pasta": "Pasta", "Garlic Bread": "Sides", "Cheesy Garlic Bread": "Sides",
+    "Jalapeno Poppers": "Starters", "Classic Tiramisu Cup": "Desserts", "Choco Lava Cake": "Desserts",
+    "Iced Tea": "Drinks", "Cold Coffee": "Drinks",
+    "Veg Hakka Noodles": "Noodles & Rice", "Chicken Hakka Noodles": "Noodles & Rice", "Veg Fried Rice": "Noodles & Rice",
+    "Chicken Fried Rice": "Noodles & Rice", "Veg Manchurian": "Starters", "Chilli Chicken": "Starters",
+    "Paneer Chilli": "Starters", "Veg Spring Rolls": "Starters", "Chicken Momos (6 pcs)": "Starters",
+    "Veg Momos (6 pcs)": "Starters", "Hot and Sour Soup": "Soups", "Sweet Corn Chicken Soup": "Soups",
+    "Chilli Garlic Potatoes": "Sides", "Classic Lemon Soda": "Drinks",
+    "Quinoa Salad Bowl": "Bowls & Mains", "Paneer Wrap": "Wraps", "Mediterranean Chickpea Bowl": "Bowls & Mains",
+    "Grilled Paneer Protein Bowl": "Bowls & Mains", "Avocado Toast": "Starters & Light Bites",
+    "Hummus Platter": "Sides & Light Bites", "Sweet Potato Wedges": "Sides & Light Bites",
+    "Corn and Spinach Soup": "Soups", "Fresh Fruit Bowl": "Desserts & Fruit", "Greek Yoghurt Parfait": "Desserts & Fruit",
+    "Chia Seed Pudding": "Desserts & Fruit", "Cold-Pressed Juice": "Drinks", "Oats Banana Smoothie": "Drinks",
+    "Mint Cucumber Cooler": "Drinks",
+}
 
 # Coupons: type, value, maximum discount, minimum order and description
 COUPONS = {
@@ -266,6 +339,12 @@ COUPONS = {
                  "desc": "20% off up to ₹80 on orders of ₹299 or more"},
     "FREEDEL": {"type": "freedel", "value": 0, "cap": 0, "min": 149,
                 "desc": "Free delivery on orders of ₹149 or more"},
+    "PRAMODPRO": {"type": "percent", "value": 15, "cap": 75, "min": 249,
+                  "desc": "Pramod Sir's Python Perk: 15% off up to ₹75 on orders of ₹249 or more"},
+    "SIRPLS": {"type": "percent", "value": 10, "cap": 50, "min": 199,
+               "desc": "Sir, Please Save My GPA: 10% off up to ₹50 on orders of ₹199 or more"},
+    "PASSKARADO": {"type": "percent", "value": 15, "cap": 60, "min": 299,
+                   "desc": "Pass Karado, Sir: 15% off up to ₹60 on orders of ₹299 or more"},
 }
 
 # Pricing rules (all amounts in rupees)
@@ -322,7 +401,12 @@ def base_delivery_fee(distance_km, item_total):
 
 
 def apply_coupon(code, item_total, delivery_fee):
-    """Check a coupon code. Returns (discount, new_delivery_fee, message, is_valid)."""
+    """Validate a coupon and return (discount, delivery fee, message, validity).
+
+    Normalising the code here as well as in the text box makes this helper safer
+    if it is reused elsewhere in the app.
+    """
+    code = code.strip().upper()
     if code == "":
         return 0, delivery_fee, "", True
 
@@ -460,6 +544,8 @@ def smart_pairing_items(restaurant):
         "Veg Hakka Noodles": ["Veg Spring Rolls", "Hot and Sour Soup"],
         "Chicken Fried Rice": ["Veg Spring Rolls", "Hot and Sour Soup"],
         "Paneer Wrap": ["Fresh Fruit Bowl", "Cold-Pressed Juice"],
+        "Masala Chai": ["Hara Bhara Kebab", "Gulab Jamun (2 pcs)"],
+        "Adrak Chai": ["Hara Bhara Kebab", "Gulab Jamun (2 pcs)"],
     }
     menu_names = [item[0] for item in restaurant["menu"]]
     cart_names = [name for name, qty in st.session_state.cart.items() if qty > 0]
@@ -695,35 +781,51 @@ elif st.session_state.page == "Menu":
     if not restaurant["deliverable"]:
         st.error(f"We deliver within {MAX_DELIVERY_KM} km. Change your location or choose a closer restaurant.")
     veg_only_menu = st.checkbox("🌱 Show vegetarian dishes only", key="menu_veg_filter")
-    shown_items = 0
-    for item_name, description, price, is_veg in restaurant["menu"]:
+    # Group each restaurant's menu into sensible sections, like modern food-ordering apps.
+    category_order = [
+        "Starters", "Starters & Light Bites", "Main Course", "Pizza", "Burgers", "Wraps",
+        "Bowls & Mains", "Noodles & Rice", "Pasta", "Soups", "Sides", "Sides & Breads",
+        "Sides & Light Bites", "Drinks", "Desserts", "Desserts & Fruit",
+    ]
+    grouped_menu = {}
+    for menu_item in restaurant["menu"]:
+        item_name, description, price, is_veg = menu_item
         if veg_only_menu and not is_veg:
             continue
-        shown_items += 1
-        current_qty = st.session_state.cart.get(item_name, 0)
-        with st.container(border=True):
-            item_col, price_col, action_col = st.columns([4, 1.1, 1.6])
-            dot = "🟢" if is_veg else "🔴"
-            item_col.markdown(f"**{item_name}**")
-            item_col.markdown(
-                f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Veg" if is_veg else "🔴 Non-Veg"}</span>',
-                unsafe_allow_html=True,
-            )
-            item_col.caption(description)
-            price_col.markdown(f"### {inr(price)}")
-            action_col.caption(f"In your cart: **{current_qty}**")
-            add_col, remove_col = action_col.columns(2)
-            if add_col.button("+ Add", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True):
-                if restaurant["deliverable"]:
-                    st.session_state.cart[item_name] = current_qty + 1
-                    st.rerun()
-            if remove_col.button("−", key=f"remove_{restaurant['name']}_{item_name}", use_container_width=True):
-                if current_qty > 1:
-                    st.session_state.cart[item_name] = current_qty - 1
-                elif current_qty == 1:
-                    del st.session_state.cart[item_name]
-                st.rerun()
-    if shown_items == 0:
+        category = MENU_CATEGORIES.get(item_name, "More to Enjoy")
+        grouped_menu.setdefault(category, []).append(menu_item)
+
+    ordered_categories = [category for category in category_order if category in grouped_menu]
+    ordered_categories += [category for category in grouped_menu if category not in ordered_categories]
+    if ordered_categories:
+        category_tabs = st.tabs([f"{category} · {len(grouped_menu[category])}" for category in ordered_categories])
+        for category, category_tab in zip(ordered_categories, category_tabs):
+            with category_tab:
+                st.caption(f"Explore {category.lower()} at {restaurant['name']}")
+                for item_name, description, price, is_veg in grouped_menu[category]:
+                    current_qty = st.session_state.cart.get(item_name, 0)
+                    with st.container(border=True):
+                        item_col, price_col, action_col = st.columns([3.4, 1.1, 1.7])
+                        item_col.markdown(f"**{item_name}**")
+                        item_col.markdown(
+                            f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Veg" if is_veg else "🔴 Non-Veg"}</span>',
+                            unsafe_allow_html=True,
+                        )
+                        item_col.caption(description)
+                        price_col.markdown(f"### {inr(price)}")
+                        action_col.caption(f"In cart: **{current_qty}**")
+                        add_col, remove_col = action_col.columns(2)
+                        if add_col.button("+ Add", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True):
+                            if restaurant["deliverable"]:
+                                st.session_state.cart[item_name] = current_qty + 1
+                                st.rerun()
+                        if remove_col.button("−", key=f"remove_{restaurant['name']}_{item_name}", use_container_width=True):
+                            if current_qty > 1:
+                                st.session_state.cart[item_name] = current_qty - 1
+                            elif current_qty == 1:
+                                del st.session_state.cart[item_name]
+                            st.rerun()
+    else:
         st.info("No dishes match this filter at the selected restaurant.")
 
     st.markdown(
@@ -831,7 +933,11 @@ elif st.session_state.page == "Checkout":
             delivery_speed = st.radio("Delivery speed", ["Standard", "Express ⚡ (+₹30)"], horizontal=True)
             express = delivery_speed.startswith("Express")
             tip = st.select_slider("Tip for your delivery partner (₹)", options=[0, 10, 20, 30, 50], value=0)
-            coupon_code = st.text_input("Coupon code", placeholder="Try WELCOME50", key="checkout_coupon").strip().upper()
+            coupon_code = st.text_input(
+                "Coupon code",
+                placeholder="Try PRAMODPRO, SIRPLS, PASSKARADO or WELCOME50",
+                key="checkout_coupon",
+            ).strip().upper()
             payment = st.selectbox("Payment method", ["UPI", "Credit / Debit Card", "Cash on Delivery"], key="checkout_payment")
             contactless = st.checkbox("Contactless delivery", key="checkout_contactless")
             instructions = st.text_input("Cooking or delivery note", placeholder="Less spicy, ring the bell...", key="checkout_instructions")
@@ -854,7 +960,14 @@ elif st.session_state.page == "Checkout":
         st.markdown(f'<div class="bill-box receipt-box">{receipt_rows}</div>', unsafe_allow_html=True)
         st.caption(f"Estimated delivery: about {eta} minutes · Payment: {payment}")
 
-        if st.button("Place my order  ✨", type="primary", use_container_width=True):
+        # Do not let an order be placed with a mistyped/ineligible coupon still entered.
+        # The customer can correct the code or clear the field to continue without one.
+        if st.button(
+            "Place my order  ✨",
+            type="primary",
+            use_container_width=True,
+            disabled=not bill["coupon_ok"],
+        ):
             order_id = "CT" + str(random.randint(10000, 99999))
             partner = random.choice(["Rahul", "Amit", "Sandeep", "Vikram", "Deepak"])
             order_items = []
@@ -1038,3 +1151,30 @@ st.markdown(
     '<div class="app-footer"><strong>🍜 ChaiTapri Eats</strong><span>Made for campus cravings · Sonipat, Haryana</span><small>Student project demo: restaurants, delivery partners, payments and order history are simulated. Order history lasts for this active app session and is not stored in a database.</small></div>',
     unsafe_allow_html=True,
 )
+
+
+# ---------------------------------------------------------------------------
+# PROJECT NOTES: transparent explanations and quick manual test cases
+# ---------------------------------------------------------------------------
+with st.expander("🧠 How this project works (for curious customers and project review)"):
+    st.markdown(
+        """
+        - **Lists and dictionaries:** restaurant menus store dish details; the coupon dictionary maps each code to its rules.
+        - **Functions:** `base_delivery_fee()`, `apply_coupon()` and `calculate_bill()` keep calculations in reusable places.
+        - **Conditionals:** delivery distance, coupon eligibility and delivery charges use `if` / `elif` / `else`.
+        - **Loops:** the app loops through restaurant menus to display dishes and build the receipt.
+        - **Session state:** the cart, selected restaurant and order history persist while navigating between pages.
+        - **Validation:** invalid or ineligible coupon codes show a message and prevent accidental checkout until the code is corrected or cleared.
+
+        **Quick test checklist**
+        1. Add one dish and check that the subtotal equals its price.
+        2. Enter `SIRPLS` with a subtotal below ₹199: it should be rejected.
+        3. Enter `SIRPLS` with a subtotal of ₹199 or more: it should apply 10% off, capped at ₹50.
+        4. Enter `PASSKARADO` with a subtotal of ₹299 or more: it should apply 15% off, capped at ₹60.
+        5. Enter a made-up coupon: checkout should stay disabled until you fix or clear the code.
+        6. Reach a food subtotal of ₹499: standard delivery should become free under the app's pricing rules.
+        7. Place a valid demo order and confirm it appears in **My Orders**.
+
+        *This is a demonstration app: restaurant listings, fees and delivery tracking are simulated, not live services.*
+        """
+    )
