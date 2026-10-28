@@ -285,7 +285,6 @@ def select_restaurant(name):
         st.session_state.cart = {}
     st.session_state.selected = name
     st.session_state.page = "Menu"
-    st.session_state.page_navigation = "Menu"
 
 
 # ---------------------------------------------------------------------------
@@ -295,8 +294,6 @@ def select_restaurant(name):
 # ---------------------------------------------------------------------------
 if "page" not in st.session_state:
     st.session_state.page = "Home"
-if "page_navigation" not in st.session_state:
-    st.session_state.page_navigation = st.session_state.page
 if "selected" not in st.session_state:
     st.session_state.selected = RESTAURANTS[0]["name"]
 if "cart" not in st.session_state:
@@ -305,13 +302,12 @@ if "last_order" not in st.session_state:
     st.session_state.last_order = None
 
 st.sidebar.markdown("### 🍽️ ChaiTapri Eats")
+pages = ["Home", "Menu", "Cart", "Checkout"]
 page = st.sidebar.radio(
     "Navigate",
-    ["Home", "Menu", "Cart", "Checkout"],
-    key="page_navigation",
-    on_change=lambda: st.session_state.update(page=st.session_state.page_navigation),
+    pages,
+    index=pages.index(st.session_state.page) if st.session_state.page in pages else 0,
 )
-page = st.session_state.page_navigation
 st.session_state.page = page
 
 st.sidebar.divider()
@@ -373,7 +369,6 @@ restaurant = next(
 
 def go_to(page_name):
     st.session_state.page = page_name
-    st.session_state.page_navigation = page_name
     st.rerun()
 
 def cart_count():
