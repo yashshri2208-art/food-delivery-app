@@ -168,6 +168,24 @@ html { scroll-behavior:smooth; }
 .branch-location { background:radial-gradient(circle at 88% 18%,rgba(72,201,165,.18),transparent 28%),linear-gradient(125deg,#1c2c32,#263843 60%,#211626); border-bottom:4px solid var(--mint); }
 .branch-my-orders { background:radial-gradient(circle at 88% 18%,rgba(255,90,82,.15),transparent 28%),linear-gradient(125deg,#302135,#3a2943 60%,#211626); border-bottom:4px solid var(--red); }
 
+/* Auto-rotating homepage hero carousel (CSS only; no JavaScript or extra package). */
+.hero-carousel { position:relative; height:320px; overflow:hidden; border-radius:24px; margin:18px 0 28px; border:1px solid rgba(255,255,255,.12); box-shadow:0 18px 48px rgba(0,0,0,.3); background:#211626; }
+.hero-slide { position:absolute; inset:0; display:flex; align-items:flex-end; padding:clamp(22px,4vw,44px); background-size:cover; background-position:center; opacity:0; animation:heroRotate 18s infinite; }
+.hero-slide:before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(17,15,21,.93) 0%,rgba(17,15,21,.72) 42%,rgba(17,15,21,.12) 100%),linear-gradient(0deg,rgba(17,15,21,.45),transparent 60%); }
+.hero-slide-content { position:relative; z-index:1; max-width:650px; }
+.hero-slide-kicker { color:#ffc928; text-transform:uppercase; font-size:.78rem; font-weight:800; letter-spacing:.16em; margin-bottom:8px; }
+.hero-slide-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(2rem,4.5vw,3.8rem); line-height:1; letter-spacing:-.04em; font-weight:800; color:#fff7e8; margin-bottom:10px; }
+.hero-slide-copy { color:rgba(255,247,232,.88); font-size:1rem; max-width:520px; }
+.hero-slide:nth-child(1) { animation-delay:0s; }
+.hero-slide:nth-child(2) { animation-delay:6s; }
+.hero-slide:nth-child(3) { animation-delay:12s; }
+@keyframes heroRotate { 0%,29% { opacity:1; transform:scale(1); } 33%,96% { opacity:0; transform:scale(1.035); } 100% { opacity:1; transform:scale(1); } }
+.crave-feature { border:1px solid rgba(255,201,40,.22); border-radius:18px; padding:17px; background:linear-gradient(135deg,rgba(255,201,40,.09),rgba(255,90,82,.045)); height:100%; }
+.badge-unlocked { border:1px solid rgba(72,201,165,.3); border-radius:14px; padding:12px; background:rgba(72,201,165,.08); margin-bottom:8px; }
+.badge-locked { border:1px dashed rgba(255,255,255,.18); border-radius:14px; padding:12px; opacity:.65; margin-bottom:8px; }
+@media (prefers-reduced-motion: reduce) { .hero-slide { animation:none; } .hero-slide:nth-child(1) { opacity:1; } }
+@media (max-width:700px) { .hero-carousel { height:300px; } .hero-slide { padding:22px; } }
+
 /* Consistent image proportions across the restaurant discovery and menu screens. */
 .restaurant-photo {
     display:block;
@@ -708,6 +726,7 @@ st.sidebar.markdown("### 🍜 ChaiTapri Eats")
 st.sidebar.caption("Your campus food companion")
 sidebar_pages = [
     ("🏠", "Home"),
+    ("🧭", "Crave Club"),
     ("🍽️", "Menu"),
     ("🛒", "Cart"),
     ("💳", "Checkout"),
@@ -788,7 +807,7 @@ def show_bill_rows(bill, menu_items, cart, include_tip=True):
 
 
 # A slim top navigation bar gives each branch a consistent way to move around.
-top_cols = st.columns(6)
+top_cols = st.columns(len(sidebar_pages))
 for col, (nav_icon, nav_page) in zip(top_cols, sidebar_pages):
     if col.button(
         f"{nav_icon} {nav_page}" + (f" ({len(st.session_state.my_orders)})" if nav_page == "My Orders" else ""),
@@ -810,6 +829,23 @@ if st.session_state.page == "Home":
         "Explore campus favourites, compare delivery times, and find something worth looking forward to.",
         "✨",
     )
+    # Three-slide automatic carousel: CSS handles the rotation without extra packages.
+    carousel_slides = [
+        (RESTAURANT_PHOTOS["Sunrise Breakfast Club"], "BREAKFAST, YOUR WAY", "Start the day on a delicious note.", "From chocos and toast to dosa, chole bhature and pancakes."),
+        (RESTAURANT_PHOTOS["Spice Route Kitchen"], "COMFORT FOOD CALLING", "Big cravings deserve big flavours.", "Find North Indian favourites, sizzling sides and sweet endings."),
+        (RESTAURANT_PHOTOS["Pizza Piazza"], "MAKE TONIGHT A TREAT", "Pizza night is always a good idea.", "Explore pizzas, pasta and sides — then build your perfect order."),
+    ]
+    slide_html = '<div class="hero-carousel" aria-label="Featured food slides rotating automatically">'
+    for photo_url, kicker, title, copy in carousel_slides:
+        slide_html += f"""<div class=\"hero-slide\" style=\"background-image:url('{photo_url}')\"><div class=\"hero-slide-content\"><div class=\"hero-slide-kicker\">{kicker}</div><div class=\"hero-slide-title\">{title}</div><div class=\"hero-slide-copy\">{copy}</div></div></div>"""
+    slide_html += '</div>'
+    st.markdown(slide_html, unsafe_allow_html=True)
+    cta_left, cta_right = st.columns([1, 2])
+    with cta_left:
+        if st.button("🧭 Find my next meal", type="primary", use_container_width=True, key="hero_crave_club"):
+            go_to("Crave Club")
+    with cta_right:
+        st.caption("The featured slides rotate automatically every six seconds. Restaurant images are illustrative; delivery details are simulated.")
     filter_a, filter_b, filter_c = st.columns([1.2, 1.2, 1.6])
     with filter_a:
         veg_only = st.checkbox("🌱 Vegetarian options", key="home_veg_filter")
@@ -817,15 +853,16 @@ if st.session_state.page == "Home":
         sort_by = st.selectbox("Sort by", ["Nearest first", "Top rated", "Fastest delivery"], key="home_sort")
     with filter_c:
         restaurant_search = st.text_input("Find a restaurant", placeholder="Try breakfast, pizza, Indian, healthy…", key="home_restaurant_search")
+    visible_restaurants = list(RESTAURANTS)
     if restaurant_search.strip():
         visible_restaurants = [r for r in visible_restaurants if restaurant_search.lower() in (r["name"] + " " + r["cuisine"]).lower()]
 
     if sort_by == "Top rated":
-        visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["rating"], reverse=True)
+        visible_restaurants = sorted(visible_restaurants, key=lambda r: r["rating"], reverse=True)
     elif sort_by == "Fastest delivery":
-        visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["eta"])
+        visible_restaurants = sorted(visible_restaurants, key=lambda r: r["eta"])
     else:
-        visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["distance"])
+        visible_restaurants = sorted(visible_restaurants, key=lambda r: r["distance"])
 
     st.markdown('<div class="section-title">Made for your cravings</div>', unsafe_allow_html=True)
     card_columns = st.columns(3)
@@ -849,7 +886,7 @@ if st.session_state.page == "Home":
                 """,
                 unsafe_allow_html=True,
             )
-            menu_veg = all(item[3] for item in r["menu"])
+            menu_veg = any(item[3] for item in r["menu"])
             if not veg_only or menu_veg:
                 if st.button("Explore menu  →", key=f"home_{r['name']}", use_container_width=True):
                     set_restaurant(r["name"])
@@ -866,6 +903,193 @@ if st.session_state.page == "Home":
         '<div class="promo-strip"><span>🍳 Breakfast to dinner</span><span>⚡ Fast delivery estimates</span><span>💛 Easy-to-understand bills</span></div>',
         unsafe_allow_html=True,
     )
+
+# ---------------------------------------------------------------------------
+# CRAVE CLUB: discovery, budget mode, meal builder, breakfast passport, group split
+# ---------------------------------------------------------------------------
+elif st.session_state.page == "Crave Club":
+    shared_header(
+        "CHAI TAPI CRAVE CLUB",
+        "Your hunger. Your budget. Your rules.",
+        "Discover meals, build a combo, explore breakfast traditions and split a group bill — all using simple, transparent rules.",
+        "🧭",
+    )
+    feature_tabs = st.tabs(["🧭 Crave Compass", "💸 Hostel Survival", "🥪 Build a Meal", "🍳 Breakfast Passport", "👥 Group Feast", "🏅 Rewards"])
+
+    # 1. Crave Compass: transparent recommendation logic based on actual menu data.
+    with feature_tabs[0]:
+        st.markdown("### Find something that fits your mood")
+        a, b, c = st.columns(3)
+        with a:
+            craving = st.selectbox("What are you craving?", ["Anything", "Spicy", "Comfort food", "Light & fresh", "Cheesy", "Breakfast", "Sweet treat"], key="crave_mood")
+        with b:
+            max_price = st.slider("Maximum price per dish (₹)", 50, 600, 200, 25, key="crave_budget")
+        with c:
+            veg_pref = st.selectbox("Food preference", ["Any", "Vegetarian only", "Non-vegetarian only"], key="crave_veg")
+        keywords = {
+            "Spicy": ["spicy", "chilli", "chili", "peri peri", "masala", "arrabbiata", "hot and sour", "peppery"],
+            "Comfort food": ["butter", "creamy", "cheese", "naan", "rice", "pasta", "burger", "pancake", "toast", "dal"],
+            "Light & fresh": ["salad", "fresh", "fruit", "quinoa", "yoghurt", "juice", "oats", "cucumber", "chickpea"],
+            "Cheesy": ["cheese", "cheesy", "mozzarella", "alfredo", "paneer"],
+            "Breakfast": ["breakfast", "toast", "cereal", "chocos", "cornflakes", "oats", "dosa", "idli", "paratha", "poha", "upma", "pancake", "waffle", "croissant", "egg", "sandwich", "chole bhature"],
+            "Sweet treat": ["chocolate", "dessert", "jam", "gulab", "brownie", "cake", "tiramisu", "waffle", "pancake", "croissant", "mango", "strawberry", "ice cream"],
+        }
+        matches = []
+        for rest in RESTAURANTS:
+            for dish in rest["menu"]:
+                name, desc, price, is_veg = dish
+                text_blob = (name + " " + desc).lower()
+                if price > max_price:
+                    continue
+                if veg_pref == "Vegetarian only" and not is_veg:
+                    continue
+                if veg_pref == "Non-vegetarian only" and is_veg:
+                    continue
+                if craving != "Anything" and not any(word in text_blob for word in keywords[craving]):
+                    continue
+                matches.append((rest, dish))
+        matches.sort(key=lambda pair: (pair[1][2], -pair[0]["rating"]))
+        st.caption("Recommendations are matched against real menu names, descriptions, prices and vegetarian labels — not generated by an AI model.")
+        if matches:
+            for idx, (rest, dish) in enumerate(matches[:6]):
+                name, desc, price, is_veg = dish
+                with st.container(border=True):
+                    item_col, price_col, action_col = st.columns([3, 1, 1.25], vertical_alignment="center")
+                    item_col.markdown(f"**{rest['emoji']} {name}**")
+                    item_col.caption(f"{rest['name']} · {'Vegetarian' if is_veg else 'Non-vegetarian'} · ★ {rest['rating']}")
+                    item_col.write(desc)
+                    price_col.markdown(f"### {inr(price)}")
+                    if action_col.button("Add this", key=f"crave_add_{idx}_{name}", use_container_width=True, disabled=not rest["deliverable"]):
+                        if st.session_state.selected != rest["name"]:
+                            st.session_state.cart = {}
+                        st.session_state.selected = rest["name"]
+                        st.session_state.cart[name] = st.session_state.cart.get(name, 0) + 1
+                        st.session_state.page = "Cart"
+                        st.rerun()
+        else:
+            st.info("No dishes match every filter. Try increasing your budget or choosing a different craving.")
+
+    # 2. Budget mode: builds small two-item combos within the selected cap.
+    with feature_tabs[1]:
+        st.markdown("### Hostel Survival Mode")
+        st.write("Pick a budget and we'll find a small combo that fits. Prices are for food items only; delivery and taxes appear at checkout.")
+        budget = st.slider("My total food budget (₹)", 100, 600, 200, 25, key="hostel_budget")
+        veg_budget = st.checkbox("Vegetarian combos only", value=True, key="hostel_veg")
+        combos = []
+        for rest in RESTAURANTS:
+            available = [d for d in rest["menu"] if (d[3] or not veg_budget)]
+            for i in range(len(available)):
+                for j in range(i + 1, len(available)):
+                    combo_total = available[i][2] + available[j][2]
+                    if combo_total <= budget:
+                        combos.append((combo_total, rest, available[i], available[j]))
+        combos.sort(key=lambda x: (abs(budget - x[0]), -x[1]["rating"]))
+        if combos:
+            for idx, (total, rest, first, second) in enumerate(combos[:5]):
+                with st.container(border=True):
+                    left, right = st.columns([3, 1])
+                    left.markdown(f"**{rest['emoji']} {first[0]} + {second[0]}**")
+                    left.caption(f"{rest['name']} · Leaves {inr(budget-total)} from your food budget")
+                    right.markdown(f"### {inr(total)}")
+                    if left.button("Add this budget combo", key=f"budget_combo_{idx}", use_container_width=True, disabled=not rest["deliverable"]):
+                        if st.session_state.selected != rest["name"]:
+                            st.session_state.cart = {}
+                        st.session_state.selected = rest["name"]
+                        st.session_state.cart[first[0]] = st.session_state.cart.get(first[0], 0) + 1
+                        st.session_state.cart[second[0]] = st.session_state.cart.get(second[0], 0) + 1
+                        st.session_state.page = "Cart"
+                        st.rerun()
+        else:
+            st.info("No two-item combo fits this budget yet. Increase the budget a little.")
+
+    # 3. Build a meal: add-ons are existing menu items, so the cart and bill stay accurate.
+    with feature_tabs[2]:
+        st.markdown("### Build Your Perfect Meal")
+        rest_name = st.selectbox("Choose a restaurant", [r["name"] for r in RESTAURANTS], key="builder_restaurant")
+        rest = next(r for r in RESTAURANTS if r["name"] == rest_name)
+        menu = rest["menu"]
+        base_names = [d[0] for d in menu]
+        base_name = st.selectbox("Choose your main item", base_names, key="builder_main")
+        base_item = next(d for d in menu if d[0] == base_name)
+        add_on_options = [d[0] for d in menu if d[0] != base_name]
+        add_ons = st.multiselect("Add up to two sides, drinks or treats", add_on_options, max_selections=2, key="builder_addons")
+        item_lookup = {d[0]: d for d in menu}
+        combo_total = base_item[2] + sum(item_lookup[n][2] for n in add_ons)
+        st.markdown(f'<div class="menu-footer"><span>Your custom meal · {1+len(add_ons)} item(s)</span><strong>{inr(combo_total)}</strong></div>', unsafe_allow_html=True)
+        st.caption("To keep the bill accurate, each chosen add-on is an existing item from the same restaurant menu.")
+        if st.button("Add my perfect meal to cart →", type="primary", use_container_width=True, disabled=not rest["deliverable"], key="builder_add_cart"):
+            if st.session_state.selected != rest_name:
+                st.session_state.cart = {}
+            st.session_state.selected = rest_name
+            for n in [base_name] + add_ons:
+                st.session_state.cart[n] = st.session_state.cart.get(n, 0) + 1
+            st.session_state.page = "Cart"
+            st.rerun()
+
+    # 4. Breakfast Passport: curated exploration of the all-day breakfast menu.
+    with feature_tabs[3]:
+        st.markdown("### Breakfast Passport")
+        breakfast_rest = next(r for r in RESTAURANTS if r["name"] == "Sunrise Breakfast Club")
+        passport_categories = ["All breakfasts", "Cereals & Bowls", "Toast & Sandwiches", "South Indian", "Indian Breakfast", "Global Breakfast"]
+        passport_category = st.selectbox("Choose a breakfast tradition", passport_categories, key="passport_category")
+        breakfast_items = [d for d in breakfast_rest["menu"] if MENU_CATEGORIES.get(d[0], "") in (passport_categories[1:] if passport_category == "All breakfasts" else [passport_category])]
+        if breakfast_items:
+            st.caption(f"{len(breakfast_items)} choices in this collection. Pick a dish to learn about and add to your order.")
+            selected_breakfast = st.selectbox("Explore a dish", [d[0] for d in breakfast_items], key="passport_dish")
+            breakfast = next(d for d in breakfast_items if d[0] == selected_breakfast)
+            st.markdown(f"**{breakfast[0]} · {inr(breakfast[2])}**")
+            st.write(breakfast[1])
+            if st.button("Add breakfast to cart", type="primary", use_container_width=True, disabled=not breakfast_rest["deliverable"], key="passport_add"):
+                if st.session_state.selected != breakfast_rest["name"]:
+                    st.session_state.cart = {}
+                st.session_state.selected = breakfast_rest["name"]
+                st.session_state.cart[breakfast[0]] = st.session_state.cart.get(breakfast[0], 0) + 1
+                st.session_state.page = "Cart"
+                st.rerun()
+            if st.button("🎲 Surprise me with a breakfast", use_container_width=True, key="passport_surprise"):
+                st.session_state.passport_surprise = random.choice(breakfast_items)[0]
+                st.rerun()
+            if st.session_state.get("passport_surprise"):
+                surprise = next((d for d in breakfast_rest["menu"] if d[0] == st.session_state.passport_surprise), None)
+                if surprise:
+                    st.info(f"Today's breakfast surprise: **{surprise[0]}** — {inr(surprise[2])}. {surprise[1]}")
+
+    # 5. Group Feast: useful bill-splitting calculator, with optional live cart subtotal.
+    with feature_tabs[4]:
+        st.markdown("### Group Feast")
+        st.write("Planning a group order? Estimate what each person would pay. This is a demo calculator; it does not create separate accounts.")
+        current_subtotal = cart_item_total()
+        use_cart_total = st.checkbox("Use my current cart subtotal", value=bool(st.session_state.cart), key="group_use_cart")
+        amount = current_subtotal if use_cart_total else st.number_input("Total bill to split (₹)", min_value=0.0, max_value=100000.0, value=500.0, step=50.0, key="group_manual_amount")
+        people = st.number_input("Number of people", min_value=2, max_value=30, value=4, step=1, key="group_people")
+        shares = round(float(amount) / int(people), 2)
+        st.markdown(f'<div class="menu-footer"><span>Each person pays (equal split)</span><strong>{inr(shares)}</strong></div>', unsafe_allow_html=True)
+        st.caption("This splits the entered amount equally. Checkout fees and delivery charges are included only if you enter a full bill total.")
+
+    # 6. Rewards: achievements based on completed demo orders in this session.
+    with feature_tabs[5]:
+        st.markdown("### ChaiTapri Passport & Rewards")
+        orders = st.session_state.my_orders
+        unique_restaurants = {o.get("restaurant") for o in orders}
+        total_orders = len(orders)
+        breakfast_orders = sum(1 for o in orders if o.get("restaurant") == "Sunrise Breakfast Club")
+        cuisine_count = len({o.get("cuisine") for o in orders})
+        total_spend = sum(float(o.get("total", 0)) for o in orders)
+        reward_rules = [
+            ("First Bite", "Place your first demo order", total_orders >= 1),
+            ("Breakfast Explorer", "Order from Sunrise Breakfast Club", breakfast_orders >= 1),
+            ("Cuisine Collector", "Try two different cuisine types", cuisine_count >= 2),
+            ("Campus Regular", "Complete three demo orders", total_orders >= 3),
+            ("Six-Kitchen Explorer", "Order from three different restaurants", len(unique_restaurants) >= 3),
+            ("Treat Yourself", "Spend ₹1,000 total across demo orders", total_spend >= 1000),
+        ]
+        unlocked = sum(1 for _, _, achieved in reward_rules if achieved)
+        st.progress(unlocked / len(reward_rules), text=f"{unlocked} of {len(reward_rules)} badges unlocked")
+        badge_cols = st.columns(3)
+        for idx, (badge_name, description, achieved) in enumerate(reward_rules):
+            with badge_cols[idx % 3]:
+                st.markdown(f'<div class="{"badge-unlocked" if achieved else "badge-locked"}"><strong>{"🏅" if achieved else "🔒"} {badge_name}</strong><br><small>{description}</small></div>', unsafe_allow_html=True)
+        st.caption("Badges are based on completed demo orders in this active session. They are not linked to a real loyalty account.")
 
 # ---------------------------------------------------------------------------
 # MENU: separate menu-focused interface with clear item cards
@@ -1313,6 +1537,9 @@ with st.expander("🧠 How this project works (for curious customers and project
         - **Loops:** the app loops through restaurant menus to display dishes and build the receipt.
         - **Session state:** the cart, selected restaurant, favourites and order history persist while navigating between pages.
         - **Search and filters:** text matching narrows restaurants and menu items; checkboxes filter vegetarian dishes and saved favourites.
+        - **Crave Club:** recommendations and budget combos are built by filtering the actual menu data; the meal builder adds real menu items to the cart.
+        - **Group Feast and rewards:** bill splitting uses division; achievement badges are derived from completed demo orders.
+        - **Homepage carousel:** three CSS-animated slides rotate every six seconds without JavaScript or additional packages.
         - **Input validation:** checkout requires a name and a 10-digit contact number, while coupon rules are checked before an order can be placed.
         - **Validation:** invalid or ineligible coupon codes show a message and prevent accidental checkout until the code is corrected or cleared.
 
@@ -1326,6 +1553,11 @@ with st.expander("🧠 How this project works (for curious customers and project
         7. Place a valid demo order with a name and 10-digit number; confirm it appears in **My Orders**.
         8. Save a dish as a favourite, filter favourites, then remove it from favourites.
         9. Use **Reorder these items** from order history and check the cart contents.
+        10. In Crave Club, try a vegetarian craving under ₹200 and check that recommendations respect the filters.
+        11. Build a custom meal and verify that the cart subtotal equals the sum of selected menu prices.
+        12. Check the Group Feast split for ₹500 and four people: each share should be ₹125.
+        13. Place a breakfast order and verify that the Breakfast Explorer badge unlocks.
+        14. Watch the homepage carousel to confirm that it rotates through three slides automatically.
 
         *This is a demonstration app: restaurant listings, fees and delivery tracking are simulated, not live services.*
         """
