@@ -128,11 +128,10 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 [data-testid="stAppViewContainer"]:has(.landing-screen) .main .block-container,
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stVerticalBlock"] { max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; gap:0 !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { position:fixed !important; inset:0 !important; z-index:50 !important; width:100vw !important; height:100vh !important; height:100dvh !important; min-height:100vh !important; min-height:100dvh !important; box-sizing:border-box !important; margin:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] { position:fixed !important; left:50% !important; bottom:20px !important; transform:translateX(-50%) !important; width:min(360px, calc(100vw - 36px)) !important; z-index:1001 !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child,
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] > [data-testid="column"]:last-child { display:none !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] > [data-testid="column"] { width:100% !important; flex:1 1 100% !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] { width:100% !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] { position:fixed !important; left:50% !important; bottom:28px !important; transform:translateX(-50%) !important; width:min(360px, calc(100vw - 36px)) !important; z-index:1001 !important; margin:0 !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] button { width:100% !important; min-height:60px !important; padding:16px 24px !important; white-space:nowrap !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] button p { font-size:1.12rem !important; white-space:nowrap !important; overflow:visible !important; text-overflow:clip !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stButton"] button span { white-space:nowrap !important; overflow:visible !important; text-overflow:clip !important; }
 @media (max-width:560px) { [data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { padding:22px !important; } }
 
 /* Extra polish: CSS-only motion, so the project still uses Python + Streamlit. */
@@ -663,12 +662,10 @@ if not st.session_state.entered_app:
         welcome_html += f'<div class="welcome-copy welcome-copy-{index+1}"><div class="landing-kicker">{kicker}</div><div class="landing-title">{title}</div><div class="landing-copy">{copy}</div></div>'
     welcome_html += '<div class="landing-perks"><span><span class="perk-icon">✦</span>Local favourites</span><span><span class="perk-icon">⚡</span>Quick delivery</span><span><span class="perk-icon">₹</span>Easy-on-pocket picks</span></div><div class="landing-footer">MADE FOR YOUR CRAVINGS · SONIPAT, HARYANA</div></div>'
     st.markdown(welcome_html, unsafe_allow_html=True)
-    _, action_col, _ = st.columns([1.2, 1.1, 2.2])
-    with action_col:
-        if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
-            st.session_state.entered_app = True
-            st.session_state.page = "Home"
-            st.rerun()
+    if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
+        st.session_state.entered_app = True
+        st.session_state.page = "Home"
+        st.rerun()
     st.stop()
 
 
