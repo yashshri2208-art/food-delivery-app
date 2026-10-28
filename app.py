@@ -123,6 +123,49 @@ html { scroll-behavior:smooth; }
 .landing-perks span:hover { transform:translateY(-3px); border-color:rgba(255,201,40,.45); background:rgba(255,201,40,.09); }
 .landing-footer { letter-spacing:.08em; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; } }
+
+/* Distinct branch interfaces; same brand palette, different layouts */
+.branch-hero { position:relative; overflow:hidden; padding:30px 32px; border-radius:24px; margin:4px 0 22px; border:1px solid rgba(255,255,255,.10); animation:pageIn .48s ease both; }
+.branch-hero:after { content:""; position:absolute; right:-38px; top:-70px; width:210px; height:210px; border:1px solid rgba(255,255,255,.10); border-radius:50%; box-shadow:0 0 0 25px rgba(255,255,255,.025),0 0 0 52px rgba(255,255,255,.02); pointer-events:none; }
+.branch-kicker { text-transform:uppercase; letter-spacing:.16em; font-size:.75rem; font-weight:800; color:var(--mint); margin-bottom:12px; }
+.branch-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(1.8rem,4vw,3.3rem); line-height:1.04; font-weight:800; color:var(--gold); max-width:850px; }
+.branch-description { color:rgba(255,247,232,.82); font-size:1rem; line-height:1.65; max-width:780px; margin-top:12px; }
+.branch-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.branch-meta span { padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.09); font-size:.82rem; }
+.restaurant-tile { min-height:250px; border:1px solid rgba(255,255,255,.12); border-radius:22px; padding:20px; margin-bottom:9px; background:linear-gradient(145deg,rgba(255,201,40,.12),rgba(255,90,82,.045) 55%,rgba(255,255,255,.025)); transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease; animation:pageIn .5s ease both; }
+.restaurant-tile:hover { transform:translateY(-5px); border-color:rgba(255,201,40,.55); box-shadow:0 16px 34px rgba(0,0,0,.22); }
+.tile-emoji { font-size:2.6rem; margin-bottom:12px; animation:floatFood 5s ease-in-out infinite; }
+.tile-cuisine { color:var(--mint); text-transform:uppercase; letter-spacing:.12em; font-size:.7rem; font-weight:800; }
+.tile-name { font-family:'Bricolage Grotesque',sans-serif; font-size:1.2rem; font-weight:800; margin:5px 0 12px; color:#fff7e8; }
+.tile-stats { display:flex; gap:8px; flex-wrap:wrap; font-size:.8rem; }
+.tile-stats span { background:rgba(255,255,255,.08); border-radius:999px; padding:5px 9px; }
+.tile-status { color:var(--gold); margin-top:15px; font-weight:700; font-size:.88rem; }
+.promo-strip { display:flex; flex-wrap:wrap; justify-content:space-around; gap:12px; margin-top:24px; padding:18px; border:1px solid rgba(255,255,255,.10); border-radius:18px; background:linear-gradient(90deg,rgba(255,201,40,.08),rgba(255,90,82,.06)); }
+.promo-strip span { font-weight:700; font-size:.88rem; }
+.menu-footer,.cart-total-card,.location-preview { display:flex; align-items:center; justify-content:space-between; gap:14px; border-radius:18px; border:1px solid rgba(255,201,40,.25); padding:18px 20px; margin:14px 0; background:linear-gradient(110deg,rgba(255,201,40,.11),rgba(255,255,255,.025)); }
+.menu-footer strong,.cart-total-card strong { color:var(--gold); font-size:1.6rem; }
+.cart-total-card { display:flex; flex-direction:column; align-items:flex-start; gap:5px; min-height:110px; }
+.cart-total-card small { color:rgba(255,247,232,.62); }
+.location-preview { justify-content:flex-start; margin-top:16px; }
+.location-pin { font-size:2rem; }
+.location-preview div { display:flex; flex-direction:column; gap:5px; }
+.location-preview small { color:rgba(255,247,232,.65); }
+.empty-state { text-align:center; border:1px dashed rgba(255,201,40,.35); border-radius:24px; padding:45px 22px; background:radial-gradient(circle at 50% 0%,rgba(255,201,40,.08),transparent 55%); animation:pageIn .5s ease both; }
+.empty-emoji { font-size:3.4rem; }
+.empty-state p { color:rgba(255,247,232,.65); }
+.receipt-box { background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,201,40,.045)); }
+.app-footer { display:flex; flex-direction:column; gap:6px; text-align:center; padding:18px 8px; color:rgba(255,247,232,.65); }
+.app-footer strong { color:var(--gold); font-size:1rem; }
+.app-footer small { font-size:.75rem; }
+
+
+.branch-home { background:radial-gradient(circle at 88% 22%,rgba(255,201,40,.19),transparent 28%),linear-gradient(125deg,#2b1b2e,#3b253e 60%,#201923); border-bottom:4px solid var(--gold); }
+.branch-menu { background:radial-gradient(circle at 90% 10%,rgba(72,201,165,.18),transparent 30%),linear-gradient(125deg,#172a29,#263b37 58%,#211626); border-bottom:4px solid var(--mint); }
+.branch-cart { background:radial-gradient(circle at 88% 15%,rgba(255,90,82,.2),transparent 30%),linear-gradient(125deg,#321f29,#402631 58%,#211626); border-bottom:4px solid var(--red); }
+.branch-checkout { background:radial-gradient(circle at 90% 12%,rgba(255,201,40,.18),transparent 28%),linear-gradient(125deg,#292235,#292c3b 60%,#211626); border-bottom:4px solid var(--gold); }
+.branch-location { background:radial-gradient(circle at 88% 18%,rgba(72,201,165,.18),transparent 28%),linear-gradient(125deg,#1c2c32,#263843 60%,#211626); border-bottom:4px solid var(--mint); }
+.branch-my-orders { background:radial-gradient(circle at 88% 18%,rgba(255,90,82,.15),transparent 28%),linear-gradient(125deg,#302135,#3a2943 60%,#211626); border-bottom:4px solid var(--red); }
+
 </style>
 """,
     unsafe_allow_html=True,
@@ -317,8 +360,10 @@ def select_restaurant(name):
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
-# 4. APP STATE AND WELCOME EXPERIENCE
+# 4. APP STATE, NAVIGATION, LOCATION, AND ORDER HISTORY
 # ---------------------------------------------------------------------------
+from datetime import datetime
+
 if "entered_app" not in st.session_state:
     st.session_state.entered_app = False
 if "page" not in st.session_state:
@@ -329,8 +374,18 @@ if "cart" not in st.session_state:
     st.session_state.cart = {}
 if "last_order" not in st.session_state:
     st.session_state.last_order = None
+if "my_orders" not in st.session_state:
+    st.session_state.my_orders = []
+if "delivery_location" not in st.session_state:
+    st.session_state.delivery_location = DEFAULT_LOCATION
+if "delivery_lat" not in st.session_state:
+    st.session_state.delivery_lat = PRESET_LOCATIONS[DEFAULT_LOCATION][0]
+if "delivery_lon" not in st.session_state:
+    st.session_state.delivery_lon = PRESET_LOCATIONS[DEFAULT_LOCATION][1]
+if "location_mode" not in st.session_state:
+    st.session_state.location_mode = "Choose an area"
 
-# First visit: show a full-screen brand introduction before the ordering app.
+# First visit: the full-screen brand introduction.
 if not st.session_state.entered_app:
     st.markdown(
         """
@@ -348,7 +403,7 @@ if not st.session_state.entered_app:
         """,
         unsafe_allow_html=True,
     )
-    spacer1, action_col, spacer2 = st.columns([1.2, 1.1, 2.2])
+    _, action_col, _ = st.columns([1.2, 1.1, 2.2])
     with action_col:
         if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
             st.session_state.entered_app = True
@@ -356,198 +411,242 @@ if not st.session_state.entered_app:
             st.rerun()
     st.stop()
 
-# ---------------------------------------------------------------------------
-# 5. APP STATE AND NAVIGATION
-# ---------------------------------------------------------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
-if "selected" not in st.session_state:
-    st.session_state.selected = RESTAURANTS[0]["name"]
-if "cart" not in st.session_state:
-    st.session_state.cart = {}
-if "last_order" not in st.session_state:
-    st.session_state.last_order = None
 
+def go_to(page_name):
+    """Change the current screen without changing the state of a rendered widget."""
+    st.session_state.page = page_name
+    st.rerun()
+
+
+def cart_count():
+    return sum(st.session_state.cart.values())
+
+
+def active_restaurant():
+    return next(
+        (r for r in RESTAURANTS if r["name"] == st.session_state.selected),
+        RESTAURANTS[0],
+    )
+
+
+def cart_item_total():
+    r = active_restaurant()
+    return sum(
+        quantity * item[2]
+        for item in r["menu"]
+        for quantity in [st.session_state.cart.get(item[0], 0)]
+    )
+
+
+def set_restaurant(name):
+    """Keep one restaurant per cart so prices and menu items stay consistent."""
+    if st.session_state.selected != name:
+        st.session_state.cart = {}
+    st.session_state.selected = name
+
+
+# Navigation and location controls are buttons rather than a state-controlled
+# radio widget. This avoids Streamlit's "widget already instantiated" error.
 st.sidebar.markdown("### 🍜 ChaiTapri Eats")
-if st.sidebar.button("← Welcome screen", use_container_width=True):
+st.sidebar.caption("Your campus food companion")
+sidebar_pages = [
+    ("🏠", "Home"),
+    ("🍽️", "Menu"),
+    ("🛒", "Cart"),
+    ("💳", "Checkout"),
+    ("📦", "My Orders"),
+    ("📍", "Location"),
+]
+for nav_icon, nav_page in sidebar_pages:
+    is_current = st.session_state.page == nav_page
+    if st.sidebar.button(
+        f"{'● ' if is_current else ''}{nav_icon}  {nav_page}",
+        key=f"sidebar_nav_{nav_page}",
+        use_container_width=True,
+        type="primary" if is_current else "secondary",
+    ):
+        go_to(nav_page)
+
+if st.sidebar.button("↩ Welcome screen", key="back_to_welcome", use_container_width=True):
     st.session_state.entered_app = False
     st.rerun()
-pages = ["Home", "Menu", "Cart", "Checkout"]
-page = st.sidebar.radio(
-    "Navigate",
-    pages,
-    index=pages.index(st.session_state.page) if st.session_state.page in pages else 0,
-)
-st.session_state.page = page
 
 st.sidebar.divider()
-st.sidebar.markdown("### 📍 Deliver to")
-location_mode = st.sidebar.radio(
-    "How should we find you?",
-    ["Use my GPS location", "Choose an area"],
-    label_visibility="collapsed",
-    key="location_mode",
-)
+st.sidebar.markdown("### 📍 Delivery location")
+st.sidebar.write(st.session_state.delivery_location)
+if st.sidebar.button("Change location →", key="sidebar_change_location", use_container_width=True):
+    go_to("Location")
+st.sidebar.caption(f"Items in cart: {cart_count()}")
 
-user_lat, user_lon = PRESET_LOCATIONS[DEFAULT_LOCATION]
-location_label = DEFAULT_LOCATION
-
-if location_mode == "Use my GPS location":
-    if GPS_AVAILABLE:
-        try:
-            st.sidebar.caption("Allow location access in your browser.")
-            gps = streamlit_geolocation()
-            if gps and gps.get("latitude") is not None and gps.get("longitude") is not None:
-                user_lat, user_lon = gps["latitude"], gps["longitude"]
-                location_label = "Your live GPS location"
-                st.sidebar.success(f"Location found: {user_lat:.4f}, {user_lon:.4f}")
-            else:
-                st.sidebar.info("Waiting for location. Showing campus results meanwhile.")
-        except Exception:
-            st.sidebar.warning("GPS is not working. Use 'Choose an area' instead.")
-    else:
-        st.sidebar.warning("GPS package missing. Use 'Choose an area' instead.")
-    st.sidebar.caption("Demo restaurants are in Sonipat.")
-else:
-    area = st.sidebar.selectbox("Pick your area", list(PRESET_LOCATIONS.keys()))
-    user_lat, user_lon = PRESET_LOCATIONS[area]
-    location_label = area
-
-st.sidebar.markdown("### 🔎 Filters")
-veg_only = st.sidebar.checkbox("Veg items only 🟢")
-sort_by = st.sidebar.selectbox(
-    "Sort restaurants by", ["Nearest first", "Top rated", "Fastest delivery"]
-)
-
-# Calculate distance and delivery estimates for each demo restaurant.
+# Calculate distance and delivery estimates using the currently saved location.
+user_lat = st.session_state.delivery_lat
+user_lon = st.session_state.delivery_lon
+location_label = st.session_state.delivery_location
 for r in RESTAURANTS:
     r["distance"] = road_distance_km(user_lat, user_lon, r["lat"], r["lon"])
     r["eta"] = estimate_eta(r["prep"], r["distance"], False)
     r["deliverable"] = r["distance"] <= MAX_DELIVERY_KM
 
-if sort_by == "Nearest first":
-    ordered = sorted(RESTAURANTS, key=lambda r: r["distance"])
-elif sort_by == "Top rated":
-    ordered = sorted(RESTAURANTS, key=lambda r: r["rating"], reverse=True)
-else:
-    ordered = sorted(RESTAURANTS, key=lambda r: r["eta"])
+ordered = sorted(RESTAURANTS, key=lambda r: r["distance"])
+restaurant = active_restaurant()
 
-restaurant = next(
-    (r for r in RESTAURANTS if r["name"] == st.session_state.selected),
-    ordered[0],
-)
 
-def go_to(page_name):
-    st.session_state.page = page_name
-    st.rerun()
-
-def cart_count():
-    return sum(st.session_state.cart.values())
-
-def cart_item_total():
-    return sum(
-        quantity * item[2]
-        for item in restaurant["menu"]
-        for quantity in [st.session_state.cart.get(item[0], 0)]
+def shared_header(kicker, title, description, emoji):
+    st.markdown(
+        f"""
+        <div class="branch-hero branch-{st.session_state.page.lower().replace(" ", "-")}">
+          <div class="branch-kicker">{emoji} {kicker}</div>
+          <div class="branch-title">{title}</div>
+          <div class="branch-description">{description}</div>
+          <div class="branch-meta"><span>📍 {location_label}</span><span>🛒 {cart_count()} items in cart</span></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-# Shared header
-st.markdown(
-    f"""
-    <div class="hero">
-      <p class="display">🍜 ChaiTapri Eats</p>
-      <p>Local kitchens. Big cravings. Delivered to <b>{location_label}</b>.</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
 
-nav1, nav2, nav3, nav4 = st.columns(4)
-for col, label, target in [
-    (nav1, "🏠 Home", "Home"),
-    (nav2, "🍽️ Menu", "Menu"),
-    (nav3, f"🛒 Cart ({cart_count()})", "Cart"),
-    (nav4, "💳 Checkout", "Checkout"),
-]:
-    if col.button(label, use_container_width=True, type="primary" if st.session_state.page == target else "secondary"):
-        go_to(target)
+def show_bill_rows(bill, menu_items, cart, include_tip=True):
+    """Build an itemised receipt using the same bill calculation as checkout."""
+    rows = ""
+    for item_name, description, price, is_veg in menu_items:
+        qty = cart.get(item_name, 0)
+        if qty > 0:
+            rows += (
+                f'<div class="bill-row"><span>{qty} × {item_name}</span>'
+                f'<span>{inr(qty * price)}</span></div>'
+            )
+    rows += f'<div class="bill-row"><span>Food subtotal</span><span>{inr(bill["item_total"])}</span></div>'
+    if bill["discount"] > 0:
+        rows += f'<div class="bill-row saving"><span>Coupon savings</span><span>− {inr(bill["discount"])}</span></div>'
+    rows += f'<div class="bill-row"><span>Delivery fee</span><span>{"FREE" if bill["delivery_fee"] == 0 else inr(bill["delivery_fee"])}</span></div>'
+    if bill["express_fee"] > 0:
+        rows += f'<div class="bill-row"><span>Express delivery</span><span>{inr(bill["express_fee"])}</span></div>'
+    rows += f'<div class="bill-row"><span>Packaging</span><span>{inr(bill["packaging"])}</span></div>'
+    rows += f'<div class="bill-row"><span>Platform fee</span><span>{inr(bill["platform_fee"])}</span></div>'
+    rows += f'<div class="bill-row"><span>GST (5%)</span><span>{inr(bill["gst"])}</span></div>'
+    if include_tip and bill["tip"] > 0:
+        rows += f'<div class="bill-row"><span>Delivery partner tip</span><span>{inr(bill["tip"])}</span></div>'
+    rows += f'<div class="bill-total"><span>Total</span><span>{inr(bill["total"])}</span></div>'
+    return rows
+
+
+# A slim top navigation bar gives each branch a consistent way to move around.
+top_cols = st.columns(6)
+for col, (nav_icon, nav_page) in zip(top_cols, sidebar_pages):
+    if col.button(
+        f"{nav_icon} {nav_page}" + (f" ({len(st.session_state.my_orders)})" if nav_page == "My Orders" else ""),
+        key=f"top_nav_{nav_page}",
+        use_container_width=True,
+        type="primary" if st.session_state.page == nav_page else "secondary",
+    ):
+        go_to(nav_page)
 
 st.divider()
 
 # ---------------------------------------------------------------------------
-# 5. HOME PAGE
+# HOME: restaurant discovery, filters, and food-first cards
 # ---------------------------------------------------------------------------
 if st.session_state.page == "Home":
-    st.markdown("## Find your next meal")
-    st.write("Five local kitchens, plenty of comfort food. Pick a place and let's get your order started.")
+    shared_header(
+        "DISCOVER YOUR NEXT FAVOURITE",
+        "What are we craving today?",
+        "Explore campus favourites, compare delivery times, and find something worth looking forward to.",
+        "✨",
+    )
+    filter_a, filter_b, filter_c = st.columns([1.2, 1.2, 1.6])
+    with filter_a:
+        veg_only = st.checkbox("🌱 Vegetarian only", key="home_veg_filter")
+    with filter_b:
+        sort_by = st.selectbox("Sort by", ["Nearest first", "Top rated", "Fastest delivery"], key="home_sort")
+    with filter_c:
+        st.markdown(f"**{len(RESTAURANTS)} kitchens**")
+        st.caption("Demo restaurants around Sonipat")
 
+    if sort_by == "Top rated":
+        visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["rating"], reverse=True)
+    elif sort_by == "Fastest delivery":
+        visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["eta"])
+    else:
+        visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["distance"])
+
+    st.markdown('<div class="section-title">Made for your cravings</div>', unsafe_allow_html=True)
     card_columns = st.columns(3)
-    for i, r in enumerate(ordered):
+    for i, r in enumerate(visible_restaurants):
         with card_columns[i % 3]:
-            status = f"{r['eta']} min delivery" if r["deliverable"] else "Outside delivery area"
+            status = f"{r['eta']} min" if r["deliverable"] else "Out of range"
             st.markdown(
                 f"""
-                <div class="rest-card">
-                  <div class="rest-name">{r['emoji']} {r['name']}</div>
-                  <div class="muted">{r['cuisine']}</div>
-                  <span class="pill rating">★ {r['rating']}</span>
-                  <span class="pill time">{status}</span>
-                  <span class="pill dist">{r['distance']:.1f} km</span>
+                <div class="restaurant-tile">
+                  <div class="tile-emoji">{r['emoji']}</div>
+                  <div class="tile-cuisine">{r['cuisine']}</div>
+                  <div class="tile-name">{r['name']}</div>
+                  <div class="tile-stats"><span>★ {r['rating']}</span><span>⌁ {r['distance']:.1f} km</span></div>
+                  <div class="tile-status">{'⚡' if r['deliverable'] else '📍'} {status} delivery</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-            if st.button("View menu", key=f"home_{r['name']}", use_container_width=True):
-                select_restaurant(r["name"])
-                st.rerun()
+            menu_veg = any(item[3] for item in r["menu"])
+            if not veg_only or menu_veg:
+                if st.button("Explore menu  →", key=f"home_{r['name']}", use_container_width=True):
+                    set_restaurant(r["name"])
+                    go_to("Menu")
 
-    with st.expander("🗺️ See restaurants on the map"):
-        map_rows = [{"lat": user_lat, "lon": user_lon, "color": "#1E64F0", "size": 140}]
+    with st.expander("🗺️ View restaurant locations"):
+        map_rows = [{"lat": user_lat, "lon": user_lon, "color": "#ffc928", "size": 140}]
         for r in RESTAURANTS:
-            map_rows.append({"lat": r["lat"], "lon": r["lon"], "color": "#D7263D", "size": 90})
+            map_rows.append({"lat": r["lat"], "lon": r["lon"], "color": "#ff5a52", "size": 90})
         st.map(pd.DataFrame(map_rows), latitude="lat", longitude="lon", color="color", size="size")
-        st.caption("Blue dot: delivery location. Red dots: restaurants.")
+        st.caption("Gold dot: your saved delivery location. Red dots: demo restaurants.")
+
+    st.markdown(
+        '<div class="promo-strip"><span>🍜 Campus favourites</span><span>⚡ Fast delivery estimates</span><span>💛 Easy-to-understand bills</span></div>',
+        unsafe_allow_html=True,
+    )
 
 # ---------------------------------------------------------------------------
-# 6. MENU PAGE
+# MENU: separate menu-focused interface with clear item cards
 # ---------------------------------------------------------------------------
 elif st.session_state.page == "Menu":
-    st.markdown(f"## {restaurant['emoji']} {restaurant['name']}")
-    st.caption(
-        f"{restaurant['cuisine']} · ★ {restaurant['rating']} · "
-        f"{restaurant['distance']:.1f} km away · about {restaurant['eta']} min"
+    restaurant = active_restaurant()
+    shared_header(
+        "THE MENU",
+        f"{restaurant['emoji']} {restaurant['name']}",
+        f"{restaurant['cuisine']} · ★ {restaurant['rating']} · {restaurant['distance']:.1f} km away · about {restaurant['eta']} min",
+        "🍽️",
     )
-
-    chosen_restaurant = st.selectbox(
-        "Choose a restaurant",
-        [r["name"] for r in ordered],
-        index=[r["name"] for r in ordered].index(restaurant["name"]),
-        key="menu_restaurant_selector",
-    )
-    if chosen_restaurant != st.session_state.selected:
-        select_restaurant(chosen_restaurant)
-        st.rerun()
+    selector_col, note_col = st.columns([1.2, 1.8])
+    with selector_col:
+        chosen_restaurant = st.selectbox(
+            "Switch restaurant",
+            [r["name"] for r in ordered],
+            index=[r["name"] for r in ordered].index(restaurant["name"]),
+            key="menu_restaurant_selector",
+        )
+        if chosen_restaurant != st.session_state.selected:
+            set_restaurant(chosen_restaurant)
+            st.rerun()
+    with note_col:
+        st.info("Tip: switching restaurants starts a fresh cart so your bill stays accurate.")
 
     if not restaurant["deliverable"]:
-        st.error(
-            f"We deliver within {MAX_DELIVERY_KM} km. Choose another restaurant or change your delivery area."
-        )
-
+        st.error(f"We deliver within {MAX_DELIVERY_KM} km. Change your location or choose a closer restaurant.")
+    veg_only_menu = st.checkbox("🌱 Show vegetarian dishes only", key="menu_veg_filter")
     shown_items = 0
     for item_name, description, price, is_veg in restaurant["menu"]:
-        if veg_only and not is_veg:
+        if veg_only_menu and not is_veg:
             continue
         shown_items += 1
+        current_qty = st.session_state.cart.get(item_name, 0)
         with st.container(border=True):
-            item_col, price_col, action_col = st.columns([4, 1.2, 1.5])
+            item_col, price_col, action_col = st.columns([4, 1.1, 1.6])
             dot = "🟢" if is_veg else "🔴"
             item_col.markdown(f"**{dot} {item_name}**")
             item_col.caption(description)
-            price_col.markdown(f"**{inr(price)}**")
-            current_qty = st.session_state.cart.get(item_name, 0)
-            action_col.caption(f"In cart: {current_qty}")
+            price_col.markdown(f"### {inr(price)}")
+            action_col.caption(f"In your cart: **{current_qty}**")
             add_col, remove_col = action_col.columns(2)
-            if add_col.button("+", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True):
+            if add_col.button("+ Add", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True):
                 if restaurant["deliverable"]:
                     st.session_state.cart[item_name] = current_qty + 1
                     st.rerun()
@@ -557,163 +656,296 @@ elif st.session_state.page == "Menu":
                 elif current_qty == 1:
                     del st.session_state.cart[item_name]
                 st.rerun()
-
     if shown_items == 0:
-        st.info("No items match your filter at this restaurant.")
+        st.info("No dishes match this filter at the selected restaurant.")
 
-    st.divider()
-    st.markdown(f"**Cart subtotal: {inr(cart_item_total())}**")
+    st.markdown(
+        f'<div class="menu-footer"><span>Current subtotal</span><strong>{inr(cart_item_total())}</strong></div>',
+        unsafe_allow_html=True,
+    )
     left, right = st.columns(2)
-    if left.button("Continue shopping", use_container_width=True):
+    if left.button("← Keep exploring", use_container_width=True):
         go_to("Home")
-    if right.button("View cart", type="primary", use_container_width=True):
+    if right.button(f"View cart ({cart_count()}) →", type="primary", use_container_width=True):
         go_to("Cart")
 
 # ---------------------------------------------------------------------------
-# 7. CART PAGE
+# CART: basket-style interface with order summary and clear next steps
 # ---------------------------------------------------------------------------
 elif st.session_state.page == "Cart":
-    st.markdown("## 🛒 Your cart")
+    restaurant = active_restaurant()
+    shared_header(
+        "YOUR BASKET",
+        "A little happiness, coming up.",
+        "Review your choices, adjust quantities, and check your subtotal before checkout.",
+        "🛒",
+    )
     if not st.session_state.cart:
-        st.info("Your cart is empty. Visit the menu to add something delicious.")
-        if st.button("Browse restaurants", type="primary"):
+        st.markdown('<div class="empty-state"><div class="empty-emoji">🧺</div><h3>Your cart is waiting for something delicious.</h3><p>Pick a kitchen and add a few favourites to get started.</p></div>', unsafe_allow_html=True)
+        if st.button("Browse restaurants →", type="primary", use_container_width=True):
             go_to("Home")
     else:
-        st.caption(f"Order from {restaurant['name']}")
+        st.markdown(f"**Ordering from:** {restaurant['emoji']} {restaurant['name']}")
+        st.caption("Your basket is reserved for one restaurant at a time.")
         for item_name, description, price, is_veg in restaurant["menu"]:
             quantity = st.session_state.cart.get(item_name, 0)
             if quantity <= 0:
                 continue
-            row1, row2, row3, row4 = st.columns([4, 1, 1, 1.5])
-            row1.write(item_name)
-            row2.write(f"{inr(price)}")
-            row3.write(f"× {quantity}")
-            row4.write(f"**{inr(price * quantity)}**")
-            minus_col, plus_col, remove_col = st.columns([1, 1, 2])
-            if minus_col.button("−", key=f"cart_minus_{item_name}"):
-                if quantity > 1:
-                    st.session_state.cart[item_name] = quantity - 1
-                else:
+            with st.container(border=True):
+                row1, row2, row3 = st.columns([4, 1.4, 1.5])
+                row1.markdown(f"**{'🟢' if is_veg else '🔴'} {item_name}**")
+                row1.caption(description)
+                row2.markdown(f"**{inr(price * quantity)}**")
+                row3.markdown(f"Quantity: **{quantity}**")
+                minus_col, plus_col, remove_col = st.columns([1, 1, 2])
+                if minus_col.button("− One", key=f"cart_minus_{item_name}", use_container_width=True):
+                    if quantity > 1:
+                        st.session_state.cart[item_name] = quantity - 1
+                    else:
+                        del st.session_state.cart[item_name]
+                    st.rerun()
+                if plus_col.button("+ One", key=f"cart_plus_{item_name}", use_container_width=True):
+                    st.session_state.cart[item_name] = quantity + 1
+                    st.rerun()
+                if remove_col.button("Remove", key=f"cart_remove_{item_name}", use_container_width=True):
                     del st.session_state.cart[item_name]
-                st.rerun()
-            if plus_col.button("+", key=f"cart_plus_{item_name}"):
-                st.session_state.cart[item_name] = quantity + 1
-                st.rerun()
-            if remove_col.button("Remove item", key=f"cart_remove_{item_name}"):
-                del st.session_state.cart[item_name]
-                st.rerun()
-            st.divider()
+                    st.rerun()
 
-        st.markdown(f"### Item total: {inr(cart_item_total())}")
-        col_a, col_b = st.columns(2)
-        if col_a.button("← Back to menu", use_container_width=True):
-            go_to("Menu")
-        if col_b.button("Proceed to checkout", type="primary", use_container_width=True):
-            go_to("Checkout")
+        total_col, action_col = st.columns([1.4, 1])
+        with total_col:
+            st.markdown(
+                f'<div class="cart-total-card"><span>Food subtotal</span><strong>{inr(cart_item_total())}</strong><small>Delivery, GST and fees are calculated at checkout.</small></div>',
+                unsafe_allow_html=True,
+            )
+        with action_col:
+            st.write("")
+            if st.button("← Back to menu", use_container_width=True):
+                go_to("Menu")
+            if st.button("Continue to checkout →", type="primary", use_container_width=True):
+                go_to("Checkout")
 
 # ---------------------------------------------------------------------------
-# 8. CHECKOUT PAGE
+# CHECKOUT: order details, clear bill, confirmation and final receipt
 # ---------------------------------------------------------------------------
 elif st.session_state.page == "Checkout":
-    st.markdown("## 💳 Checkout")
+    restaurant = active_restaurant()
+    shared_header(
+        "ALMOST THERE",
+        "Let's make it official.",
+        "Choose your delivery preferences, review every charge, and place your demo order.",
+        "💳",
+    )
     if not st.session_state.cart:
-        st.info("Your cart is empty. Add food before checking out.")
-        if st.button("Browse menu", type="primary"):
+        st.markdown('<div class="empty-state"><div class="empty-emoji">🛍️</div><h3>Your next meal is just a few clicks away.</h3><p>Add food to your cart before checking out.</p></div>', unsafe_allow_html=True)
+        if st.button("Browse the menu →", type="primary"):
             go_to("Menu")
     elif not restaurant["deliverable"]:
         st.error(
             f"{restaurant['name']} is {restaurant['distance']:.1f} km away. "
-            f"We deliver within {MAX_DELIVERY_KM} km. Choose a closer restaurant or change your area."
+            f"Delivery is limited to {MAX_DELIVERY_KM} km. Please change your location or choose a closer restaurant."
         )
-        if st.button("Choose another restaurant"):
-            go_to("Home")
+        if st.button("Change delivery location"):
+            go_to("Location")
     else:
-        st.markdown(f"**Restaurant:** {restaurant['name']}")
-        st.markdown("### Order summary")
-        for item_name, description, price, is_veg in restaurant["menu"]:
-            quantity = st.session_state.cart.get(item_name, 0)
-            if quantity > 0:
-                st.write(f"{quantity} × {item_name} — {inr(quantity * price)}")
+        details_col, preference_col = st.columns([1.1, 1])
+        with details_col:
+            st.markdown("### 🍽️ Your order")
+            st.markdown(f"**{restaurant['name']}**")
+            for item_name, description, price, is_veg in restaurant["menu"]:
+                quantity = st.session_state.cart.get(item_name, 0)
+                if quantity > 0:
+                    st.write(f"{quantity} × {item_name} — **{inr(quantity * price)}**")
+            st.caption(f"Delivering to: {location_label}")
+        with preference_col:
+            st.markdown("### 🚲 Delivery preferences")
+            delivery_speed = st.radio("Delivery speed", ["Standard", "Express ⚡ (+₹30)"], horizontal=True)
+            express = delivery_speed.startswith("Express")
+            tip = st.select_slider("Tip for your delivery partner (₹)", options=[0, 10, 20, 30, 50], value=0)
+            coupon_code = st.text_input("Coupon code", placeholder="Try WELCOME50", key="checkout_coupon").strip().upper()
+            payment = st.selectbox("Payment method", ["UPI", "Credit / Debit Card", "Cash on Delivery"], key="checkout_payment")
+            contactless = st.checkbox("Contactless delivery", key="checkout_contactless")
+            instructions = st.text_input("Cooking or delivery note", placeholder="Less spicy, ring the bell...", key="checkout_instructions")
+
+        with st.expander("🎟️ Available coupons"):
+            for code, info in COUPONS.items():
+                st.markdown(f"**{code}** — {info['desc']}")
 
         item_total = cart_item_total()
-        st.divider()
-        delivery_speed = st.radio("Delivery speed", ["Standard", "Express ⚡ (+₹30)"], horizontal=True)
-        express = delivery_speed.startswith("Express")
-        tip = st.select_slider("Tip for your delivery partner (₹)", options=[0, 10, 20, 30, 50], value=0)
-        coupon_code = st.text_input("Coupon code", placeholder="Try WELCOME50").strip().upper()
-        payment = st.selectbox("Payment method", ["UPI", "Credit / Debit Card", "Cash on Delivery"])
-        contactless = st.checkbox("Contactless delivery")
-        instructions = st.text_input("Cooking or delivery note", placeholder="Less spicy, ring the bell...")
-
-        with st.expander("Available coupons"):
-            for code, info in COUPONS.items():
-                st.markdown(f"**{code}**: {info['desc']}")
-
-        bill = calculate_bill(
-            item_total, restaurant["packaging"], restaurant["distance"],
-            express, coupon_code, tip
-        )
+        bill = calculate_bill(item_total, restaurant["packaging"], restaurant["distance"], express, coupon_code, tip)
         eta = estimate_eta(restaurant["prep"], restaurant["distance"], express)
-
         if bill["coupon_msg"]:
             if bill["coupon_ok"]:
                 st.success(bill["coupon_msg"])
             else:
                 st.warning(bill["coupon_msg"])
 
-        rows = ""
-        for name, qty, price in [
-            (item_name, st.session_state.cart.get(item_name, 0), price)
-            for item_name, description, price, is_veg in restaurant["menu"]
-        ]:
-            if qty > 0:
-                rows += (
-                    f'<div class="bill-row"><span>{qty} × {name}</span>'
-                    f'<span>{inr(qty * price)}</span></div>'
-                )
-        rows += f'<div class="bill-row"><span>Item total</span><span>{inr(bill["item_total"])}</span></div>'
-        if bill["discount"] > 0:
-            rows += f'<div class="bill-row saving"><span>Coupon discount</span><span>- {inr(bill["discount"])}</span></div>'
-        fee_text = "FREE" if bill["delivery_fee"] == 0 else inr(bill["delivery_fee"])
-        rows += f'<div class="bill-row"><span>Delivery fee</span><span>{fee_text}</span></div>'
-        if bill["express_fee"] > 0:
-            rows += f'<div class="bill-row"><span>Express delivery</span><span>{inr(bill["express_fee"])}</span></div>'
-        rows += f'<div class="bill-row"><span>Packaging</span><span>{inr(bill["packaging"])}</span></div>'
-        rows += f'<div class="bill-row"><span>Platform fee</span><span>{inr(bill["platform_fee"])}</span></div>'
-        rows += f'<div class="bill-row"><span>GST (5%)</span><span>{inr(bill["gst"])}</span></div>'
-        if bill["tip"] > 0:
-            rows += f'<div class="bill-row"><span>Tip</span><span>{inr(bill["tip"])}</span></div>'
-        rows += f'<div class="bill-total"><span>To pay</span><span>{inr(bill["total"])}</span></div>'
-        st.markdown(f'<div class="bill-box">{rows}</div>', unsafe_allow_html=True)
-        st.caption(f"Estimated delivery in about {eta} minutes.")
+        st.markdown("### 🧾 Your final bill")
+        receipt_rows = show_bill_rows(bill, restaurant["menu"], st.session_state.cart)
+        st.markdown(f'<div class="bill-box receipt-box">{receipt_rows}</div>', unsafe_allow_html=True)
+        st.caption(f"Estimated delivery: about {eta} minutes · Payment: {payment}")
 
-        if st.button("Place order", type="primary", use_container_width=True):
+        if st.button("Place my order  ✨", type="primary", use_container_width=True):
             order_id = "CT" + str(random.randint(10000, 99999))
             partner = random.choice(["Rahul", "Amit", "Sandeep", "Vikram", "Deepak"])
-            st.session_state.last_order = {
+            order_items = []
+            for item_name, description, price, is_veg in restaurant["menu"]:
+                quantity = st.session_state.cart.get(item_name, 0)
+                if quantity > 0:
+                    order_items.append({
+                        "name": item_name,
+                        "quantity": quantity,
+                        "unit_price": price,
+                        "line_total": quantity * price,
+                    })
+            order = {
                 "order_id": order_id,
+                "date": datetime.now().strftime("%d %b %Y, %I:%M %p"),
                 "restaurant": restaurant["name"],
-                "partner": partner,
-                "eta": eta,
+                "emoji": restaurant["emoji"],
+                "cuisine": restaurant["cuisine"],
+                "items": order_items,
+                "item_total": bill["item_total"],
+                "discount": bill["discount"],
+                "delivery_fee": bill["delivery_fee"],
+                "express_fee": bill["express_fee"],
+                "packaging": bill["packaging"],
+                "platform_fee": bill["platform_fee"],
+                "gst": bill["gst"],
+                "tip": bill["tip"],
                 "total": bill["total"],
                 "payment": payment,
+                "delivery_location": location_label,
+                "partner": partner,
+                "eta": eta,
+                "delivery_speed": delivery_speed,
                 "contactless": contactless,
                 "instructions": instructions.strip(),
             }
+            st.session_state.my_orders.insert(0, order)
+            st.session_state.last_order = order
             st.session_state.cart = {}
+            st.session_state.page = "My Orders"
             st.balloons()
-            st.success(f"Order {order_id} placed successfully!")
-            st.markdown(f"### Thank you for ordering from {restaurant['name']}!")
-            st.write(f"Your delivery partner is **{partner}**.")
-            st.write(f"Estimated delivery: **{eta} minutes**.")
-            st.write(f"Total paid / payable: **{inr(bill['total'])}** via **{payment}**.")
-            if contactless:
-                st.info("Contactless delivery: your order will be left at the door.")
-            if instructions.strip():
-                st.info(f"Note sent to the restaurant: {instructions.strip()}")
-        elif st.session_state.last_order:
-            last = st.session_state.last_order
-            st.caption(f"Previous demo order: {last['order_id']} from {last['restaurant']}.")
+            st.rerun()
+
+# ---------------------------------------------------------------------------
+# LOCATION: a dedicated location-selection experience
+# ---------------------------------------------------------------------------
+elif st.session_state.page == "Location":
+    shared_header(
+        "DELIVERY DESTINATION",
+        "Where should we bring the good stuff?",
+        "Choose a saved demo area or try browser GPS. The sample kitchens are around Sonipat.",
+        "📍",
+    )
+    loc_left, loc_right = st.columns([1.15, 1])
+    with loc_left:
+        st.markdown("### 🗺️ Choose your area")
+        area_choice = st.selectbox(
+            "Available demo locations",
+            list(PRESET_LOCATIONS.keys()),
+            index=list(PRESET_LOCATIONS.keys()).index(
+                st.session_state.delivery_location
+                if st.session_state.delivery_location in PRESET_LOCATIONS
+                else DEFAULT_LOCATION
+            ),
+            key="location_area_choice",
+        )
+        lat, lon = PRESET_LOCATIONS[area_choice]
+        st.markdown(
+            f'<div class="location-preview"><span class="location-pin">📍</span><div><strong>{area_choice}</strong><small>Approx. coordinates: {lat:.4f}, {lon:.4f}</small></div></div>',
+            unsafe_allow_html=True,
+        )
+        if st.button("Save this delivery location →", type="primary", use_container_width=True):
+            st.session_state.delivery_location = area_choice
+            st.session_state.delivery_lat = lat
+            st.session_state.delivery_lon = lon
+            st.session_state.location_mode = "Choose an area"
+            st.success(f"Delivery location updated to {area_choice}.")
+            st.rerun()
+    with loc_right:
+        st.markdown("### 📡 Use browser GPS")
+        st.write("If your browser supports location access, you can try detecting your current position.")
+        if GPS_AVAILABLE:
+            try:
+                gps = streamlit_geolocation()
+                if gps and gps.get("latitude") is not None and gps.get("longitude") is not None:
+                    st.success("GPS coordinates detected.")
+                    st.caption(f"{gps['latitude']:.4f}, {gps['longitude']:.4f}")
+                    if st.button("Use my GPS coordinates", use_container_width=True):
+                        st.session_state.delivery_location = "Live GPS location"
+                        st.session_state.delivery_lat = float(gps["latitude"])
+                        st.session_state.delivery_lon = float(gps["longitude"])
+                        st.session_state.location_mode = "Use my GPS location"
+                        st.rerun()
+                else:
+                    st.info("Allow location access in the browser. If it doesn't respond, choose a demo area on the left.")
+            except Exception:
+                st.warning("GPS isn't available in this browser right now. Choose a demo area instead.")
+        else:
+            st.info("The optional GPS package isn't installed. Choosing an area still works.")
+        if st.button("← Return to home", use_container_width=True):
+            go_to("Home")
+
+    st.markdown("### 🚚 Nearby demo kitchens")
+    distance_cols = st.columns(3)
+    for i, r in enumerate(sorted(RESTAURANTS, key=lambda x: x["distance"])[:3]):
+        with distance_cols[i]:
+            st.metric(r["name"], f"{r['distance']:.1f} km", "In delivery range" if r["deliverable"] else "Out of range")
+
+# ---------------------------------------------------------------------------
+# MY ORDERS: session-based order history and full itemised receipts
+# ---------------------------------------------------------------------------
+elif st.session_state.page == "My Orders":
+    shared_header(
+        "YOUR ORDER JOURNEY",
+        "Good choices deserve a receipt.",
+        "Your completed demo orders are listed here for this browser session, with the restaurant, items, payment choice and final bill.",
+        "📦",
+    )
+    if not st.session_state.my_orders:
+        st.markdown('<div class="empty-state"><div class="empty-emoji">🧾</div><h3>No orders yet — your first favourite is waiting.</h3><p>Once you place a demo order, its receipt will appear here.</p></div>', unsafe_allow_html=True)
+        if st.button("Find something delicious →", type="primary", use_container_width=True):
+            go_to("Home")
+    else:
+        st.markdown(f"**{len(st.session_state.my_orders)} order(s) in this session**")
+        for order in st.session_state.my_orders:
+            with st.expander(f"{order['emoji']} {order['restaurant']}  ·  {order['order_id']}  ·  {inr(order['total'])}"):
+                st.markdown(f"**Order ID:** `{order['order_id']}`")
+                st.caption(f"{order['date']} · {order['delivery_speed']} · {order['eta']} min estimated")
+                st.markdown(f"**Delivered to:** {order['delivery_location']}")
+                st.markdown("#### Items ordered")
+                for item in order["items"]:
+                    st.write(f"{item['quantity']} × {item['name']} ({inr(item['unit_price'])} each) — **{inr(item['line_total'])}**")
+                old_bill = {
+                    "item_total": order["item_total"],
+                    "discount": order["discount"],
+                    "delivery_fee": order["delivery_fee"],
+                    "express_fee": order["express_fee"],
+                    "packaging": order["packaging"],
+                    "platform_fee": order["platform_fee"],
+                    "gst": order["gst"],
+                    "tip": order["tip"],
+                    "total": order["total"],
+                }
+                receipt_rows = show_bill_rows(
+                    old_bill,
+                    [(item["name"], "", item["unit_price"], True) for item in order["items"]],
+                    {item["name"]: item["quantity"] for item in order["items"]},
+                )
+                st.markdown(f'<div class="bill-box receipt-box">{receipt_rows}</div>', unsafe_allow_html=True)
+                st.caption(f"Payment: {order['payment']} · Delivery partner: {order['partner']}")
+                if order["contactless"]:
+                    st.info("Contactless delivery was selected.")
+                if order["instructions"]:
+                    st.write(f"Order note: {order['instructions']}")
+                st.success("Thank you for choosing ChaiTapri Eats!")
+
+        if st.button("Order something else →", type="primary", use_container_width=True):
+            go_to("Home")
 
 st.divider()
-st.caption("ChaiTapri Eats is a student project. Restaurants, menus and prices are made up for demonstration.")
+st.markdown(
+    '<div class="app-footer"><strong>🍜 ChaiTapri Eats</strong><span>Made for campus cravings · Sonipat, Haryana</span><small>Student project demo: restaurants, delivery partners, payments and order history are simulated. Order history lasts for this active app session and is not stored in a database.</small></div>',
+    unsafe_allow_html=True,
+)
