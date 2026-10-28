@@ -8,13 +8,15 @@ What this app does:
   2. Shows nearby restaurants with distance, rating and delivery time
   3. Lets the customer pick items from a restaurant's menu
   4. Calculates a full bill: items, coupon, delivery fee, GST, tip, total
-  5. Places the order and shows a confirmation
+  5. Places demo orders and shows a short simulated delivery journey
+  6. Suggests complementary items and tracks free-delivery milestones
 
 Run with:  streamlit run app.py
 """
 
 import math
 import random
+import time
 
 import pandas as pd
 import streamlit as st
@@ -165,6 +167,14 @@ html { scroll-behavior:smooth; }
 .branch-checkout { background:radial-gradient(circle at 90% 12%,rgba(255,201,40,.18),transparent 28%),linear-gradient(125deg,#292235,#292c3b 60%,#211626); border-bottom:4px solid var(--gold); }
 .branch-location { background:radial-gradient(circle at 88% 18%,rgba(72,201,165,.18),transparent 28%),linear-gradient(125deg,#1c2c32,#263843 60%,#211626); border-bottom:4px solid var(--mint); }
 .branch-my-orders { background:radial-gradient(circle at 88% 18%,rgba(255,90,82,.15),transparent 28%),linear-gradient(125deg,#302135,#3a2943 60%,#211626); border-bottom:4px solid var(--red); }
+
+/* Smart-cart recommendations and delivery progress */
+.smart-pair { border:1px solid rgba(72,201,165,.28); border-radius:16px; padding:15px 18px; background:linear-gradient(110deg,rgba(72,201,165,.11),rgba(255,201,40,.045)); margin:10px 0; }
+.smart-pair strong { color:#8ee6cc; }
+.delivery-stage { border:1px solid rgba(255,201,40,.25); border-radius:18px; padding:20px; background:linear-gradient(135deg,rgba(255,201,40,.09),rgba(255,90,82,.06)); margin:12px 0; }
+.food-badge { display:inline-block; padding:3px 9px; border-radius:999px; font-size:.75rem; font-weight:800; margin-top:4px; }
+.food-badge.veg { color:#a9f0c0; background:rgba(44,165,94,.16); }
+.food-badge.nonveg { color:#ffaaa6; background:rgba(255,90,82,.16); }
 
 </style>
 """,
@@ -438,6 +448,59 @@ def cart_item_total():
     )
 
 
+def smart_pairing_items(restaurant):
+    """Suggest a familiar side based on items already in the current cart."""
+    pairings = {
+        "Paneer Butter Masala": ["Butter Naan", "Jeera Rice"],
+        "Butter Chicken": ["Butter Naan", "Jeera Rice"],
+        "Classic Veg Burger": ["Cheese Fries", "Peri Peri Fries"],
+        "Crispy Chicken Burger": ["Cheese Fries", "Peri Peri Fries"],
+        "Margherita Pizza": ["Garlic Bread", "Choco Lava Cake"],
+        "Farmhouse Pizza": ["Garlic Bread", "Choco Lava Cake"],
+        "Veg Hakka Noodles": ["Veg Spring Rolls", "Hot and Sour Soup"],
+        "Chicken Fried Rice": ["Veg Spring Rolls", "Hot and Sour Soup"],
+        "Paneer Wrap": ["Fresh Fruit Bowl", "Cold-Pressed Juice"],
+    }
+    menu_names = [item[0] for item in restaurant["menu"]]
+    cart_names = [name for name, qty in st.session_state.cart.items() if qty > 0]
+    suggestions = []
+    for cart_name in cart_names:
+        for suggestion in pairings.get(cart_name, []):
+            if suggestion in menu_names and suggestion not in cart_names and suggestion not in suggestions:
+                suggestions.append(suggestion)
+    if not suggestions:
+        suggestions = [name for name in menu_names if name not in cart_names]
+    return suggestions[:2]
+
+
+def render_smart_cart(restaurant, key_prefix):
+    """Show menu-based pairings and the configured free-delivery milestone."""
+    if not st.session_state.cart:
+        return
+    item_total = cart_item_total()
+    if item_total < FREE_DELIVERY_ABOVE:
+        remaining = FREE_DELIVERY_ABOVE - item_total
+        st.info(f"🚚 Add {inr(remaining)} more to unlock free delivery on orders of {inr(FREE_DELIVERY_ABOVE)} or more!")
+        st.progress(min(item_total / FREE_DELIVERY_ABOVE, 1.0), text=f"{inr(item_total)} of {inr(FREE_DELIVERY_ABOVE)} toward free delivery")
+    else:
+        st.success(f"🎉 You've unlocked free delivery! Your food subtotal is {inr(item_total)}.")
+    suggestions = smart_pairing_items(restaurant)
+    if suggestions:
+        st.markdown("### ✨ Goes great with your order")
+        for suggestion in suggestions:
+            menu_item = next((item for item in restaurant["menu"] if item[0] == suggestion), None)
+            if menu_item:
+                item_name, description, price, is_veg = menu_item
+                with st.container(border=True):
+                    item_col, price_col, add_col = st.columns([3, 1, 1.25])
+                    item_col.markdown(f"**{'🟢' if is_veg else '🔴'} {item_name}**")
+                    item_col.caption(description)
+                    price_col.markdown(f"**{inr(price)}**")
+                    if add_col.button("+ Add", key=f"{key_prefix}_{item_name}", use_container_width=True):
+                        st.session_state.cart[item_name] = st.session_state.cart.get(item_name, 0) + 1
+                        st.rerun()
+
+
 def set_restaurant(name):
     """Keep one restaurant per cart so prices and menu items stay consistent."""
     if st.session_state.selected != name:
@@ -641,7 +704,11 @@ elif st.session_state.page == "Menu":
         with st.container(border=True):
             item_col, price_col, action_col = st.columns([4, 1.1, 1.6])
             dot = "🟢" if is_veg else "🔴"
-            item_col.markdown(f"**{dot} {item_name}**")
+            item_col.markdown(f"**{item_name}**")
+            item_col.markdown(
+                f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Veg" if is_veg else "🔴 Non-Veg"}</span>',
+                unsafe_allow_html=True,
+            )
             item_col.caption(description)
             price_col.markdown(f"### {inr(price)}")
             action_col.caption(f"In your cart: **{current_qty}**")
@@ -711,6 +778,8 @@ elif st.session_state.page == "Cart":
                     del st.session_state.cart[item_name]
                     st.rerun()
 
+        render_smart_cart(restaurant, "cart_pair")
+
         total_col, action_col = st.columns([1.4, 1])
         with total_col:
             st.markdown(
@@ -747,6 +816,7 @@ elif st.session_state.page == "Checkout":
         if st.button("Change delivery location"):
             go_to("Location")
     else:
+        render_smart_cart(restaurant, "checkout_pair")
         details_col, preference_col = st.columns([1.1, 1])
         with details_col:
             st.markdown("### 🍽️ Your order")
@@ -821,11 +891,29 @@ elif st.session_state.page == "Checkout":
                 "contactless": contactless,
                 "instructions": instructions.strip(),
             }
+            # Short live demo simulation. This is simulated status, not real tracking.
+            st.markdown("### 🚴 Your delivery is coming to life")
+            delivery_box = st.empty()
+            delivery_progress = st.progress(0, text="Order confirmed")
+            stages = [
+                (25, "🟢 Step 1 · Kitchen is preparing your order...", "Your food is being freshly prepared."),
+                (60, "🚴 Step 2 · Your delivery partner has picked it up!", f"{partner} is on the way to {location_label}."),
+                (100, "🎉 Step 3 · Delivered! Enjoy your meal.", "Thanks for ordering with ChaiTapri Eats!"),
+            ]
+            for progress_value, headline, detail in stages:
+                delivery_box.markdown(
+                    f'<div class="delivery-stage"><h3>{headline}</h3><p>{detail}</p><small>Order {order_id} · Demo delivery simulation</small></div>',
+                    unsafe_allow_html=True,
+                )
+                delivery_progress.progress(progress_value, text=f"Delivery progress: {progress_value}%")
+                time.sleep(0.8)
+            order["delivery_status"] = "Delivered (simulated)"
             st.session_state.my_orders.insert(0, order)
             st.session_state.last_order = order
             st.session_state.cart = {}
             st.session_state.page = "My Orders"
             st.balloons()
+            time.sleep(0.25)
             st.rerun()
 
 # ---------------------------------------------------------------------------
@@ -913,6 +1001,7 @@ elif st.session_state.page == "My Orders":
             with st.expander(f"{order['emoji']} {order['restaurant']}  ·  {order['order_id']}  ·  {inr(order['total'])}"):
                 st.markdown(f"**Order ID:** `{order['order_id']}`")
                 st.caption(f"{order['date']} · {order['delivery_speed']} · {order['eta']} min estimated")
+                st.success(order.get("delivery_status", "Order placed (simulated)"))
                 st.markdown(f"**Delivered to:** {order['delivery_location']}")
                 st.markdown("#### Items ordered")
                 for item in order["items"]:
