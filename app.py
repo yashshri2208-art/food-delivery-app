@@ -324,6 +324,40 @@ RESTAURANTS = [
             ("Mint Cucumber Cooler", "Refreshing cucumber, mint and lime", 89, True),
         ],
     },
+    {
+        "name": "Sunrise Breakfast Club", "emoji": "🍳", "cuisine": "All-day Breakfast · Indian & Global",
+        "rating": 4.7, "prep": 16, "packaging": 12, "lat": 28.9550, "lon": 77.0930,
+        "menu": [
+            ("Chocos with Cold Milk", "Chocolate cereal served with chilled milk", 99, True),
+            ("Classic Cornflakes Bowl", "Golden cornflakes with cold milk", 89, True),
+            ("Honey Oats & Banana", "Rolled oats, banana and a touch of honey", 119, True),
+            ("Butter Toast", "Toasted bread served with creamy butter", 59, True),
+            ("Jam & Butter Toast", "Crisp toast with butter and fruit jam", 69, True),
+            ("Grilled Veg Sandwich", "Toasted sandwich with vegetables and cheese", 119, True),
+            ("Bombay Masala Sandwich", "Potato, cucumber, tomato and green chutney", 109, True),
+            ("Egg and Cheese Sandwich", "Scrambled egg and cheese in toasted bread", 139, False),
+            ("Idli Sambar (3 pcs)", "Soft steamed idlis with sambar and coconut chutney", 99, True),
+            ("Masala Dosa", "Crisp dosa filled with spiced potato masala", 129, True),
+            ("Plain Dosa", "Golden rice-and-lentil crepe with chutneys", 99, True),
+            ("Medu Vada (2 pcs)", "Crispy lentil doughnuts with sambar", 89, True),
+            ("Chole Bhature", "Fluffy bhature with spicy chickpea curry", 159, True),
+            ("Aloo Paratha", "Stuffed potato paratha with curd and pickle", 119, True),
+            ("Poha", "Light flattened rice with peanuts, curry leaves and lemon", 89, True),
+            ("Vegetable Upma", "Comforting semolina breakfast with vegetables", 89, True),
+            ("English Breakfast Plate", "Baked beans, toast, sautéed mushrooms and grilled tomato", 229, True),
+            ("Pancakes with Maple Syrup", "Fluffy pancakes with maple syrup", 179, True),
+            ("Waffles with Chocolate", "Golden waffles with chocolate sauce", 189, True),
+            ("Butter Croissant", "Flaky, buttery French-style croissant", 99, True),
+            ("Bagel with Cream Cheese", "Toasted bagel with smooth cream cheese", 149, True),
+            ("Shakshuka with Toast", "Eggs poached in spiced tomato and pepper sauce", 199, False),
+            ("Japanese Tamago Sandwich", "Soft milk bread with Japanese-style egg filling", 169, False),
+            ("Breakfast Burrito", "Tortilla with scrambled egg, beans and cheese", 189, False),
+            ("Greek Yoghurt Granola Bowl", "Greek yoghurt, crunchy granola and seasonal fruit", 149, True),
+            ("Fresh Orange Juice", "Freshly squeezed orange juice", 99, True),
+            ("Filter Coffee", "South Indian filter coffee with milk", 59, True),
+            ("Masala Chai", "Indian milk tea brewed with warming spices", 35, True),
+        ],
+    },
 ]
 
 # Categorise each dish into menu sections, as used by food-ordering apps.
@@ -355,6 +389,20 @@ MENU_CATEGORIES = {
     "Corn and Spinach Soup": "Soups", "Fresh Fruit Bowl": "Desserts & Fruit", "Greek Yoghurt Parfait": "Desserts & Fruit",
     "Chia Seed Pudding": "Desserts & Fruit", "Cold-Pressed Juice": "Drinks", "Oats Banana Smoothie": "Drinks",
     "Mint Cucumber Cooler": "Drinks",
+    "Chocos with Cold Milk": "Cereals & Bowls", "Classic Cornflakes Bowl": "Cereals & Bowls",
+    "Honey Oats & Banana": "Cereals & Bowls", "Greek Yoghurt Granola Bowl": "Cereals & Bowls",
+    "Butter Toast": "Toast & Sandwiches", "Jam & Butter Toast": "Toast & Sandwiches",
+    "Grilled Veg Sandwich": "Toast & Sandwiches", "Bombay Masala Sandwich": "Toast & Sandwiches",
+    "Egg and Cheese Sandwich": "Toast & Sandwiches", "Bagel with Cream Cheese": "Toast & Sandwiches",
+    "Idli Sambar (3 pcs)": "South Indian", "Masala Dosa": "South Indian",
+    "Plain Dosa": "South Indian", "Medu Vada (2 pcs)": "South Indian",
+    "Chole Bhature": "Indian Breakfast", "Aloo Paratha": "Indian Breakfast",
+    "Poha": "Indian Breakfast", "Vegetable Upma": "Indian Breakfast",
+    "English Breakfast Plate": "Global Breakfast", "Pancakes with Maple Syrup": "Global Breakfast",
+    "Waffles with Chocolate": "Global Breakfast", "Butter Croissant": "Global Breakfast",
+    "Shakshuka with Toast": "Global Breakfast", "Japanese Tamago Sandwich": "Global Breakfast",
+    "Breakfast Burrito": "Global Breakfast", "Fresh Orange Juice": "Drinks",
+    "Filter Coffee": "Drinks",
 }
 
 # Carefully chosen illustrative food photos: overhead for pizza/salads, front-on
@@ -366,6 +414,7 @@ RESTAURANT_PHOTOS = {
     "Pizza Piazza": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=85",
     "Dragon Wok": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1200&q=85",
     "Green Bowl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
+    "Sunrise Breakfast Club": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1200&q=85",
 }
 MENU_PHOTOS = {
     "Main Course": RESTAURANT_PHOTOS["Spice Route Kitchen"], "Starters": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80",
@@ -601,6 +650,10 @@ def smart_pairing_items(restaurant):
         "Paneer Wrap": ["Fresh Fruit Bowl", "Cold-Pressed Juice"],
         "Masala Chai": ["Hara Bhara Kebab", "Gulab Jamun (2 pcs)"],
         "Adrak Chai": ["Hara Bhara Kebab", "Gulab Jamun (2 pcs)"],
+        "Chocos with Cold Milk": ["Butter Toast", "Fresh Orange Juice"],
+        "Masala Dosa": ["Filter Coffee", "Medu Vada (2 pcs)"],
+        "Chole Bhature": ["Fresh Orange Juice", "Masala Chai"],
+        "Pancakes with Maple Syrup": ["Fresh Orange Juice", "Filter Coffee"],
     }
     menu_names = [item[0] for item in restaurant["menu"]]
     cart_names = [name for name, qty in st.session_state.cart.items() if qty > 0]
@@ -763,7 +816,7 @@ if st.session_state.page == "Home":
     with filter_b:
         sort_by = st.selectbox("Sort by", ["Nearest first", "Top rated", "Fastest delivery"], key="home_sort")
     with filter_c:
-        restaurant_search = st.text_input("Find a restaurant", placeholder="Try pizza, Indian, healthy…", key="home_restaurant_search")
+        restaurant_search = st.text_input("Find a restaurant", placeholder="Try breakfast, pizza, Indian, healthy…", key="home_restaurant_search")
     if restaurant_search.strip():
         visible_restaurants = [r for r in visible_restaurants if restaurant_search.lower() in (r["name"] + " " + r["cuisine"]).lower()]
 
@@ -810,7 +863,7 @@ if st.session_state.page == "Home":
         st.caption("Gold dot: your saved delivery location. Red dots: demo restaurants.")
 
     st.markdown(
-        '<div class="promo-strip"><span>🍜 Campus favourites</span><span>⚡ Fast delivery estimates</span><span>💛 Easy-to-understand bills</span></div>',
+        '<div class="promo-strip"><span>🍳 Breakfast to dinner</span><span>⚡ Fast delivery estimates</span><span>💛 Easy-to-understand bills</span></div>',
         unsafe_allow_html=True,
     )
 
@@ -849,6 +902,7 @@ elif st.session_state.page == "Menu":
     show_favourites = st.checkbox("💛 Show favourites only", key=f"show_favourites_{restaurant['name']}")
     # Group each restaurant's menu into sensible sections, like modern food-ordering apps.
     category_order = [
+        "Cereals & Bowls", "Toast & Sandwiches", "South Indian", "Indian Breakfast", "Global Breakfast",
         "Starters", "Starters & Light Bites", "Main Course", "Pizza", "Burgers", "Wraps",
         "Bowls & Mains", "Noodles & Rice", "Pasta", "Soups", "Sides", "Sides & Breads",
         "Sides & Light Bites", "Drinks", "Desserts", "Desserts & Fruit",
