@@ -104,14 +104,19 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 @media (max-width:800px) { .food-orbit { position:relative; right:auto; top:auto; width:140px; height:140px; font-size:70px; margin:30px 0 0; } .food-orbit-small { display:none; } .landing-screen { min-height:auto; } }
 
 
-.welcome-copy { position:absolute !important; left:clamp(28px,6vw,84px); top:clamp(155px,21vh,230px); right:clamp(28px,6vw,84px); opacity:0; animation:welcomeRotate 18s infinite; pointer-events:none; }
+/* Keep the welcome campaign copy clear of the logo, perks and CTA at every screen size. */
+.landing-screen { min-height: min(760px, 78vh); min-height: max(620px, 78vh); padding:clamp(26px,4vw,56px); }
+.welcome-copy { position:absolute !important; left:clamp(26px,4vw,56px); top:clamp(190px,26vh,245px); right:clamp(26px,38%,520px); opacity:0; animation:welcomeRotate 18s infinite; pointer-events:none; z-index:3; }
 .welcome-copy-1 { animation-delay:0s; }
 .welcome-copy-2 { animation-delay:6s; }
 .welcome-copy-3 { animation-delay:12s; }
-.welcome-copy .landing-kicker { margin-top:0; }
-.welcome-copy .landing-title { margin-top:16px; }
-.welcome-copy .landing-copy { max-width:590px; }
-@media (max-width:800px) { .welcome-copy { top:140px; } }
+.welcome-copy .landing-kicker { margin-top:0; font-size:clamp(.68rem,1vw,.78rem); }
+.welcome-copy .landing-title { margin-top:12px; margin-bottom:14px; font-size:clamp(2.65rem,5.4vw,5.1rem); line-height:.98; letter-spacing:-.045em; overflow-wrap:normal; }
+.welcome-copy .landing-copy { max-width:540px; font-size:clamp(.92rem,1.4vw,1.12rem); line-height:1.5; }
+.landing-perks { position:absolute; left:clamp(26px,4vw,56px); right:clamp(26px,4vw,56px); bottom:58px; margin-top:0; z-index:4; }
+.landing-footer { position:absolute; left:clamp(26px,4vw,56px); bottom:24px; margin-top:0; z-index:4; }
+@media (max-width:900px) { .landing-screen { min-height:680px; padding:26px; } .welcome-copy { top:210px; right:26px; } .welcome-copy .landing-title { font-size:clamp(2.6rem,7.2vw,4.2rem); max-width:660px; } .welcome-sticker { right:1%; top:22%; opacity:.26; } .landing-perks { bottom:66px; } }
+@media (max-width:560px) { .landing-screen { min-height:720px; padding:22px; } .brand-mark { width:50px; height:50px; font-size:25px; } .welcome-copy { left:22px; right:22px; top:190px; } .welcome-copy .landing-title { font-size:clamp(2.4rem,11vw,3.5rem); line-height:1; } .welcome-copy .landing-copy { font-size:.95rem; } .welcome-sticker { top:30%; right:0; opacity:.16; } .landing-perks { left:22px; right:22px; bottom:68px; gap:7px; } .landing-perks span { font-size:.76rem; padding:8px 10px; } .landing-footer { left:22px; bottom:22px; font-size:.68rem; } }
 @media (prefers-reduced-motion: reduce) { .welcome-copy { animation:none; } .welcome-copy-1 { opacity:1; } .welcome-copy-2,.welcome-copy-3 { display:none; } }
 
 /* Extra polish: CSS-only motion, so the project still uses Python + Streamlit. */
