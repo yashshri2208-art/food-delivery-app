@@ -38,64 +38,91 @@ st.set_page_config(page_title="ChaiTapri Eats", page_icon="🍛", layout="wide")
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root { --ink:#211626; --gold:#ffc928; --red:#ff5a52; --cream:#fff7e8; --mint:#48c9a5; }
 html, body, [class*="css"], .stMarkdown, .stButton button, label {
-    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    font-family:'DM Sans','Segoe UI',sans-serif;
 }
-h1, h2, h3, .display {
-    font-family: 'Bricolage Grotesque', 'Segoe UI', sans-serif !important;
-}
-.hero {
-    background: #2B1B2E;
-    border-radius: 20px;
-    padding: 30px 36px;
-    margin-bottom: 22px;
-    border-bottom: 6px solid #F2B705;
-}
-.hero .display {
-    color: #F2B705; font-size: 2.6rem; font-weight: 800;
-    margin: 0; line-height: 1.1;
-}
-.hero p { color: #F5EBDD; margin: 8px 0 0 0; font-size: 1.05rem; }
-.section-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 1.5rem; font-weight: 800; margin: 18px 0 8px 0;
-}
-.rest-card {
-    border: 1.5px solid rgba(128,128,128,.30);
-    border-radius: 16px; padding: 14px 16px; margin-bottom: 8px;
-    background: rgba(242,183,5,.07);
-}
-.rest-card.selected {
-    border: 2.5px solid #D7263D; background: rgba(215,38,61,.08);
-}
-.rest-card.far { opacity: .55; }
-.rest-name { font-size: 1.12rem; font-weight: 700; }
-.muted { opacity: .72; font-size: .88rem; }
-.pill {
-    display: inline-block; padding: 2px 10px; border-radius: 999px;
-    font-size: .78rem; font-weight: 700; margin: 6px 6px 0 0;
-}
-.pill.rating { background: #2E9E83; color: white; }
-.pill.time   { background: rgba(242,183,5,.30); }
-.pill.dist   { background: rgba(43,27,46,.12); }
-.pill.out    { background: #D7263D; color: white; }
-.menu-name { font-weight: 700; font-size: 1.02rem; }
-.price { font-weight: 700; color: #D7263D; }
-.bill-box {
-    border: 1.5px solid rgba(128,128,128,.30);
-    border-radius: 16px; padding: 16px 18px; margin: 8px 0 12px 0;
-}
-.bill-row {
-    display: flex; justify-content: space-between;
-    padding: 6px 0; border-bottom: 1px dashed rgba(128,128,128,.35);
-}
-.bill-row.saving { color: #2E9E83; font-weight: 700; }
-.bill-total {
-    display: flex; justify-content: space-between;
-    padding-top: 12px; font-size: 1.35rem; font-weight: 800; color: #D7263D;
-}
+h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !important; }
+.block-container { padding-top:1.7rem; padding-bottom:3rem; animation: pageIn .55s ease both; }
+@keyframes pageIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes floatFood { 0%,100% { transform:translateY(0) rotate(-4deg); } 50% { transform:translateY(-12px) rotate(4deg); } }
+@keyframes glow { 0%,100% { box-shadow:0 0 0 rgba(255,201,40,0); } 50% { box-shadow:0 0 36px rgba(255,201,40,.18); } }
+.stApp { background:radial-gradient(ellipse at 85% 0%, rgba(255,201,40,.07), transparent 30%), #101116; }
+[data-testid="stSidebar"] { background:linear-gradient(180deg,#241b2a,#191a22); border-right:1px solid rgba(255,255,255,.08); }
+[data-testid="stSidebar"] h3 { color:var(--gold); }
+.stButton button { border-radius:13px; min-height:2.8rem; font-weight:700; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.stButton button:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,.2); border-color:var(--gold); }
+.stButton button[kind="primary"] { background:linear-gradient(135deg,#ff6458,#ed3f50); border:0; color:white; }
+.hero { background:linear-gradient(120deg,#2b1b2e,#42243a 60%,#2b1b2e); border-radius:22px; padding:27px 32px; margin-bottom:22px; border-bottom:5px solid var(--gold); box-shadow:0 16px 44px rgba(0,0,0,.2); }
+.hero .display { color:var(--gold); font-size:2.25rem; font-weight:800; margin:0; line-height:1.1; }
+.hero p { color:#fff7e8; margin:8px 0 0; font-size:1.02rem; }
+.section-title { font-family:'Bricolage Grotesque',sans-serif; font-size:1.55rem; font-weight:800; margin:18px 0 8px; }
+.rest-card { border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; margin-bottom:8px; background:linear-gradient(145deg,rgba(255,201,40,.09),rgba(255,255,255,.025)); min-height:130px; transition:transform .2s ease,border-color .2s ease; }
+.rest-card:hover { transform:translateY(-3px); border-color:rgba(255,201,40,.55); }
+.rest-card.selected { border:2px solid var(--red); background:rgba(255,90,82,.08); }
+.rest-card.far { opacity:.55; }
+.rest-name { font-size:1.12rem; font-weight:700; }
+.muted { opacity:.72; font-size:.88rem; }
+.pill { display:inline-block; padding:4px 10px; border-radius:999px; font-size:.78rem; font-weight:700; margin:7px 5px 0 0; }
+.pill.rating { background:#258f78; color:white; } .pill.time { background:rgba(255,201,40,.19); color:#ffe08a; } .pill.dist { background:rgba(255,255,255,.09); } .pill.out { background:var(--red); color:white; }
+.menu-name { font-weight:700; font-size:1.02rem; } .price { font-weight:700; color:var(--red); }
+.bill-box { border:1px solid rgba(255,255,255,.13); border-radius:18px; padding:18px 20px; margin:8px 0 12px; background:rgba(255,255,255,.025); }
+.bill-row { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px dashed rgba(255,255,255,.14); }
+.bill-row.saving { color:var(--mint); font-weight:700; } .bill-total { display:flex; justify-content:space-between; gap:16px; padding-top:14px; font-size:1.35rem; font-weight:800; color:var(--gold); }
+/* Welcome page */
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stSidebar"] { display:none; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHeader"] { background:transparent; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) .block-container { max-width:1400px; padding-top:1.2rem; }
+.landing-screen { position:relative; overflow:hidden; min-height:70vh; border-radius:30px; padding:clamp(28px,6vw,84px); background:radial-gradient(circle at 82% 35%,rgba(255,201,40,.22),transparent 24%),radial-gradient(circle at 72% 75%,rgba(255,90,82,.22),transparent 27%),linear-gradient(135deg,#211526 0%,#332039 48%,#17171f 100%); border:1px solid rgba(255,255,255,.12); box-shadow:0 25px 80px rgba(0,0,0,.32); animation:pageIn .8s ease both; }
+.landing-screen:after { content:''; position:absolute; width:390px; height:390px; border:1px solid rgba(255,201,40,.22); border-radius:50%; right:-90px; top:12%; box-shadow:0 0 0 35px rgba(255,201,40,.035),0 0 0 75px rgba(255,201,40,.025); pointer-events:none; }
+.brand-mark { display:inline-flex; align-items:center; justify-content:center; width:58px; height:58px; border-radius:19px; background:var(--gold); color:#26192a; font-size:30px; box-shadow:0 10px 30px rgba(255,201,40,.18); }
+.landing-kicker { color:var(--mint); text-transform:uppercase; letter-spacing:.18em; font-size:.78rem; font-weight:800; margin-top:28px; }
+.landing-title { color:#fff7e8; font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:clamp(3.2rem,8vw,6.8rem); line-height:.93; letter-spacing:-.055em; margin:16px 0 20px; max-width:800px; }
+.landing-title span { color:var(--gold); }
+.landing-copy { color:rgba(255,247,232,.78); font-size:clamp(1rem,2vw,1.25rem); line-height:1.7; max-width:590px; }
+.food-orbit { position:absolute; right:9%; top:24%; width:210px; height:210px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(145deg,rgba(255,201,40,.2),rgba(255,90,82,.12)); border:1px solid rgba(255,255,255,.15); font-size:105px; animation:floatFood 5s ease-in-out infinite,glow 4s ease-in-out infinite; }
+.food-orbit-small { position:absolute; right:27%; top:59%; font-size:44px; animation:floatFood 4.2s ease-in-out infinite; }
+.landing-perks { display:flex; flex-wrap:wrap; gap:10px; margin-top:34px; }
+.landing-perks span { padding:10px 14px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.055); color:#fff7e8; border-radius:999px; font-size:.88rem; }
+.landing-footer { color:rgba(255,247,232,.5); font-size:.8rem; margin-top:36px; }
+@media (max-width:800px) { .food-orbit { position:relative; right:auto; top:auto; width:140px; height:140px; font-size:70px; margin:30px 0 0; } .food-orbit-small { display:none; } .landing-screen { min-height:auto; } }
+
+/* Extra polish: CSS-only motion, so the project still uses Python + Streamlit. */
+@keyframes gradientDrift { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+@keyframes riseIn { from { opacity:0; transform:translateY(22px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes softPulse { 0%,100% { box-shadow:0 0 0 0 rgba(255,201,40,.16); } 50% { box-shadow:0 0 0 9px rgba(255,201,40,0); } }
+@keyframes ringSpin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+@keyframes sparkle { 0%,100% { opacity:.45; transform:scale(.94); } 50% { opacity:1; transform:scale(1.06); } }
+html { scroll-behavior:smooth; }
+.block-container { animation:riseIn .55s cubic-bezier(.2,.75,.25,1) both; }
+.stApp { background-image:radial-gradient(ellipse at 8% 18%,rgba(255,90,82,.075),transparent 27%),radial-gradient(ellipse at 90% 4%,rgba(255,201,40,.085),transparent 30%),linear-gradient(145deg,#101116,#15121a 55%,#101116); background-size:160% 160%; animation:gradientDrift 24s ease-in-out infinite; }
+.hero { background:linear-gradient(115deg,#211526,#45233d,#282039,#211526); background-size:240% 240%; animation:gradientDrift 16s ease infinite, riseIn .65s ease both; position:relative; overflow:hidden; }
+.hero:after { content:'✦'; position:absolute; right:34px; top:10px; font-size:74px; line-height:1; color:rgba(255,201,40,.12); animation:sparkle 4s ease-in-out infinite; pointer-events:none; }
+.hero .display { letter-spacing:-.035em; text-shadow:0 4px 22px rgba(255,201,40,.12); }
+.rest-card { backdrop-filter:blur(12px); animation:riseIn .55s cubic-bezier(.2,.75,.25,1) both; }
+.rest-card:hover { transform:translateY(-5px) scale(1.012); box-shadow:0 16px 36px rgba(0,0,0,.22); }
+.stButton button { position:relative; overflow:hidden; }
+.stButton button:active { transform:scale(.975); }
+.stButton button[kind="primary"] { background:linear-gradient(115deg,#ff6458,#e93f55,#ff8a50); background-size:200% 200%; animation:gradientDrift 8s ease infinite; box-shadow:0 8px 24px rgba(255,90,82,.13); }
+.stButton button[kind="primary"]:hover { box-shadow:0 12px 30px rgba(255,90,82,.27); }
+[data-testid="stVerticalBlockBorderWrapper"] { border-radius:16px !important; border-color:rgba(255,255,255,.12) !important; background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012)); transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease; }
+[data-testid="stVerticalBlockBorderWrapper"]:hover { border-color:rgba(255,201,40,.32) !important; }
+[data-testid="stTextInput"] input, [data-testid="stNumberInput"] input, [data-testid="stSelectbox"] div[data-baseweb="select"] { border-radius:12px; }
+[data-testid="stTextInput"] input:focus, [data-testid="stNumberInput"] input:focus { border-color:var(--gold); box-shadow:0 0 0 2px rgba(255,201,40,.12); }
+.pill { transition:transform .18s ease,filter .18s ease; }
+.pill:hover { transform:translateY(-2px); filter:brightness(1.12); }
+.landing-screen { background-size:180% 180%; animation:gradientDrift 18s ease infinite, riseIn .8s cubic-bezier(.2,.75,.25,1) both; }
+.landing-screen:before { content:''; position:absolute; width:330px; height:330px; border-radius:50%; right:2%; bottom:-180px; background:rgba(255,90,82,.12); filter:blur(35px); animation:floatFood 7s ease-in-out infinite; pointer-events:none; }
+.landing-screen:after { animation:ringSpin 38s linear infinite; }
+.brand-mark { animation:riseIn .7s .08s both,softPulse 4s 1s ease-in-out infinite; }
+.landing-kicker { animation:riseIn .7s .16s both; }
+.landing-title { animation:riseIn .75s .24s both; }
+.landing-copy { animation:riseIn .75s .34s both; }
+.landing-perks span { transition:transform .2s ease,border-color .2s ease,background .2s ease; }
+.landing-perks span:hover { transform:translateY(-3px); border-color:rgba(255,201,40,.45); background:rgba(255,201,40,.09); }
+.landing-footer { letter-spacing:.08em; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; } }
 </style>
 """,
     unsafe_allow_html=True,
@@ -290,7 +317,47 @@ def select_restaurant(name):
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
-# 4. APP STATE AND NAVIGATION
+# 4. APP STATE AND WELCOME EXPERIENCE
+# ---------------------------------------------------------------------------
+if "entered_app" not in st.session_state:
+    st.session_state.entered_app = False
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+if "selected" not in st.session_state:
+    st.session_state.selected = RESTAURANTS[0]["name"]
+if "cart" not in st.session_state:
+    st.session_state.cart = {}
+if "last_order" not in st.session_state:
+    st.session_state.last_order = None
+
+# First visit: show a full-screen brand introduction before the ordering app.
+if not st.session_state.entered_app:
+    st.markdown(
+        """
+        <div class="landing-screen">
+          <div class="brand-mark">🍜</div>
+          <div class="landing-kicker">Your campus food companion</div>
+          <div class="landing-title">Good food.<br><span>Good mood.</span></div>
+          <div class="landing-copy">Cravings don't wait. Discover your favourite local kitchens, find something delicious, and get it delivered right to your door at OP Jindal Global University.</div>
+          <div class="landing-perks">
+            <span>✦ Local favourites</span><span>⚡ Quick delivery</span><span>₹ Easy-on-pocket picks</span>
+          </div>
+          <div class="food-orbit">🍔</div><div class="food-orbit-small">🍕</div>
+          <div class="landing-footer">MADE FOR YOUR CRAVINGS · SONIPAT, HARYANA</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    spacer1, action_col, spacer2 = st.columns([1.2, 1.1, 2.2])
+    with action_col:
+        if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
+            st.session_state.entered_app = True
+            st.session_state.page = "Home"
+            st.rerun()
+    st.stop()
+
+# ---------------------------------------------------------------------------
+# 5. APP STATE AND NAVIGATION
 # ---------------------------------------------------------------------------
 if "page" not in st.session_state:
     st.session_state.page = "Home"
@@ -301,7 +368,10 @@ if "cart" not in st.session_state:
 if "last_order" not in st.session_state:
     st.session_state.last_order = None
 
-st.sidebar.markdown("### 🍽️ ChaiTapri Eats")
+st.sidebar.markdown("### 🍜 ChaiTapri Eats")
+if st.sidebar.button("← Welcome screen", use_container_width=True):
+    st.session_state.entered_app = False
+    st.rerun()
 pages = ["Home", "Menu", "Cart", "Checkout"]
 page = st.sidebar.radio(
     "Navigate",
@@ -385,8 +455,8 @@ def cart_item_total():
 st.markdown(
     f"""
     <div class="hero">
-      <p class="display">ChaiTapri Eats</p>
-      <p>Hot food from five local kitchens, at your door. Delivering to <b>{location_label}</b>.</p>
+      <p class="display">🍜 ChaiTapri Eats</p>
+      <p>Local kitchens. Big cravings. Delivered to <b>{location_label}</b>.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -409,7 +479,7 @@ st.divider()
 # ---------------------------------------------------------------------------
 if st.session_state.page == "Home":
     st.markdown("## Find your next meal")
-    st.write("Choose a local kitchen to browse its menu and start your order.")
+    st.write("Five local kitchens, plenty of comfort food. Pick a place and let's get your order started.")
 
     card_columns = st.columns(3)
     for i, r in enumerate(ordered):
