@@ -119,14 +119,16 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 @media (max-width:560px) { .landing-screen { min-height:720px; padding:22px; } .brand-mark { width:50px; height:50px; font-size:25px; } .welcome-copy { left:22px; right:22px; top:190px; } .welcome-copy .landing-title { font-size:clamp(2.4rem,11vw,3.5rem); line-height:1; } .welcome-copy .landing-copy { font-size:.95rem; } .welcome-sticker { top:30%; right:0; opacity:.16; } .landing-perks { left:22px; right:22px; bottom:68px; gap:7px; } .landing-perks span { font-size:.76rem; padding:8px 10px; } .landing-footer { left:22px; bottom:22px; font-size:.68rem; } }
 @media (prefers-reduced-motion: reduce) { .welcome-copy { animation:none; } .welcome-copy-1 { opacity:1; } .welcome-copy-2,.welcome-copy-3 { display:none; } }
 
-/* True edge-to-edge welcome page: remove Streamlit's page gutters and toolbar only on landing. */
+/* Welcome screen: pin the campaign to the actual viewport so Streamlit gutters cannot leave black margins. */
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHeader"],
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stToolbar"] { display:none !important; height:0 !important; visibility:hidden !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) .main,
+[data-testid="stAppViewContainer"]:has(.landing-screen) section.main,
 [data-testid="stAppViewContainer"]:has(.landing-screen) section.main > div,
-[data-testid="stAppViewContainer"]:has(.landing-screen) .main .block-container { max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) .main { padding:0 !important; margin:0 !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { width:100%; height:100vh; height:100svh; min-height:100vh !important; min-height:100svh !important; box-sizing:border-box; margin:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
-[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] { position:fixed !important; left:50% !important; bottom:20px !important; transform:translateX(-50%) !important; width:min(360px, calc(100vw - 36px)) !important; z-index:1000 !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) .main .block-container,
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stVerticalBlock"] { max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; gap:0 !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) .landing-screen { position:fixed !important; inset:0 !important; z-index:50 !important; width:100vw !important; height:100vh !important; height:100dvh !important; min-height:100vh !important; min-height:100dvh !important; box-sizing:border-box !important; margin:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
+[data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] { position:fixed !important; left:50% !important; bottom:20px !important; transform:translateX(-50%) !important; width:min(360px, calc(100vw - 36px)) !important; z-index:1001 !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child,
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] > [data-testid="column"]:last-child { display:none !important; }
 [data-testid="stAppViewContainer"]:has(.landing-screen) [data-testid="stHorizontalBlock"] > [data-testid="column"] { width:100% !important; flex:1 1 100% !important; }
