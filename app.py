@@ -168,6 +168,23 @@ html { scroll-behavior:smooth; }
 .branch-location { background:radial-gradient(circle at 88% 18%,rgba(72,201,165,.18),transparent 28%),linear-gradient(125deg,#1c2c32,#263843 60%,#211626); border-bottom:4px solid var(--mint); }
 .branch-my-orders { background:radial-gradient(circle at 88% 18%,rgba(255,90,82,.15),transparent 28%),linear-gradient(125deg,#302135,#3a2943 60%,#211626); border-bottom:4px solid var(--red); }
 
+/* Consistent image proportions across the restaurant discovery and menu screens. */
+.restaurant-photo {
+    display:block;
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    object-position:center;
+    border-radius:18px;
+    margin:0 0 12px 0;
+    border:1px solid rgba(255,255,255,.10);
+    background:#211626;
+}
+/* Restaurant discovery images use a consistent landscape crop. Menu items intentionally use text-first cards. */
+@media (max-width:700px) {
+    .restaurant-photo { height:190px; }
+}
+
 /* Smart-cart recommendations and delivery progress */
 .smart-pair { border:1px solid rgba(72,201,165,.28); border-radius:16px; padding:15px 18px; background:linear-gradient(110deg,rgba(72,201,165,.11),rgba(255,201,40,.045)); margin:10px 0; }
 .smart-pair strong { color:#8ee6cc; }
@@ -762,7 +779,10 @@ if st.session_state.page == "Home":
     for i, r in enumerate(visible_restaurants):
         with card_columns[i % 3]:
             status = f"{r['eta']} min" if r["deliverable"] else "Out of range"
-            st.image(RESTAURANT_PHOTOS[r["name"]], use_container_width=True)
+            st.markdown(
+                f'<img class="restaurant-photo" src="{RESTAURANT_PHOTOS[r["name"]]}" alt="Food from {r["name"]}" loading="lazy">',
+                unsafe_allow_html=True,
+            )
             st.markdown(
                 f"""
                 <div class="restaurant-tile">
@@ -855,8 +875,7 @@ elif st.session_state.page == "Menu":
                 for item_name, description, price, is_veg in grouped_menu[category]:
                     current_qty = st.session_state.cart.get(item_name, 0)
                     with st.container(border=True):
-                        photo_col, item_col, action_col = st.columns([1.05, 2.7, 1.55], vertical_alignment="center")
-                        photo_col.image(MENU_PHOTOS.get(category, RESTAURANT_PHOTOS[restaurant["name"]]), use_container_width=True)
+                        item_col, action_col = st.columns([3.4, 1.35], vertical_alignment="center")
                         item_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
                         item_col.markdown(
                             f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Vegetarian" if is_veg else "🔴 Non-vegetarian"}</span>',
