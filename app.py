@@ -175,6 +175,15 @@ html { scroll-behavior:smooth; }
 .food-badge { display:inline-block; padding:3px 9px; border-radius:999px; font-size:.75rem; font-weight:800; margin-top:4px; }
 .food-badge.veg { color:#a9f0c0; background:rgba(44,165,94,.16); }
 .food-badge.nonveg { color:#ffaaa6; background:rgba(255,90,82,.16); }
+.food-photo { border-radius:14px; overflow:hidden; }
+.menu-item-title { font-size:1.04rem; font-weight:800; letter-spacing:-.01em; }
+.menu-item-desc { color:rgba(255,247,232,.72); font-size:.86rem; line-height:1.45; }
+.menu-card-price { color:var(--gold); font-size:1.1rem; font-weight:800; }
+.fav-button { border:1px solid rgba(255,90,82,.25); border-radius:999px; padding:4px 9px; }
+.tile-photo-caption { color:rgba(255,247,232,.6); font-size:.74rem; }
+.order-timeline { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px; }
+.order-timeline span { flex:1; min-width:130px; border:1px solid rgba(72,201,165,.24); border-radius:12px; padding:10px; background:rgba(72,201,165,.07); font-size:.82rem; }
+@media (max-width:700px) { .branch-hero { padding:22px 18px; } .restaurant-tile { min-height:unset; } .menu-footer { align-items:flex-start; flex-direction:column; } }
 
 </style>
 """,
@@ -331,6 +340,29 @@ MENU_CATEGORIES = {
     "Mint Cucumber Cooler": "Drinks",
 }
 
+# Carefully chosen illustrative food photos: overhead for pizza/salads, front-on
+# for burgers, and three-quarter views for curries, noodles and plated mains.
+# Images are illustrative category visuals, not claims that they show the exact dish.
+RESTAURANT_PHOTOS = {
+    "Spice Route Kitchen": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=85",
+    "Burger Barn": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=85",
+    "Pizza Piazza": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=85",
+    "Dragon Wok": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1200&q=85",
+    "Green Bowl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
+}
+MENU_PHOTOS = {
+    "Main Course": RESTAURANT_PHOTOS["Spice Route Kitchen"], "Starters": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80",
+    "Sides & Breads": "https://images.unsplash.com/photo-1619158401201-8fa932741a0a?auto=format&fit=crop&w=600&q=80",
+    "Drinks": "https://images.unsplash.com/photo-1513558161293-c37a6079382d?auto=format&fit=crop&w=600&q=80",
+    "Desserts": "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80",
+    "Burgers": RESTAURANT_PHOTOS["Burger Barn"], "Sides": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80",
+    "Pizza": RESTAURANT_PHOTOS["Pizza Piazza"], "Pasta": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80",
+    "Noodles & Rice": RESTAURANT_PHOTOS["Dragon Wok"], "Soups": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    "Bowls & Mains": RESTAURANT_PHOTOS["Green Bowl"], "Wraps": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=600&q=80",
+    "Starters & Light Bites": RESTAURANT_PHOTOS["Green Bowl"], "Sides & Light Bites": RESTAURANT_PHOTOS["Green Bowl"],
+    "Desserts & Fruit": "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80",
+}
+
 # Coupons: type, value, maximum discount, minimum order and description
 COUPONS = {
     "WELCOME50": {"type": "percent", "value": 50, "cap": 100, "min": 199,
@@ -339,7 +371,7 @@ COUPONS = {
                  "desc": "20% off up to ₹80 on orders of ₹299 or more"},
     "FREEDEL": {"type": "freedel", "value": 0, "cap": 0, "min": 149,
                 "desc": "Free delivery on orders of ₹149 or more"},
-    "PRAMODPRO": {"type": "percent", "value": 15, "cap": 75, "min": 249,
+    "PRAMODSIRPRO": {"type": "percent", "value": 15, "cap": 75, "min": 249,
                   "desc": "Pramod Sir's Python Perk: 15% off up to ₹75 on orders of ₹249 or more"},
     "SIRPLS": {"type": "percent", "value": 10, "cap": 50, "min": 199,
                "desc": "Sir, Please Save My GPA: 10% off up to ₹50 on orders of ₹199 or more"},
@@ -470,6 +502,12 @@ if "last_order" not in st.session_state:
     st.session_state.last_order = None
 if "my_orders" not in st.session_state:
     st.session_state.my_orders = []
+if "favourites" not in st.session_state:
+    st.session_state.favourites = []
+if "customer_name" not in st.session_state:
+    st.session_state.customer_name = ""
+if "customer_phone" not in st.session_state:
+    st.session_state.customer_phone = ""
 if "delivery_location" not in st.session_state:
     st.session_state.delivery_location = DEFAULT_LOCATION
 if "delivery_lat" not in st.session_state:
@@ -704,12 +742,13 @@ if st.session_state.page == "Home":
     )
     filter_a, filter_b, filter_c = st.columns([1.2, 1.2, 1.6])
     with filter_a:
-        veg_only = st.checkbox("🌱 Vegetarian only", key="home_veg_filter")
+        veg_only = st.checkbox("🌱 Vegetarian options", key="home_veg_filter")
     with filter_b:
         sort_by = st.selectbox("Sort by", ["Nearest first", "Top rated", "Fastest delivery"], key="home_sort")
     with filter_c:
-        st.markdown(f"**{len(RESTAURANTS)} kitchens**")
-        st.caption("Demo restaurants around Sonipat")
+        restaurant_search = st.text_input("Find a restaurant", placeholder="Try pizza, Indian, healthy…", key="home_restaurant_search")
+    if restaurant_search.strip():
+        visible_restaurants = [r for r in visible_restaurants if restaurant_search.lower() in (r["name"] + " " + r["cuisine"]).lower()]
 
     if sort_by == "Top rated":
         visible_restaurants = sorted(RESTAURANTS, key=lambda r: r["rating"], reverse=True)
@@ -723,6 +762,7 @@ if st.session_state.page == "Home":
     for i, r in enumerate(visible_restaurants):
         with card_columns[i % 3]:
             status = f"{r['eta']} min" if r["deliverable"] else "Out of range"
+            st.image(RESTAURANT_PHOTOS[r["name"]], use_container_width=True)
             st.markdown(
                 f"""
                 <div class="restaurant-tile">
@@ -731,11 +771,12 @@ if st.session_state.page == "Home":
                   <div class="tile-name">{r['name']}</div>
                   <div class="tile-stats"><span>★ {r['rating']}</span><span>⌁ {r['distance']:.1f} km</span></div>
                   <div class="tile-status">{'⚡' if r['deliverable'] else '📍'} {status} delivery</div>
+                  <div class="tile-photo-caption">{'Free delivery above ₹499' if r['deliverable'] else 'Change location to order'}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-            menu_veg = any(item[3] for item in r["menu"])
+            menu_veg = all(item[3] for item in r["menu"])
             if not veg_only or menu_veg:
                 if st.button("Explore menu  →", key=f"home_{r['name']}", use_container_width=True):
                     set_restaurant(r["name"])
@@ -780,7 +821,12 @@ elif st.session_state.page == "Menu":
 
     if not restaurant["deliverable"]:
         st.error(f"We deliver within {MAX_DELIVERY_KM} km. Change your location or choose a closer restaurant.")
-    veg_only_menu = st.checkbox("🌱 Show vegetarian dishes only", key="menu_veg_filter")
+    menu_filter_col, menu_fav_col = st.columns([1.6, 1])
+    with menu_filter_col:
+        dish_search = st.text_input("Search this menu", placeholder="Search dishes or ingredients…", key=f"dish_search_{restaurant['name']}")
+    with menu_fav_col:
+        veg_only_menu = st.checkbox("🌱 Vegetarian only", key="menu_veg_filter")
+    show_favourites = st.checkbox("💛 Show favourites only", key=f"show_favourites_{restaurant['name']}")
     # Group each restaurant's menu into sensible sections, like modern food-ordering apps.
     category_order = [
         "Starters", "Starters & Light Bites", "Main Course", "Pizza", "Burgers", "Wraps",
@@ -791,6 +837,10 @@ elif st.session_state.page == "Menu":
     for menu_item in restaurant["menu"]:
         item_name, description, price, is_veg = menu_item
         if veg_only_menu and not is_veg:
+            continue
+        if dish_search.strip() and dish_search.lower() not in (item_name + " " + description).lower():
+            continue
+        if show_favourites and item_name not in st.session_state.favourites:
             continue
         category = MENU_CATEGORIES.get(item_name, "More to Enjoy")
         grouped_menu.setdefault(category, []).append(menu_item)
@@ -805,24 +855,30 @@ elif st.session_state.page == "Menu":
                 for item_name, description, price, is_veg in grouped_menu[category]:
                     current_qty = st.session_state.cart.get(item_name, 0)
                     with st.container(border=True):
-                        item_col, price_col, action_col = st.columns([3.4, 1.1, 1.7])
-                        item_col.markdown(f"**{item_name}**")
+                        photo_col, item_col, action_col = st.columns([1.05, 2.7, 1.55], vertical_alignment="center")
+                        photo_col.image(MENU_PHOTOS.get(category, RESTAURANT_PHOTOS[restaurant["name"]]), use_container_width=True)
+                        item_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
                         item_col.markdown(
-                            f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Veg" if is_veg else "🔴 Non-Veg"}</span>',
+                            f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Vegetarian" if is_veg else "🔴 Non-vegetarian"}</span>',
                             unsafe_allow_html=True,
                         )
-                        item_col.caption(description)
-                        price_col.markdown(f"### {inr(price)}")
+                        item_col.markdown(f'<div class="menu-item-desc">{description}</div>', unsafe_allow_html=True)
+                        item_col.markdown(f'<div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
+                        fav_label = "💛 Saved" if item_name in st.session_state.favourites else "♡ Save"
+                        if item_col.button(fav_label, key=f"fav_{restaurant['name']}_{item_name}"):
+                            if item_name in st.session_state.favourites:
+                                st.session_state.favourites.remove(item_name)
+                            else:
+                                st.session_state.favourites.append(item_name)
+                            st.rerun()
                         action_col.caption(f"In cart: **{current_qty}**")
-                        add_col, remove_col = action_col.columns(2)
-                        if add_col.button("+ Add", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True):
-                            if restaurant["deliverable"]:
-                                st.session_state.cart[item_name] = current_qty + 1
-                                st.rerun()
-                        if remove_col.button("−", key=f"remove_{restaurant['name']}_{item_name}", use_container_width=True):
+                        if action_col.button("＋ Add to cart", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"]):
+                            st.session_state.cart[item_name] = current_qty + 1
+                            st.rerun()
+                        if current_qty > 0 and action_col.button("− Remove one", key=f"remove_{restaurant['name']}_{item_name}", use_container_width=True):
                             if current_qty > 1:
                                 st.session_state.cart[item_name] = current_qty - 1
-                            elif current_qty == 1:
+                            else:
                                 del st.session_state.cart[item_name]
                             st.rerun()
     else:
@@ -930,14 +986,23 @@ elif st.session_state.page == "Checkout":
             st.caption(f"Delivering to: {location_label}")
         with preference_col:
             st.markdown("### 🚲 Delivery preferences")
+            customer_name = st.text_input("Name for the order", key="checkout_customer_name", placeholder="Your name")
+            customer_phone = st.text_input("Contact number", key="checkout_customer_phone", placeholder="10-digit mobile number", max_chars=10)
+            phone_valid = customer_phone.isdigit() and len(customer_phone) == 10
+            if customer_phone and not phone_valid:
+                st.warning("Enter a valid 10-digit mobile number for this demo checkout.")
+            st.caption("A name and valid 10-digit number are required to place a demo order.")
             delivery_speed = st.radio("Delivery speed", ["Standard", "Express ⚡ (+₹30)"], horizontal=True)
             express = delivery_speed.startswith("Express")
             tip = st.select_slider("Tip for your delivery partner (₹)", options=[0, 10, 20, 30, 50], value=0)
             coupon_code = st.text_input(
                 "Coupon code",
-                placeholder="Try PRAMODPRO, SIRPLS, PASSKARADO or WELCOME50",
+                placeholder="Try PRAMODSIRPRO, SIRPLS, PASSKARADO or WELCOME50",
                 key="checkout_coupon",
             ).strip().upper()
+            st.caption("🎟️ PRAMODSIRPRO — Pramod Sir's Python Perk: 15% off (max ₹75) on ₹249+ orders")
+            st.caption("😭 SIRPLS — Sir, Please Save My GPA: 10% off (max ₹50) on ₹199+ orders")
+            st.caption("🙏 PASSKARADO — Pass Karado, Sir: 15% off (max ₹60) on ₹299+ orders")
             payment = st.selectbox("Payment method", ["UPI", "Credit / Debit Card", "Cash on Delivery"], key="checkout_payment")
             contactless = st.checkbox("Contactless delivery", key="checkout_contactless")
             instructions = st.text_input("Cooking or delivery note", placeholder="Less spicy, ring the bell...", key="checkout_instructions")
@@ -966,7 +1031,7 @@ elif st.session_state.page == "Checkout":
             "Place my order  ✨",
             type="primary",
             use_container_width=True,
-            disabled=not bill["coupon_ok"],
+            disabled=(not bill["coupon_ok"] or not customer_name.strip() or not phone_valid),
         ):
             order_id = "CT" + str(random.randint(10000, 99999))
             partner = random.choice(["Rahul", "Amit", "Sandeep", "Vikram", "Deepak"])
@@ -997,6 +1062,8 @@ elif st.session_state.page == "Checkout":
                 "tip": bill["tip"],
                 "total": bill["total"],
                 "payment": payment,
+                "customer_name": customer_name.strip(),
+                "customer_phone": customer_phone,
                 "delivery_location": location_label,
                 "partner": partner,
                 "eta": eta,
@@ -1115,7 +1182,10 @@ elif st.session_state.page == "My Orders":
                 st.markdown(f"**Order ID:** `{order['order_id']}`")
                 st.caption(f"{order['date']} · {order['delivery_speed']} · {order['eta']} min estimated")
                 st.success(order.get("delivery_status", "Order placed (simulated)"))
+                st.markdown('<div class="order-timeline"><span>✓ Order confirmed</span><span>✓ Kitchen prepared</span><span>✓ Partner delivered</span></div>', unsafe_allow_html=True)
                 st.markdown(f"**Delivered to:** {order['delivery_location']}")
+                if order.get("customer_name"):
+                    st.caption(f"Order for {order['customer_name']} · Contact ending {order.get('customer_phone', '')[-4:]}")
                 st.markdown("#### Items ordered")
                 for item in order["items"]:
                     st.write(f"{item['quantity']} × {item['name']} ({inr(item['unit_price'])} each) — **{inr(item['line_total'])}**")
@@ -1142,13 +1212,18 @@ elif st.session_state.page == "My Orders":
                 if order["instructions"]:
                     st.write(f"Order note: {order['instructions']}")
                 st.success("Thank you for choosing ChaiTapri Eats!")
+                if st.button("↻ Reorder these items", key=f"reorder_{order['order_id']}", use_container_width=True):
+                    st.session_state.selected = order["restaurant"]
+                    st.session_state.cart = {item["name"]: item["quantity"] for item in order["items"]}
+                    st.session_state.page = "Cart"
+                    st.rerun()
 
         if st.button("Order something else →", type="primary", use_container_width=True):
             go_to("Home")
 
 st.divider()
 st.markdown(
-    '<div class="app-footer"><strong>🍜 ChaiTapri Eats</strong><span>Made for campus cravings · Sonipat, Haryana</span><small>Student project demo: restaurants, delivery partners, payments and order history are simulated. Order history lasts for this active app session and is not stored in a database.</small></div>',
+    '<div class="app-footer"><strong>🍜 ChaiTapri Eats</strong><span>Made for campus cravings · Sonipat, Haryana</span><span>About · Help · Contact · Campus favourites</span><small>Student project demo: photos are illustrative, restaurant listings, delivery partners, payments and order history are simulated. No payment is processed. Order history lasts for this active app session and is not stored in a database.</small></div>',
     unsafe_allow_html=True,
 )
 
@@ -1163,7 +1238,9 @@ with st.expander("🧠 How this project works (for curious customers and project
         - **Functions:** `base_delivery_fee()`, `apply_coupon()` and `calculate_bill()` keep calculations in reusable places.
         - **Conditionals:** delivery distance, coupon eligibility and delivery charges use `if` / `elif` / `else`.
         - **Loops:** the app loops through restaurant menus to display dishes and build the receipt.
-        - **Session state:** the cart, selected restaurant and order history persist while navigating between pages.
+        - **Session state:** the cart, selected restaurant, favourites and order history persist while navigating between pages.
+        - **Search and filters:** text matching narrows restaurants and menu items; checkboxes filter vegetarian dishes and saved favourites.
+        - **Input validation:** checkout requires a name and a 10-digit contact number, while coupon rules are checked before an order can be placed.
         - **Validation:** invalid or ineligible coupon codes show a message and prevent accidental checkout until the code is corrected or cleared.
 
         **Quick test checklist**
@@ -1173,7 +1250,9 @@ with st.expander("🧠 How this project works (for curious customers and project
         4. Enter `PASSKARADO` with a subtotal of ₹299 or more: it should apply 15% off, capped at ₹60.
         5. Enter a made-up coupon: checkout should stay disabled until you fix or clear the code.
         6. Reach a food subtotal of ₹499: standard delivery should become free under the app's pricing rules.
-        7. Place a valid demo order and confirm it appears in **My Orders**.
+        7. Place a valid demo order with a name and 10-digit number; confirm it appears in **My Orders**.
+        8. Save a dish as a favourite, filter favourites, then remove it from favourites.
+        9. Use **Reorder these items** from order history and check the cart contents.
 
         *This is a demonstration app: restaurant listings, fees and delivery tracking are simulated, not live services.*
         """
