@@ -1262,35 +1262,23 @@ elif st.session_state.page == "Menu":
                 for item_name, description, price, is_veg in grouped_menu[category]:
                     current_qty = st.session_state.cart.get(item_name, 0)
                     with st.container(border=True):
-                        photo_col, detail_col = st.columns([1.15, 2.85], vertical_alignment="center")
-                        photo_url = DISH_PHOTOS.get(item_name)
-                        if photo_url:
-                            # Hide a failed remote image rather than leaving a broken-image icon.
-                            photo_col.markdown(
-                                f"""<div class="dish-photo-wrap"><img class="dish-photo" src="{photo_url}" alt="{item_name}" loading="lazy" onerror="this.parentElement.innerHTML='Dish photo unavailable';this.parentElement.classList.add('photo-unavailable');"></div>""",
-                                unsafe_allow_html=True,
-                            )
-                        else:
-                            photo_col.markdown(
-                                '<div class="dish-photo-wrap photo-unavailable">Dish photo not yet verified</div>',
-                                unsafe_allow_html=True,
-                            )
-                        detail_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
-                        detail_col.markdown(
+                        # Text-only menu cards: dish photos removed to avoid broken or mismatched images.
+                        st.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
+                        st.markdown(
                             f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Vegetarian" if is_veg else "🔴 Non-vegetarian"}</span>',
                             unsafe_allow_html=True,
                         )
-                        detail_col.markdown(f'<div class="menu-item-desc">{description}</div>', unsafe_allow_html=True)
-                        detail_col.markdown(f'<div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
+                        st.markdown(f'<div class="menu-item-desc">{description}</div>', unsafe_allow_html=True)
+                        st.markdown(f'<div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
                         fav_label = "💛 Saved" if item_name in st.session_state.favourites else "♡ Save"
-                        if detail_col.button(fav_label, key=f"fav_{restaurant['name']}_{item_name}"):
+                        if st.button(fav_label, key=f"fav_{restaurant['name']}_{item_name}"):
                             if item_name in st.session_state.favourites:
                                 st.session_state.favourites.remove(item_name)
                             else:
                                 st.session_state.favourites.append(item_name)
                             st.rerun()
                         if current_qty == 0:
-                            if detail_col.button("ADD +", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"], type="primary"):
+                            if st.button("ADD +", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"], type="primary"):
                                 st.session_state.cart[item_name] = 1
                                 st.rerun()
                         else:
