@@ -712,7 +712,7 @@ if not st.session_state.entered_app:
     st.markdown(welcome_html, unsafe_allow_html=True)
     if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
         st.session_state.entered_app = True
-        st.session_state.page = "Explore"
+        st.session_state.page = "Home"
         st.rerun()
     st.stop()
 
