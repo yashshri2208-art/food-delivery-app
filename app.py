@@ -45,6 +45,16 @@ st.markdown(
 html, body, [class*="css"], .stMarkdown, .stButton button, label {
     font-family:'DM Sans','Segoe UI',sans-serif;
 }
+/* Remove Streamlit's fixed top toolbar so it cannot cover the custom navigation. */
+[data-testid="stHeader"], [data-testid="stToolbar"] {
+    display:none !important;
+    height:0 !important;
+    visibility:hidden !important;
+}
+[data-testid="stAppViewContainer"] .main .block-container {
+    padding-top:1.7rem;
+}
+
 h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !important; }
 .block-container { padding-top:1.7rem; padding-bottom:3rem; animation: pageIn .55s ease both; }
 @keyframes pageIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -1551,6 +1561,42 @@ elif st.session_state.page == "My Orders":
                 if order["instructions"]:
                     st.write(f"Order note: {order['instructions']}")
                 st.success("Thank you for choosing ChaiTapri Eats!")
+
+                # Reviews are available only after an order reaches Delivered status.
+                st.markdown("#### ⭐ Rate your experience")
+                if order.get("review_submitted"):
+                    st.success(f"Thanks for your feedback! Your rating: {order['review_rating']} · Extra delivery tip: {inr(order.get('review_tip', 0))}")
+                    if order.get("review_text"):
+                        st.caption(f"Your review: {order['review_text']}")
+                else:
+                    st.caption("How was the food and delivery? You can also leave an optional extra tip for your delivery partner.")
+                    rating = st.radio(
+                        "Star rating",
+                        ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
+                        index=4,
+                        horizontal=True,
+                        key=f"review_rating_{order['order_id']}",
+                    )
+                    review_text = st.text_area(
+                        "Review (optional)",
+                        placeholder="Tell us what you liked or what we could improve...",
+                        key=f"review_text_{order['order_id']}",
+                        max_chars=500,
+                    )
+                    review_tip = st.selectbox(
+                        "Add an extra tip for your delivery partner (optional)",
+                        [0, 10, 20, 30, 50],
+                        format_func=lambda amount: "No extra tip" if amount == 0 else inr(amount),
+                        key=f"review_tip_{order['order_id']}",
+                    )
+                    if st.button("Submit review", type="primary", key=f"submit_review_{order['order_id']}", use_container_width=True):
+                        order["review_rating"] = rating
+                        order["review_text"] = review_text.strip()
+                        order["review_tip"] = review_tip
+                        order["review_submitted"] = True
+                        st.success("Review submitted. Thank you!")
+                        st.rerun()
+
                 if st.button("↻ Reorder these items", key=f"reorder_{order['order_id']}", use_container_width=True):
                     st.session_state.selected = order["restaurant"]
                     st.session_state.cart = {item["name"]: item["quantity"] for item in order["items"]}
