@@ -1282,7 +1282,7 @@ elif st.session_state.page == "Menu":
                                 st.session_state.cart[item_name] = 1
                                 st.rerun()
                         else:
-                            minus_col, qty_col, plus_col = detail_col.columns([1, 1, 1])
+                            minus_col, qty_col, plus_col = st.columns([1, 1, 1])
                             if minus_col.button("−", key=f"minus_{restaurant['name']}_{item_name}", use_container_width=True):
                                 if current_qty > 1:
                                     st.session_state.cart[item_name] = current_qty - 1
