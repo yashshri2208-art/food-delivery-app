@@ -42,8 +42,19 @@ st.markdown(
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 :root { --ink:#211626; --gold:#ffc928; --red:#ff5a52; --cream:#fff7e8; --mint:#48c9a5; }
-html, body, [class*="css"], .stMarkdown, .stButton button, label {
-    font-family:'DM Sans','Segoe UI',sans-serif;
+html, body, .stApp, .stApp p, .stApp li, .stApp label,
+.stApp input, .stApp textarea, .stApp select,
+.stApp [data-testid="stMarkdownContainer"],
+.stApp [data-testid="stCaptionContainer"],
+.stApp [data-testid="stWidgetLabel"],
+.stApp .stButton button, .stApp [data-baseweb="select"],
+.stApp [data-baseweb="input"], .stApp [data-baseweb="textarea"],
+.stApp [data-testid="stExpander"] summary {
+    font-family:'DM Sans','Segoe UI',sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6, .display, .branch-title, .tile-name,
+.hero-slide-title, .menu-item-title {
+    font-family:'Bricolage Grotesque','DM Sans','Segoe UI',sans-serif !important;
 }
 /* Remove Streamlit's fixed top toolbar so it cannot cover the custom navigation. */
 [data-testid="stHeader"], [data-testid="stToolbar"] {
@@ -61,7 +72,13 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 @keyframes floatFood { 0%,100% { transform:translateY(0) rotate(-4deg); } 50% { transform:translateY(-12px) rotate(4deg); } }
 @keyframes glow { 0%,100% { box-shadow:0 0 0 rgba(255,201,40,0); } 50% { box-shadow:0 0 36px rgba(255,201,40,.18); } }
 .stApp { background:radial-gradient(ellipse at 85% 0%, rgba(255,201,40,.07), transparent 30%), #101116; }
-[data-testid="stSidebar"] { background:linear-gradient(180deg,#241b2a,#191a22); border-right:1px solid rgba(255,255,255,.08); }
+[data-testid="stSidebar"] { display:none !important; }
+[data-testid="stAppViewContainer"] .main .block-container { max-width:1440px; }
+/* Single custom-feeling top navigation row */
+.stApp div[data-testid="stHorizontalBlock"]:has(button[key^="top_nav_"]) { gap:.55rem; }
+.stApp button[kind="secondary"] { border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.045); }
+.stApp button[kind="primary"] { box-shadow:0 7px 22px rgba(255,90,82,.18); }
+
 [data-testid="stSidebar"] h3 { color:var(--gold); }
 .stButton button { border-radius:13px; min-height:2.8rem; font-weight:700; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .stButton button:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,.2); border-color:var(--gold); }
@@ -274,6 +291,15 @@ html { scroll-behavior:smooth; }
 .order-timeline { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px; }
 .order-timeline span { flex:1; min-width:130px; border:1px solid rgba(72,201,165,.24); border-radius:12px; padding:10px; background:rgba(72,201,165,.07); font-size:.82rem; }
 @media (max-width:700px) { .branch-hero { padding:22px 18px; } .restaurant-tile { min-height:unset; } .menu-footer { align-items:flex-start; flex-direction:column; } }
+
+
+/* Unified font pair, integrated restaurant cards, and photo-led dish rows. */
+.restaurant-photo { height:190px; margin-bottom:14px; border-radius:14px; object-fit:cover; }
+.dish-photo { display:block; width:100%; height:138px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.10); }
+.qty-display { text-align:center; font-weight:800; font-size:1.05rem; padding:.55rem 0; color:var(--gold); }
+.tile-name { margin-bottom:10px; }
+[data-testid="stVerticalBlockBorderWrapper"] { overflow:hidden; }
+@media (max-width:700px) { .dish-photo { height:110px; } .restaurant-photo { height:160px; } }
 
 </style>
 """,
@@ -772,10 +798,7 @@ def set_restaurant(name):
     st.session_state.selected = name
 
 
-# Navigation and location controls are buttons rather than a state-controlled
-# radio widget. This avoids Streamlit's "widget already instantiated" error.
-st.sidebar.markdown("### 🍜 ChaiTapri Eats")
-st.sidebar.caption("Your campus food companion")
+# The sidebar is intentionally removed; the top navigation below is the only navigation bar.
 sidebar_pages = [
     ("🏠", "Home"),
     ("🧭", "Crave Club"),
@@ -785,26 +808,6 @@ sidebar_pages = [
     ("📦", "My Orders"),
     ("📍", "Location"),
 ]
-for nav_icon, nav_page in sidebar_pages:
-    is_current = st.session_state.page == nav_page
-    if st.sidebar.button(
-        f"{'● ' if is_current else ''}{nav_icon}  {nav_page}",
-        key=f"sidebar_nav_{nav_page}",
-        use_container_width=True,
-        type="primary" if is_current else "secondary",
-    ):
-        go_to(nav_page)
-
-if st.sidebar.button("↩ Welcome screen", key="back_to_welcome", use_container_width=True):
-    st.session_state.entered_app = False
-    st.rerun()
-
-st.sidebar.divider()
-st.sidebar.markdown("### 📍 Delivery location")
-st.sidebar.write(st.session_state.delivery_location)
-if st.sidebar.button("Change location →", key="sidebar_change_location", use_container_width=True):
-    go_to("Location")
-st.sidebar.caption(f"Items in cart: {cart_count()}")
 
 # Calculate distance and delivery estimates using the currently saved location.
 user_lat = st.session_state.delivery_lat
@@ -921,28 +924,22 @@ if st.session_state.page == "Home":
     for i, r in enumerate(visible_restaurants):
         with card_columns[i % 3]:
             status = f"{r['eta']} min" if r["deliverable"] else "Out of range"
-            st.markdown(
-                f'<img class="restaurant-photo" src="{RESTAURANT_PHOTOS[r["name"]]}" alt="Food from {r["name"]}" loading="lazy">',
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                f"""
-                <div class="restaurant-tile">
-                  <div class="tile-emoji">{r['emoji']}</div>
-                  <div class="tile-cuisine">{r['cuisine']}</div>
-                  <div class="tile-name">{r['name']}</div>
-                  <div class="tile-stats"><span>★ {r['rating']}</span><span>⌁ {r['distance']:.1f} km</span></div>
-                  <div class="tile-status">{'⚡' if r['deliverable'] else '📍'} {status} delivery</div>
-                  <div class="tile-photo-caption">{'Free delivery above ₹499' if r['deliverable'] else 'Change location to order'}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
             menu_veg = any(item[3] for item in r["menu"])
             if not veg_only or menu_veg:
-                if st.button("Explore menu  →", key=f"home_{r['name']}", use_container_width=True):
-                    set_restaurant(r["name"])
-                    go_to("Menu")
+                with st.container(border=True):
+                    st.markdown(
+                        f'<img class="restaurant-photo" src="{RESTAURANT_PHOTOS[r["name"]]}" alt="Food from {r["name"]}" loading="lazy">',
+                        unsafe_allow_html=True,
+                    )
+                    st.markdown(f'<div class="tile-cuisine">{r["cuisine"]}</div><div class="tile-name">{r["name"]}</div>', unsafe_allow_html=True)
+                    stat_rating, stat_time, stat_distance = st.columns(3)
+                    stat_rating.markdown(f'**★ {r["rating"]:.1f}**')
+                    stat_time.caption(f'⏱ {status}')
+                    stat_distance.caption(f'⌁ {r["distance"]:.1f} km')
+                    st.caption('Free delivery above ₹499' if r['deliverable'] else 'Change location to order')
+                    if st.button("View menu  →", key=f"home_{r['name']}", use_container_width=True, type="primary"):
+                        set_restaurant(r["name"])
+                        go_to("Menu")
 
     with st.expander("🗺️ View restaurant locations"):
         map_rows = [{"lat": user_lat, "lon": user_lon, "color": "#ffc928", "size": 140}]
@@ -1205,31 +1202,42 @@ elif st.session_state.page == "Menu":
                 for item_name, description, price, is_veg in grouped_menu[category]:
                     current_qty = st.session_state.cart.get(item_name, 0)
                     with st.container(border=True):
-                        item_col, action_col = st.columns([3.4, 1.35], vertical_alignment="center")
-                        item_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
-                        item_col.markdown(
+                        photo_col, detail_col = st.columns([1.15, 2.85], vertical_alignment="center")
+                        photo_url = MENU_PHOTOS.get(category, RESTAURANT_PHOTOS.get(restaurant["name"], ""))
+                        photo_col.markdown(
+                            f'<img class="dish-photo" src="{photo_url}" alt="Illustrative photo for {item_name}" loading="lazy">',
+                            unsafe_allow_html=True,
+                        )
+                        detail_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
+                        detail_col.markdown(
                             f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Vegetarian" if is_veg else "🔴 Non-vegetarian"}</span>',
                             unsafe_allow_html=True,
                         )
-                        item_col.markdown(f'<div class="menu-item-desc">{description}</div>', unsafe_allow_html=True)
-                        item_col.markdown(f'<div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
+                        detail_col.markdown(f'<div class="menu-item-desc">{description}</div>', unsafe_allow_html=True)
+                        detail_col.markdown(f'<div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
                         fav_label = "💛 Saved" if item_name in st.session_state.favourites else "♡ Save"
-                        if item_col.button(fav_label, key=f"fav_{restaurant['name']}_{item_name}"):
+                        if detail_col.button(fav_label, key=f"fav_{restaurant['name']}_{item_name}"):
                             if item_name in st.session_state.favourites:
                                 st.session_state.favourites.remove(item_name)
                             else:
                                 st.session_state.favourites.append(item_name)
                             st.rerun()
-                        action_col.caption(f"In cart: **{current_qty}**")
-                        if action_col.button("＋ Add to cart", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"]):
-                            st.session_state.cart[item_name] = current_qty + 1
-                            st.rerun()
-                        if current_qty > 0 and action_col.button("− Remove one", key=f"remove_{restaurant['name']}_{item_name}", use_container_width=True):
-                            if current_qty > 1:
-                                st.session_state.cart[item_name] = current_qty - 1
-                            else:
-                                del st.session_state.cart[item_name]
-                            st.rerun()
+                        if current_qty == 0:
+                            if detail_col.button("ADD +", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"], type="primary"):
+                                st.session_state.cart[item_name] = 1
+                                st.rerun()
+                        else:
+                            minus_col, qty_col, plus_col = detail_col.columns([1, 1, 1])
+                            if minus_col.button("−", key=f"minus_{restaurant['name']}_{item_name}", use_container_width=True):
+                                if current_qty > 1:
+                                    st.session_state.cart[item_name] = current_qty - 1
+                                else:
+                                    del st.session_state.cart[item_name]
+                                st.rerun()
+                            qty_col.markdown(f'<div class="qty-display">{current_qty}</div>', unsafe_allow_html=True)
+                            if plus_col.button("+", key=f"plus_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"]):
+                                st.session_state.cart[item_name] = current_qty + 1
+                                st.rerun()
     else:
         st.info("No dishes match this filter at the selected restaurant.")
 
