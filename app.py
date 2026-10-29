@@ -307,6 +307,8 @@ html { scroll-behavior:smooth; }
 /* Unified font pair, integrated restaurant cards, and photo-led dish rows. */
 .restaurant-photo { height:190px; margin-bottom:14px; border-radius:14px; object-fit:cover; }
 .dish-photo { display:block; width:100%; height:138px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.10); }
+.dish-photo-wrap { width:100%; height:138px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.10); }
+.photo-unavailable { display:flex; align-items:center; justify-content:center; color:#a9a3ad; background:rgba(255,255,255,.025); font-size:13px; text-align:center; padding:10px; box-sizing:border-box; }
 .qty-display { text-align:center; font-weight:800; font-size:1.05rem; padding:.55rem 0; color:var(--gold); }
 .tile-name { margin-bottom:10px; }
 [data-testid="stVerticalBlockBorderWrapper"] { overflow:hidden; }
@@ -537,6 +539,17 @@ MENU_PHOTOS = {
     "Bowls & Mains": RESTAURANT_PHOTOS["Green Bowl"], "Wraps": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=600&q=80",
     "Starters & Light Bites": RESTAURANT_PHOTOS["Green Bowl"], "Sides & Light Bites": RESTAURANT_PHOTOS["Green Bowl"],
     "Desserts & Fruit": "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80",
+}
+
+# Verified dish-specific image URLs. Do not reuse a generic category photo for every dish.
+# If a dish does not have a verified image, show a neutral placeholder instead.
+DISH_PHOTOS = {
+    "Paneer Tikka": "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto%2Cw_300%2Ch_300%2Cc_fit/FOOD_CATALOG/IMAGES/CMS/2026/3/20/2f82a246-60cc-4aed-9893-30c3b1f72096_694f3675-22a9-4772-a893-c75b303fe5c6.png",
+    "Hara Bhara Kebab": "https://images.archanaskitchen.com/images/recipes/snack-recipes/indian-snack-recipes/Hara_Bara_Kebab_Video_Recipe_17_8921b4130e.jpg",
+    "Shahi Paneer": "https://img-global.cpcdn.com/recipes/a7d3302a9f9095f3/680x781cq80/shahi-paneer-recipe-main-photo.jpg",
+    "Butter Chicken": "https://images.deliveryhero.io/image/fd-pk/Products/76523368.jpg?width=600",
+    "Gulab Jamun (2 pcs)": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto%2Cq_auto%2Cfl_lossy/rauptpxhevaagr48x2nc",
+    "Masala Chai": "https://nutriscan.app/calories-nutrition/images/masala-chai-68702.webp",
 }
 
 # Coupons: type, value, maximum discount, minimum order and description
@@ -1250,11 +1263,18 @@ elif st.session_state.page == "Menu":
                     current_qty = st.session_state.cart.get(item_name, 0)
                     with st.container(border=True):
                         photo_col, detail_col = st.columns([1.15, 2.85], vertical_alignment="center")
-                        photo_url = MENU_PHOTOS.get(category, RESTAURANT_PHOTOS.get(restaurant["name"], ""))
-                        photo_col.markdown(
-                            f'<img class="dish-photo" src="{photo_url}" alt="Illustrative photo for {item_name}" loading="lazy">',
-                            unsafe_allow_html=True,
-                        )
+                        photo_url = DISH_PHOTOS.get(item_name)
+                        if photo_url:
+                            # Hide a failed remote image rather than leaving a broken-image icon.
+                            photo_col.markdown(
+                                f"""<div class="dish-photo-wrap"><img class="dish-photo" src="{photo_url}" alt="{item_name}" loading="lazy" onerror="this.parentElement.innerHTML='Dish photo unavailable';this.parentElement.classList.add('photo-unavailable');"></div>""",
+                                unsafe_allow_html=True,
+                            )
+                        else:
+                            photo_col.markdown(
+                                '<div class="dish-photo-wrap photo-unavailable">Dish photo not yet verified</div>',
+                                unsafe_allow_html=True,
+                            )
                         detail_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
                         detail_col.markdown(
                             f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Vegetarian" if is_veg else "🔴 Non-vegetarian"}</span>',
