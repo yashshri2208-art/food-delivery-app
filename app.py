@@ -36,7 +36,7 @@ except ImportError:
 st.set_page_config(page_title="ChaiTapri Eats", page_icon="🍛", layout="wide")
 
 # Custom CSS: gives the page its own look (colours, fonts, cards).
-# Palette: warm cream, white surfaces, and chilli red as the single accent
+# Palette: ink #2B1B2E, turmeric #F2B705, chilli #D7263D, mint #2E9E83
 st.markdown(
     """
 <style>
@@ -264,88 +264,6 @@ html { scroll-behavior:smooth; }
 .order-timeline { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px; }
 .order-timeline span { flex:1; min-width:130px; border:1px solid rgba(72,201,165,.24); border-radius:12px; padding:10px; background:rgba(72,201,165,.07); font-size:.82rem; }
 @media (max-width:700px) { .branch-hero { padding:22px 18px; } .restaurant-tile { min-height:unset; } .menu-footer { align-items:flex-start; flex-direction:column; } }
-
-
-/* ChaiTapri Eats redesign: warm, food-first, calmer and consistent. */
-:root { --ink:#34241f; --gold:#d93632; --red:#d93632; --cream:#fffaf4; --mint:#d93632; --surface:#ffffff; --muted:#776b65; }
-html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"],
-[data-testid="stMarkdownContainer"], [data-testid="stText"], [data-testid="stCaptionContainer"],
-[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] *,
-[data-testid="stTextInput"] input, [data-testid="stNumberInput"] input,
-[data-testid="stTextArea"] textarea, [data-testid="stSelectbox"] *,
-[data-testid="stMultiSelect"] *, [data-testid="stTabs"] *,
-[data-testid="stExpander"] *, [data-testid="stRadio"] *, [data-testid="stCheckbox"] *,
-[data-testid="stButton"] button, [data-testid="stSlider"] *, [data-testid="stDateInput"] * {
-  font-family:'DM Sans','Segoe UI',sans-serif !important;
-}
-h1,h2,h3,h4,.display,.landing-title,.tile-name,.branch-title { font-family:'Bricolage Grotesque','DM Sans',sans-serif !important; color:#34241f; }
-.stApp { background:#fffaf4 !important; color:#34241f !important; background-image:none !important; animation:none !important; }
-[data-testid="stAppViewContainer"] { background:#fffaf4 !important; }
-[data-testid="stSidebar"] { display:none !important; }
-[data-testid="stHeader"] { background:rgba(255,250,244,.92) !important; }
-.block-container { max-width:1400px; padding-top:1.1rem; animation:none !important; }
-[data-testid="stHorizontalBlock"] { gap:1rem; }
-[data-testid="stVerticalBlockBorderWrapper"] { background:#fff !important; border:1px solid #f0e5dc !important; border-radius:20px !important; box-shadow:0 5px 20px rgba(76,43,25,.045); transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease; }
-[data-testid="stVerticalBlockBorderWrapper"]:hover { border-color:#edb8ad !important; box-shadow:0 9px 24px rgba(76,43,25,.08); transform:translateY(-2px); }
-.stButton button { border-radius:12px !important; min-height:2.55rem; font-weight:700 !important; transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease !important; animation:none !important; }
-.stButton button:hover { transform:translateY(-1px); box-shadow:0 5px 13px rgba(95,40,30,.1); border-color:#d93632 !important; }
-.stButton button[kind="primary"] { background:#d93632 !important; color:white !important; border:1px solid #d93632 !important; box-shadow:none !important; }
-.stButton button:not([kind="primary"]) { background:#fff !important; color:#493831 !important; border-color:#eadbd1 !important; }
-[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,[data-testid="stSelectbox"] div[data-baseweb="select"],[data-testid="stMultiSelect"] div[data-baseweb="select"] { border-radius:12px !important; background:#fff !important; }
-[data-testid="stTextInput"] input:focus,[data-testid="stNumberInput"] input:focus { border-color:#d93632 !important; box-shadow:0 0 0 1px #d93632 !important; }
-[data-testid="stTabs"] button { color:#75645c !important; }
-[data-testid="stTabs"] button[aria-selected="true"] { color:#d93632 !important; border-bottom-color:#d93632 !important; }
-[data-testid="stProgressBar"] > div > div { background:#d93632 !important; }
-[data-testid="stAlert"] { border-radius:14px !important; }
-.stApp p,.stApp label,.stApp li,.stApp [data-testid="stCaptionContainer"] { color:#51443d; }
-.hero,.branch-hero { background:#fff0e7 !important; border:1px solid #f2d8ca !important; border-bottom:3px solid #d93632 !important; box-shadow:none !important; animation:none !important; }
-.hero .display,.branch-title { color:#34241f !important; }
-.hero p,.branch-description { color:#68564d !important; }
-.branch-kicker,.landing-kicker,.hero-slide-kicker { color:#d93632 !important; }
-.branch-meta span { color:#5b463d !important; background:#fff !important; border-color:#f0dfd5 !important; }
-.section-title { color:#34241f !important; }
-.restaurant-photo { border-radius:14px; border:0; }
-.restaurant-tile { background:#fff !important; border-color:#f0e5dc !important; animation:none !important; }
-.tile-emoji { display:none !important; }
-.tile-cuisine { color:#d93632 !important; }
-.tile-name { color:#34241f !important; }
-.tile-stats span,.restaurant-meta span { color:#57473e !important; background:#fff3eb !important; border-radius:999px; padding:5px 9px; font-size:.8rem; }
-.restaurant-meta { display:flex; flex-wrap:wrap; gap:6px; margin:.5rem 0; }
-.promo-strip,.menu-footer,.cart-total-card,.location-preview,.crave-feature,.smart-pair,.delivery-stage { background:#fff4ec !important; border-color:#f0d7c9 !important; color:#493831 !important; }
-.menu-footer strong,.cart-total-card strong,.menu-card-price,.price { color:#d93632 !important; }
-.bill-box { background:#fff !important; border-color:#f0e5dc !important; }
-.bill-row { border-bottom-color:#eee1d8 !important; }
-.bill-row.saving,.smart-pair strong { color:#a43a2e !important; }
-.bill-total { color:#d93632 !important; }
-.food-badge.veg { color:#276749 !important; background:#e4f4e9 !important; }
-.food-badge.nonveg { color:#a62c28 !important; background:#fde8e4 !important; }
-.menu-item-desc,.tile-photo-caption { color:#786b64 !important; }
-.badge-unlocked { background:#edf7ee !important; border-color:#d5ead8 !important; }
-.badge-locked { background:#fff !important; border-color:#eadbd1 !important; }
-/* Home: one carousel focal point, followed by search and compact restaurant cards. */
-.home-welcome { margin:0 0 14px; }
-.home-welcome .home-kicker { color:#d93632; font-size:.75rem; font-weight:800; letter-spacing:.13em; }
-.home-welcome h1 { font-size:clamp(2rem,4vw,3.2rem); margin:.25rem 0; line-height:1.05; }
-.home-welcome p { margin:.2rem 0 1rem; color:#75645c; }
-.hero-carousel { border-radius:20px !important; margin-bottom:18px !important; box-shadow:none !important; }
-.hero-slide { animation:heroRotate 18s ease-in-out infinite !important; }
-.hero-slide-title { color:#fffaf4 !important; }
-.hero-slide-copy { color:rgba(255,250,244,.92) !important; }
-[data-testid="stImage"] img { border-radius:13px !important; object-fit:cover; }
-/* Keep only the featured carousel rotating; all ambient and decorative motion is removed. */
-.block-container,.hero,.rest-card,.restaurant-tile,.landing-screen,.brand-mark,.landing-kicker,.landing-title,.landing-copy,.landing-perks span,.food-orbit,.food-orbit-small,.welcome-sticker,.welcome-slide:before,.welcome-slide:after,.hero:after,.stApp { animation:none !important; }
-.rest-card:hover,.restaurant-tile:hover { transform:translateY(-2px) !important; }
-.landing-screen { background:#fff0e7 !important; border:0 !important; box-shadow:none !important; }
-.landing-title { color:#34241f !important; }
-.landing-title span { color:#d93632 !important; }
-.landing-copy,.landing-footer { color:#68564d !important; }
-.landing-perks span { background:#fffaf4 !important; color:#51443d !important; border-color:#f0d7c9 !important; }
-.brand-mark { background:#d93632 !important; color:#fff !important; box-shadow:none !important; }
-.welcome-slide:nth-child(1) { background:linear-gradient(120deg,#fff0e7,#f8c9b4 60%,#eaa38f) !important; }
-.welcome-slide:nth-child(2) { background:linear-gradient(120deg,#fff8ed,#f5d9b7 60%,#eabf99) !important; }
-.welcome-slide:nth-child(3) { background:linear-gradient(120deg,#fff2ed,#f4c2ba 60%,#e9978d) !important; }
-.welcome-slide:after { background:linear-gradient(90deg,rgba(255,250,244,.15),rgba(255,250,244,0) 80%) !important; }
-@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
 
 </style>
 """,
@@ -844,7 +762,10 @@ def set_restaurant(name):
     st.session_state.selected = name
 
 
-# One navigation bar: the sidebar is hidden in CSS, and these buttons form the main navigation.
+# Navigation and location controls are buttons rather than a state-controlled
+# radio widget. This avoids Streamlit's "widget already instantiated" error.
+st.sidebar.markdown("### 🍜 ChaiTapri Eats")
+st.sidebar.caption("Your campus food companion")
 sidebar_pages = [
     ("🏠", "Home"),
     ("🧭", "Crave Club"),
@@ -854,6 +775,26 @@ sidebar_pages = [
     ("📦", "My Orders"),
     ("📍", "Location"),
 ]
+for nav_icon, nav_page in sidebar_pages:
+    is_current = st.session_state.page == nav_page
+    if st.sidebar.button(
+        f"{'● ' if is_current else ''}{nav_icon}  {nav_page}",
+        key=f"sidebar_nav_{nav_page}",
+        use_container_width=True,
+        type="primary" if is_current else "secondary",
+    ):
+        go_to(nav_page)
+
+if st.sidebar.button("↩ Welcome screen", key="back_to_welcome", use_container_width=True):
+    st.session_state.entered_app = False
+    st.rerun()
+
+st.sidebar.divider()
+st.sidebar.markdown("### 📍 Delivery location")
+st.sidebar.write(st.session_state.delivery_location)
+if st.sidebar.button("Change location →", key="sidebar_change_location", use_container_width=True):
+    go_to("Location")
+st.sidebar.caption(f"Items in cart: {cart_count()}")
 
 # Calculate distance and delivery estimates using the currently saved location.
 user_lat = st.session_state.delivery_lat
@@ -924,8 +865,13 @@ st.divider()
 # HOME: restaurant discovery, filters, and food-first cards
 # ---------------------------------------------------------------------------
 if st.session_state.page == "Home":
-    st.markdown('<div class="home-welcome"><div class="home-kicker">CHAI TAPRI EATS · SONIPAT</div><h1>Good food. No drama.</h1><p>Find your next favourite, compare delivery times, and order something worth looking forward to.</p></div>', unsafe_allow_html=True)
-    # One featured food carousel is the main visual focus on Home.
+    shared_header(
+        "DISCOVER YOUR NEXT FAVOURITE",
+        "What are we craving today?",
+        "Explore campus favourites, compare delivery times, and find something worth looking forward to.",
+        "✨",
+    )
+    # Three-slide automatic carousel: CSS handles the rotation without extra packages.
     carousel_slides = [
         (RESTAURANT_PHOTOS["Sunrise Breakfast Club"], "BREAKFAST, YOUR WAY", "Start the day on a delicious note.", "From chocos and toast to dosa, chole bhature and pancakes."),
         (RESTAURANT_PHOTOS["Spice Route Kitchen"], "COMFORT FOOD CALLING", "Big cravings deserve big flavours.", "Find North Indian favourites, sizzling sides and sweet endings."),
@@ -965,15 +911,26 @@ if st.session_state.page == "Home":
     for i, r in enumerate(visible_restaurants):
         with card_columns[i % 3]:
             status = f"{r['eta']} min" if r["deliverable"] else "Out of range"
+            st.markdown(
+                f'<img class="restaurant-photo" src="{RESTAURANT_PHOTOS[r["name"]]}" alt="Food from {r["name"]}" loading="lazy">',
+                unsafe_allow_html=True,
+            )
+            st.markdown(
+                f"""
+                <div class="restaurant-tile">
+                  <div class="tile-emoji">{r['emoji']}</div>
+                  <div class="tile-cuisine">{r['cuisine']}</div>
+                  <div class="tile-name">{r['name']}</div>
+                  <div class="tile-stats"><span>★ {r['rating']}</span><span>⌁ {r['distance']:.1f} km</span></div>
+                  <div class="tile-status">{'⚡' if r['deliverable'] else '📍'} {status} delivery</div>
+                  <div class="tile-photo-caption">{'Free delivery above ₹499' if r['deliverable'] else 'Change location to order'}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
             menu_veg = any(item[3] for item in r["menu"])
-            if veg_only and not menu_veg:
-                continue
-            with st.container(border=True):
-                st.image(RESTAURANT_PHOTOS[r["name"]], use_container_width=True)
-                st.markdown(f'<div class="tile-cuisine">{r["cuisine"]}</div><div class="tile-name">{r["name"]}</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="restaurant-meta"><span>★ {r["rating"]}</span><span>⌁ {r["distance"]:.1f} km</span><span>◷ {status}</span></div>', unsafe_allow_html=True)
-                st.caption("Free delivery above ₹499" if r["deliverable"] else "Change location to order")
-                if st.button("View menu  →", key=f"home_{r['name']}", use_container_width=True, disabled=not r["deliverable"]):
+            if not veg_only or menu_veg:
+                if st.button("Explore menu  →", key=f"home_{r['name']}", use_container_width=True):
                     set_restaurant(r["name"])
                     go_to("Menu")
 
@@ -1237,36 +1194,32 @@ elif st.session_state.page == "Menu":
                 st.caption(f"Explore {category.lower()} at {restaurant['name']}")
                 for item_name, description, price, is_veg in grouped_menu[category]:
                     current_qty = st.session_state.cart.get(item_name, 0)
-                    category_photo = MENU_PHOTOS.get(category, RESTAURANT_PHOTOS.get(restaurant["name"], RESTAURANT_PHOTOS["Spice Route Kitchen"]))
                     with st.container(border=True):
-                        photo_col, item_col, action_col = st.columns([1.15, 3.2, 1.5], vertical_alignment="center")
-                        photo_col.image(category_photo, use_container_width=True)
+                        item_col, action_col = st.columns([3.4, 1.35], vertical_alignment="center")
                         item_col.markdown(f'<div class="menu-item-title">{item_name}</div>', unsafe_allow_html=True)
-                        item_col.markdown(f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"VEG" if is_veg else "NON-VEG"}</span>', unsafe_allow_html=True)
-                        item_col.markdown(f'<div class="menu-item-desc">{description}</div><div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
-                        fav_label = "♥ Saved" if item_name in st.session_state.favourites else "♡ Save"
+                        item_col.markdown(
+                            f'<span class="food-badge {"veg" if is_veg else "nonveg"}">{"🟢 Vegetarian" if is_veg else "🔴 Non-vegetarian"}</span>',
+                            unsafe_allow_html=True,
+                        )
+                        item_col.markdown(f'<div class="menu-item-desc">{description}</div>', unsafe_allow_html=True)
+                        item_col.markdown(f'<div class="menu-card-price">{inr(price)}</div>', unsafe_allow_html=True)
+                        fav_label = "💛 Saved" if item_name in st.session_state.favourites else "♡ Save"
                         if item_col.button(fav_label, key=f"fav_{restaurant['name']}_{item_name}"):
                             if item_name in st.session_state.favourites:
                                 st.session_state.favourites.remove(item_name)
                             else:
                                 st.session_state.favourites.append(item_name)
                             st.rerun()
-                        if current_qty == 0:
-                            if action_col.button("ADD +", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"]):
-                                st.session_state.cart[item_name] = 1
-                                st.rerun()
-                        else:
-                            minus_col, qty_col, plus_col = action_col.columns([1, 1, 1])
-                            if minus_col.button("−", key=f"minus_{restaurant['name']}_{item_name}", use_container_width=True):
-                                if current_qty > 1:
-                                    st.session_state.cart[item_name] = current_qty - 1
-                                else:
-                                    del st.session_state.cart[item_name]
-                                st.rerun()
-                            qty_col.markdown(f'<div class="qty-number">{current_qty}</div>', unsafe_allow_html=True)
-                            if plus_col.button("+", key=f"plus_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"]):
-                                st.session_state.cart[item_name] = current_qty + 1
-                                st.rerun()
+                        action_col.caption(f"In cart: **{current_qty}**")
+                        if action_col.button("＋ Add to cart", key=f"add_{restaurant['name']}_{item_name}", use_container_width=True, disabled=not restaurant["deliverable"]):
+                            st.session_state.cart[item_name] = current_qty + 1
+                            st.rerun()
+                        if current_qty > 0 and action_col.button("− Remove one", key=f"remove_{restaurant['name']}_{item_name}", use_container_width=True):
+                            if current_qty > 1:
+                                st.session_state.cart[item_name] = current_qty - 1
+                            else:
+                                del st.session_state.cart[item_name]
+                            st.rerun()
     else:
         st.info("No dishes match this filter at the selected restaurant.")
 
