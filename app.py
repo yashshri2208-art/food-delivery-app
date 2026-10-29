@@ -75,7 +75,18 @@ h1,h2,h3,.display { font-family:'Bricolage Grotesque','Segoe UI',sans-serif !imp
 [data-testid="stSidebar"] { display:none !important; }
 [data-testid="stAppViewContainer"] .main .block-container { max-width:1440px; }
 /* Single custom-feeling top navigation row */
-.stApp div[data-testid="stHorizontalBlock"]:has(button[key^="top_nav_"]) { gap:.55rem; }
+.stApp div[data-testid="stHorizontalBlock"]:has(button[key^="top_nav_"]) {
+    gap:.55rem;
+    position:sticky;
+    top:0;
+    z-index:999;
+    padding:10px 12px;
+    margin:0 0 14px;
+    background:rgba(16,17,22,.96);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.10);
+    border-radius:0 0 16px 16px;
+}
 .stApp button[kind="secondary"] { border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.045); }
 .stApp button[kind="primary"] { box-shadow:0 7px 22px rgba(255,90,82,.18); }
 
@@ -701,7 +712,7 @@ if not st.session_state.entered_app:
     st.markdown(welcome_html, unsafe_allow_html=True)
     if st.button("Explore restaurants  →", type="primary", use_container_width=True, key="enter_ordering_app"):
         st.session_state.entered_app = True
-        st.session_state.page = "Home"
+        st.session_state.page = "Explore"
         st.rerun()
     st.stop()
 
@@ -799,12 +810,11 @@ def set_restaurant(name):
 
 
 # The sidebar is intentionally removed; the top navigation below is the only navigation bar.
-sidebar_pages = [
+top_nav_pages = [
     ("🏠", "Home"),
+    ("🔎", "Explore"),
     ("🧭", "Crave Club"),
-    ("🍽️", "Menu"),
     ("🛒", "Cart"),
-    ("💳", "Checkout"),
     ("📦", "My Orders"),
     ("📍", "Location"),
 ]
@@ -862,8 +872,8 @@ def show_bill_rows(bill, menu_items, cart, include_tip=True):
 
 
 # A slim top navigation bar gives each branch a consistent way to move around.
-top_cols = st.columns(len(sidebar_pages))
-for col, (nav_icon, nav_page) in zip(top_cols, sidebar_pages):
+top_cols = st.columns(len(top_nav_pages))
+for col, (nav_icon, nav_page) in zip(top_cols, top_nav_pages):
     if col.button(
         f"{nav_icon} {nav_page}" + (f" ({len(st.session_state.my_orders)})" if nav_page == "My Orders" else ""),
         key=f"top_nav_{nav_page}",
@@ -897,10 +907,46 @@ if st.session_state.page == "Home":
     st.markdown(slide_html, unsafe_allow_html=True)
     cta_left, cta_right = st.columns([1, 2])
     with cta_left:
-        if st.button("🧭 Find my next meal", type="primary", use_container_width=True, key="hero_crave_club"):
-            go_to("Crave Club")
+        if st.button("🔎 Explore restaurants", type="primary", use_container_width=True, key="hero_explore"):
+            go_to("Explore")
     with cta_right:
         st.caption("The featured slides rotate automatically every six seconds. Restaurant images are illustrative; delivery details are simulated.")
+
+    st.markdown("### Where would you like to go?")
+    home_action_cols = st.columns(3)
+    with home_action_cols[0]:
+        with st.container(border=True):
+            st.markdown("### 🔎 Explore")
+            st.caption("Browse restaurants, compare ratings and find your next meal.")
+            if st.button("Browse restaurants →", key="home_go_explore", use_container_width=True, type="primary"):
+                go_to("Explore")
+    with home_action_cols[1]:
+        with st.container(border=True):
+            st.markdown("### 🧭 Crave Club")
+            st.caption("Discover budget combos, meal ideas, breakfast and rewards.")
+            if st.button("Explore Crave Club →", key="home_go_crave", use_container_width=True):
+                go_to("Crave Club")
+    with home_action_cols[2]:
+        with st.container(border=True):
+            st.markdown("### 🛒 Your cart")
+            st.caption(f"{cart_count()} item(s) currently in your cart.")
+            if st.button("View cart →", key="home_go_cart", use_container_width=True):
+                go_to("Cart")
+    st.markdown(
+        '<div class="promo-strip"><span>🍳 Breakfast to dinner</span><span>⚡ Fast delivery estimates</span><span>💛 Easy-to-understand bills</span></div>',
+        unsafe_allow_html=True,
+    )
+
+# ---------------------------------------------------------------------------
+# EXPLORE: focused restaurant discovery, filters, and location map
+# ---------------------------------------------------------------------------
+elif st.session_state.page == "Explore":
+    shared_header(
+        "FIND YOUR NEXT MEAL",
+        "Explore restaurants",
+        "Search, filter and compare nearby demo kitchens. Select a restaurant to open its dedicated menu.",
+        "🔎",
+    )
     filter_a, filter_b, filter_c = st.columns([1.2, 1.2, 1.6])
     with filter_a:
         veg_only = st.checkbox("🌱 Vegetarian options", key="home_veg_filter")
@@ -952,6 +998,7 @@ if st.session_state.page == "Home":
         '<div class="promo-strip"><span>🍳 Breakfast to dinner</span><span>⚡ Fast delivery estimates</span><span>💛 Easy-to-understand bills</span></div>',
         unsafe_allow_html=True,
     )
+
 
 # ---------------------------------------------------------------------------
 # CRAVE CLUB: discovery, budget mode, meal builder, breakfast passport, group split
